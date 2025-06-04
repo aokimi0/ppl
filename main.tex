@@ -3,37 +3,27 @@
 \usepackage{geometry}
 \geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
 
+% 基础宏包
+\usepackage{amsmath}           % 数学公式
+\usepackage{amssymb}          % 数学符号
+\usepackage{graphicx}          % 图片支持
+\usepackage{float}             % 浮动体设置
+\usepackage{booktabs}          % 用于美观的表格边框
+\usepackage{fancyhdr}          % 页眉页脚
+\usepackage{lastpage}          % 获取总页数
+\usepackage{zhnumber}          % 中文数字
+\usepackage{subcaption}        % 支持子图
+\usepackage{placeins}          % 用于\FloatBarrier命令
+
 % 参考文献设置
 \usepackage[numbers,sort&compress,square,comma]{natbib}
 \bibliographystyle{unsrtnat}
 
-% 其他必要的包
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{hyperref}
+% URL和超链接设置
 \usepackage{url}
-
-% 参考文献样式定制
-\makeatletter
-\renewcommand{\@biblabel}[1]{[#1]}
-\makeatother
-
-% 基础宏包
-\usepackage{ctex}              % 中文支持
-\usepackage{graphicx}          % 图片支持
-\usepackage{amsmath}           % 数学公式
-\usepackage{amssymb}          % 数学符号
-\usepackage{geometry}          % 页面设置
-\usepackage{fancyhdr}          % 页眉页脚
-\usepackage{lastpage}          % 获取总页数
-\usepackage{zhnumber}          % 中文数字
-\usepackage{float}             % 浮动体设置
-\usepackage{subcaption}        % 支持子图
-\usepackage{placeins}          % 用于\FloatBarrier命令
-
-% 页面设置
-\geometry{a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm}
+\usepackage{xurl}
+\usepackage{hyperref}
+\renewcommand{\UrlFont}{\ttfamily\color{blue}\small}
 
 % 浮动体设置
 \renewcommand{\textfraction}{0.05}
@@ -53,11 +43,9 @@
 % 图片路径
 \graphicspath{{fig/}}
 
-% 参考文献处理增强
-\usepackage{hyperref}
-\usepackage{url}
-\usepackage{xurl}
-\renewcommand{\UrlFont}{\ttfamily\color{blue}\small}
+% 设置中文段首缩进
+\setlength{\parindent}{2em}  % 段首缩进2个字符
+\setlength{\parskip}{0.5ex}  % 段间距
 
 % 确保文献内含中文字符时正确编译
 \usepackage{etoolbox}
@@ -70,10 +58,6 @@
 \renewcommand{\bibfont}{\small}
 \setlength{\bibsep}{1.2ex}
 \makeatother
-
-% 美化URL显示
-\usepackage{xurl}
-\renewcommand{\UrlFont}{\ttfamily\color{blue}\small}
 
 % 伪代码设置
 \usepackage{algorithm}  
@@ -124,7 +108,7 @@
 %-------------------------页眉页脚--------------
 \pagestyle{fancy}
 \lhead{\kaishu \leftmark}
-\rhead{\kaishu 新西兰交通事故分析系统数据集实验报告}
+\rhead{\kaishu 预测驱动统计推断：一项模拟研究}
 \lfoot{}
 \cfoot{\thepage}
 \rfoot{}
@@ -176,12 +160,13 @@
     {\zihao{3}\songti\bfseries 摘\quad 要}
 \end{center}
 \vspace{0.5em}
-\parindent 2em % Standard Chinese paragraph indent
 \small
-本项目旨在评估预测驱动推断（Prediction-Powered Inference, PPI）框架在结合少量标注数据、大量未标注数据及机器学习模型预测以提升统计推断效率方面的性能。通过模拟一个类似阿尔茨海默病神经影像学倡议（ADNI）的数据集，我们比较了PPI方法与经典统计推断（仅依赖少量标注数据）和朴素机器学习推断（直接使用所有预测值）的表现。实验结果表明，PPI方法能够在保持名义覆盖率的同时，有效缩小置信区间宽度，并显著降低估计偏差，从而验证了其在数据稀缺场景下增强统计推断能力的潜力。
+\setlength{\parindent}{2em} % Standard Chinese paragraph indent
+
+\indent 本项目旨在评估预测驱动推断（Prediction-Powered Inference, PPI）框架在结合少量标注数据、大量未标注数据及机器学习模型预测以提升统计推断效率方面的性能。通过模拟一个类似阿尔茨海默病神经影像学倡议（ADNI）的数据集，我们比较了PPI方法与经典统计推断（仅依赖少量标注数据）和朴素机器学习推断（直接使用所有预测值）的表现。实验结果表明，PPI方法能够在保持名义覆盖率的同时，有效缩小置信区间宽度，并显著降低估计偏差，从而验证了其在数据稀缺场景下增强统计推断能力的潜力。代码已开源于 \url{https://github.com/aokimi0/ppl}。
 
 \vspace{1em}
-\keywords{预测驱动推断；统计推断；机器学习；数据稀缺；模拟研究；置信区间}
+\noindent\textbf{关键词：}预测驱动推断；统计推断；机器学习；数据稀缺；模拟研究；置信区间
 
 % --- English Abstract ---
 \clearpage
@@ -191,9 +176,10 @@
     {\zihao{3}\bfseries Abstract}
 \end{center}
 \vspace{0.5em}
-\parindent 2em
 \small
-This project aims to evaluate the performance of the Prediction-Powered Inference (PPI) framework in enhancing statistical inference efficiency by combining a small amount of labeled data, a large amount of unlabeled data, and predictions from machine learning models. By simulating a dataset analogous to the Alzheimer's Disease Neuroimaging Initiative (ADNI), we compare the PPI method with classical statistical inference (relying solely on limited labeled data) and naive machine learning inference (directly using all predicted values). The experimental results demonstrate that the PPI method can effectively reduce confidence interval width and significantly decrease estimation bias while maintaining nominal coverage rates, thereby validating its potential to enhance statistical inference capabilities in data-scarce scenarios.
+\setlength{\parindent}{2em}
+
+\indent This project aims to evaluate the performance of the Prediction-Powered Inference (PPI) framework in enhancing statistical inference efficiency by combining a small amount of labeled data, a large amount of unlabeled data, and predictions from machine learning models. By simulating a dataset analogous to the Alzheimer's Disease Neuroimaging Initiative (ADNI), we compare the PPI method with classical statistical inference (relying solely on limited labeled data) and naive machine learning inference (directly using all predicted values). The experimental results demonstrate that the PPI method can effectively reduce confidence interval width and significantly decrease estimation bias while maintaining nominal coverage rates, thereby validating its potential to enhance statistical inference capabilities in data-scarce scenarios. The code is available at \url{https://github.com/aokimi0/ppl}.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} Prediction-Powered Inference; Statistical Inference; Machine Learning; Data Scarcity; Simulation Study; Confidence Intervals
@@ -206,10 +192,10 @@ This project aims to evaluate the performance of the Prediction-Powered Inferenc
 % --- Main Content Start ---
 \section{引言}
 \subsection{背景与动机}
-在许多科学研究和商业决策中，获取大规模高质量的标注数据（"金标准"）成本高昂且耗时。然而，未标注数据和强大的预训练机器学习模型却日益普及。传统的统计推断方法在标注数据稀缺时面临统计功效不足的问题，而直接将机器学习模型的预测结果用于下游统计分析，则可能因模型偏差导致推断失效。预测驱动推断（PPI）框架的提出，旨在弥合机器学习预测能力与统计推断有效性要求之间的鸿沟。
+\indent 在许多科学研究和商业决策中，获取大规模高质量的标注数据（"金标准"）成本高昂且耗时。然而，未标注数据和强大的预训练机器学习模型却日益普及。传统的统计推断方法在标注数据稀缺时面临统计功效不足的问题，而直接将机器学习模型的预测结果用于下游统计分析，则可能因模型偏差导致推断失效。预测驱动推断（PPI）框架的提出，旨在弥合机器学习预测能力与统计推断有效性要求之间的鸿沟。
 
 \subsection{问题陈述}
-本项目探讨的核心问题是：当拥有少量标注数据、大量未标注数据以及一个（可能不完美的）机器学习预测模型时，如何有效地结合这些信息进行可靠的统计推断（如均值估计和置信区间构建）？我们旨在量化PPI方法相对于仅使用标注数据的经典方法和直接使用模型预测的朴素方法的性能增益。
+\indent 本项目探讨的核心问题是：当拥有少量标注数据、大量未标注数据以及一个（可能不完美的）机器学习预测模型时，如何有效地结合这些信息进行可靠的统计推断（如均值估计和置信区间构建）？我们旨在量化PPI方法相对于仅使用标注数据的经典方法和直接使用模型预测的朴素方法的性能增益。
 
 \subsection{项目目标}
 \begin{enumerate}
@@ -228,30 +214,30 @@ This project aims to evaluate the performance of the Prediction-Powered Inferenc
 
 \subsection{报告结构}
 \label{sec:report_structure}
-本报告的后续章节安排如下：第二部分将详细介绍预测驱动统计推断的理论框架，包括其基本原理、核心组件（如校正项）以及所选PPI++方法的特点。第三部分将阐述实验设计和具体实现细节，包括数据集的选择与预处理、预训练模型的规格、三种对比推断方法的实现方案，以及开发环境和所用工具。第四部分将呈现实验结果和评估，重点比较不同方法在点估计偏差、均方误差、置信区间覆盖率和长度等方面的表现。第五部分将对实验结果进行深入讨论，解读其含义，分析研究的局限性，并展望未来工作。第六部分为结论，总结本研究的主要发现和意义。第七部分将提供关于项目可复现性的说明。最后是参考文献和可能的附录。
+本报告的后续章节安排如下：第二部分将详细介绍预测驱动统计推断的理论框架，包括其基本原理、核心组件（如校正项）以及所选PPI++方法的特点。第三部分将阐述实验设计和具体实现细节，包括数据集的选择与预处理、预训练模型的规格、三种对比推断方法的实现方案，以及开发环境和所用工具。第四部分将呈现实验结果和评估，重点比较不同方法在点估计偏差、均方误差、置信区间覆盖率和长度等方面的表现。第五部分将对实验结果进行深入讨论，解读其含义，分析研究的局限性，并展望未来工作。第六部分为结论，总结本研究的主要发现和意义。最后是参考文献和附录。
 
 \section{方法论}
 \label{sec:methodology}
 
 \subsection{预测驱动的统计推断框架}
 \label{sec:ppi_framework}
-在现代数据科学实践中，一个核心的挑战在于如何弥合机器学习强大的预测能力与经典统计学对推断结论严格有效性要求之间的鸿沟。机器学习模型，特别是大规模预训练模型，能够从未标注数据中学习并生成海量的预测信息，但这些预测本身并不直接提供统计学意义上的不确定性量化。另一方面，传统的统计推断方法虽然能提供严格的有效性保证（如置信区间的正确覆盖率），但在标注数据稀缺时其效能大打折扣。预测驱动推断（PPI）及其变体，正是为了解决这一核心矛盾而提出的。它们不试图替代统计推断，而是旨在将机器学习的预测信息以一种统计学上稳健的方式整合到推断过程中，从而在保证有效性的前提下，提升推断的效率和精度。这一框架的一个显著优点在于其对机器学习模型的"不可知论（agnosticism）"~{[1]}: 它不要求深入了解预训练模型的内部结构或训练细节，仅利用其输出的预测值，并通过少量标注数据来校正这些预测中可能存在的系统性偏差。这种特性使得PPI方法具有广泛的适用性，尤其是在用户可能无法控制或完全理解所用预训练模型的场景中。
+\indent 在现代数据科学实践中，一个核心的挑战在于如何弥合机器学习强大的预测能力与经典统计学对推断结论严格有效性要求之间的鸿沟。机器学习模型，特别是大规模预训练模型，能够从未标注数据中学习并生成海量的预测信息，但这些预测本身并不直接提供统计学意义上的不确定性量化。另一方面，传统的统计推断方法虽然能提供严格的有效性保证（如置信区间的正确覆盖率），但在标注数据稀缺时其效能大打折扣。预测驱动推断（PPI）及其变体，正是为了解决这一核心矛盾而提出的。它们不试图替代统计推断，而是旨在将机器学习的预测信息以一种统计学上稳健的方式整合到推断过程中，从而在保证有效性的前提下，提升推断的效率和精度。这一框架的一个显著优点在于其对机器学习模型的"不可知论（agnosticism）": 它不要求深入了解预训练模型的内部结构或训练细节，仅利用其输出的预测值，并通过少量标注数据来校正这些预测中可能存在的系统性偏差。这种特性使得PPI方法具有广泛的适用性，尤其是在用户可能无法控制或完全理解所用预训练模型的场景中。
 
 \subsubsection{预测驱动推断（PPI）基础}
 \label{sec:ppi_basics}
-预测驱动推断（Prediction-Powered Inference, PPI）是一种新兴的统计框架，其核心思想在于巧妙地结合两类数据源的优势：一类是数量庞大但可能存在未知偏差的机器学习（ML）模型预测结果，另一类是数量稀少但质量可靠的"金标准"标注数据~{[1]}. PPI的目标是利用这两类信息，对感兴趣的总体参数（如均值、分位数、回归系数等）进行有效的统计推断，即构建具有预设覆盖率的置信区间或进行假设检验。
+\indent 预测驱动推断（Prediction-Powered Inference, PPI）是一种新兴的统计框架，其核心思想在于巧妙地结合两类数据源的优势：一类是数量庞大但可能存在未知偏差的机器学习（ML）模型预测结果，另一类是数量稀少但质量可靠的"金标准"标注数据。PPI的目标是利用这两类信息，对感兴趣的总体参数（如均值、分位数、回归系数等）进行有效的统计推断，即构建具有预设覆盖率的置信区间或进行假设检验。
 
-该框架的一般流程是：首先，利用预训练的ML模型 $f(X)$ 对大量的未标注数据 $X'_1, \dots, X'_N$ 产生预测值 $\hat{Y}'_1, \dots, \hat{Y}'_N$。这些预测值被用来形成对目标参数的一个初步的、可能是有偏的估计。然后，利用小规模的标注数据集 $(X_1,Y_1), \dots, (X_n,Y_n)$，其中 $Y_i$ 是真实的标签，而 $\hat{Y}_i=f(X_i)$ 是ML模型对这些已标注样本的预测。通过比较 $Y_i$ 和 $\hat{Y}_i$，PPI能够量化ML模型的预测误差，并构建一个所谓的"校正项"（rectifier）。这个校正项随后被用来调整基于大量预测值得出的初步估计，从而得到一个经过偏差校正的、更可靠的最终估计量~{[1]}。
+该框架的一般流程是：首先，利用预训练的ML模型 $f(X)$ 对大量的未标注数据 $X'_1, \dots, X'_N$ 产生预测值 $\hat{Y}'_1, \dots, \hat{Y}'_N$。这些预测值被用来形成对目标参数的一个初步的、可能是有偏的估计。然后，利用小规模的标注数据集 $(X_1,Y_1), \dots, (X_n,Y_n)$，其中 $Y_i$ 是真实的标签，而 $\hat{Y}_i=f(X_i)$ 是ML模型对这些已标注样本的预测。通过比较 $Y_i$ 和 $\hat{Y}_i$，PPI能够量化ML模型的预测误差，并构建一个所谓的"校正项"（rectifier）。这个校正项随后被用来调整基于大量预测值得出的初步估计，从而得到一个经过偏差校正的、更可靠的最终估计量。
 
-PPI框架的普适性很强，它可以应用于任何能够表示为凸目标函数最小化器的参数估计问题~{[1]}。这意味着除了常见的均值、分位数和回归系数外，许多其他复杂的统计量也可以通过PPI进行推断。一个关键特性是，PPI对提供预测的ML模型 $f(X)$ 本身不作任何假设，无论是模型的结构、训练方法还是其预测的准确度如何，PPI都能保证最终推断的统计有效性~{[1]}。
+PPI框架的普适性很强，它可以应用于任何能够表示为凸目标函数最小化器的参数估计问题。这意味着除了常见的均值、分位数和回归系数外，许多其他复杂的统计量也可以通过PPI进行推断。一个关键特性是，PPI对提供预测的ML模型 $f(X)$ 本身不作任何假设，无论是模型的结构、训练方法还是其预测的准确度如何，PPI都能保证最终推断的统计有效性。
 
 \subsubsection{校正项（Rectifier）在偏差修正中的作用}
 \label{sec:rectifier}
 校正项是PPI框架中实现偏差修正的核心机制。其基本思想是利用已有的少量标注数据来估计和补偿由ML模型预测引入的系统性偏差。校正项的具体数学形式取决于所要估计的目标参数 $\theta$ 以及相应的"拟合度量"（measure of fit） $m_{\theta}$。
 
-在Angelopoulos等人~{[1]}的原始工作中，对于一个候选的参数值 $\theta$，拟合度量 $m_{\theta}$ 在基于预测值 $\hat{Y}'$ 的未标注数据集上计算，用于量化 $\theta$ 基于这些（可能不完美的）预测数据的合理性。校正项 $D_{\theta}$ (或 $\Delta_{\theta}$) 则被定义为在标注数据集上，真实标签 $Y$ 计算的拟合度量与预测标签 $\hat{Y}$ 计算的拟合度量之差。例如，在估计总体均值 $\mu=E[Y]$ 的简单情况下，一个朴素的基于预测的估计是 $\frac{1}{N}\sum_{i=1}^{N}f(X'_i)$。校正项可以理解为对 $f(X)$ 预测偏差的经验估计，通常形式为 $\frac{1}{n}\sum_{j=1}^{n}(f(X_j)-Y_j)$，即模型预测值与真实值在标注样本上的平均差异~{[18]}。
+在Angelopoulos等人的原始工作中，对于一个候选的参数值 $\theta$，拟合度量 $m_{\theta}$ 在基于预测值 $\hat{Y}'$ 的未标注数据集上计算，用于量化 $\theta$ 基于这些（可能不完美的）预测数据的合理性。校正项 $D_{\theta}$ (或 $\Delta_{\theta}$) 则被定义为在标注数据集上，真实标签 $Y$ 计算的拟合度量与预测标签 $\hat{Y}$ 计算的拟合度量之差。例如，在估计总体均值 $\mu=E[Y]$ 的简单情况下，一个朴素的基于预测的估计是 $\frac{1}{N}\sum_{i=1}^{N}f(X'_i)$。校正项可以理解为对 $f(X)$ 预测偏差的经验估计，通常形式为 $\frac{1}{n}\sum_{j=1}^{n}(f(X_j)-Y_j)$，即模型预测值与真实值在标注样本上的平均差异。
 
-最终的PPI估计量 $\hat{\theta}_{\text{PPI}}$ 通常是将基于大量预测的初步估计量减去这个校正项（或其某种形式的推广）得到。例如，对于均值估计，PPI估计量可以表示为~{[18]}：
+最终的PPI估计量 $\hat{\theta}_{\text{PPI}}$ 通常是将基于大量预测的初步估计量减去这个校正项（或其某种形式的推广）得到。例如，对于均值估计，PPI估计量可以表示为：
 \begin{equation}
 \hat{\mu}_{\text{PPI}} = \frac{1}{N} \sum_{i=1}^{N} f(X'_i) - \frac{1}{n} \sum_{j=1}^{n} (f(X_j) - Y_j)
 \label{eq:ppi_estimator_new}
@@ -260,18 +246,18 @@ PPI框架的普适性很强，它可以应用于任何能够表示为凸目标�
 
 \subsubsection{所选PPI变体：PPI++ 以增强效率和自适应性}
 \label{sec:ppi_plus_plus}
-尽管原始PPI框架具有开创性和普适性，但在某些情况下，其计算效率和统计效率可能并非最优。为了解决这些问题，Angelopoulos等人后续提出了PPI++~{[19]}。PPI++ 的核心改进在于引入了一个称为"功效调整参数"（power-tuning parameter）的 $\lambda \in \mathbb{R}$。这个参数用于自适应地权衡经典统计估计量（仅基于标注数据）和利用ML预测进行校正的部分。
+尽管原始PPI框架具有开创性和普适性，但在某些情况下，其计算效率和统计效率可能并非最优。为了解决这些问题，Angelopoulos等人后续提出了PPI++。PPI++ 的核心改进在于引入了一个称为"功效调整参数"（power-tuning parameter）的 $\lambda \in \mathbb{R}$。这个参数用于自适应地权衡经典统计估计量（仅基于标注数据）和利用ML预测进行校正的部分。
 
-PPI++的估计量通常基于一个调整后的损失函数 $L^{\text{PP}}_{\lambda}(\theta)$，其形式为~{[20]}：
+PPI++的估计量通常基于一个调整后的损失函数 $L^{\text{PP}}_{\lambda}(\theta)$，其形式为：
 \begin{equation}
 L^{\text{PP}}_{\lambda}(\theta) := L_n(\theta) + \lambda \cdot (L_f^N(\theta) - L_f^n(\theta))
 \label{eq:ppi_plus_plus_loss}
 \end{equation}
 其中，$L_n(\theta)$ 是基于标注数据的经典损失函数，$L_f^N(\theta)$ 是基于大量未标注数据（使用 $f(X)$ 的预测值）的损失函数，$L_f^n(\theta)$ 是基于标注数据（但使用 $f(X)$ 的预测值而非真实 $Y$）的损失函数。参数 $\lambda$ 控制了预测信息（即 $L_f^N(\theta) - L_f^n(\theta)$ 这一项，它反映了预测在未标注数据上带来的"增益"相对于其在标注数据上的"表现"）在多大程度上被纳入最终估计。
 
-$\lambda$ 的选择至关重要。PPI++的一个关键特性是，$\lambda$ 可以从数据中估计得到，目标通常是最小化最终PPI++估计量的渐进方差或最大化相关假设检验的功效~{[19]}。Python库 \texttt{ppi\_py} 在其实现中，允许用户不指定 \texttt{lam} 参数，此时库会自动从数据中估计最优的 $\lambda$ 值~{[22]}。当 $\lambda=0$ 时，PPI++估计量退化为仅使用标注数据的经典估计量；当 $\lambda=1$ 时，在某些特定情况下（例如，损失函数具有特定形式），PPI++可能恢复到原始PPI估计量的形式~{[22]}。
+$\lambda$ 的选择至关重要。PPI++的一个关键特性是，$\lambda$ 可以从数据中估计得到，目标通常是最小化最终PPI++估计量的渐进方差或最大化相关假设检验的功效。Python库 \texttt{ppi\_py} 在其实现中，允许用户不指定 \texttt{lam} 参数，此时库会自动从数据中估计最优的 $\lambda$ 值。当 $\lambda=0$ 时，PPI++估计量退化为仅使用标注数据的经典估计量；当 $\lambda=1$ 时，在某些特定情况下（例如，损失函数具有特定形式），PPI++可能恢复到原始PPI估计量的形式。
 
-这种自适应性是PPI++相较于原始PPI的一个重要优势。它使得方法能够根据预训练模型 $f(X)$ 的实际预测质量自动调整。如果 $f(X)$ 的预测非常准确，估计出的 $\lambda$ 可能会接近1，从而充分利用大量的预测信息以减小估计方差、缩短置信区间。反之，如果 $f(X)$ 的预测质量较差或与真实值关联不大，估计出的 $\lambda$ 可能会趋向于0，此时PPI++将更多地依赖于可靠的标注数据，表现接近于经典推断方法，从而避免了被劣质预测误导的风险。这种稳健性使得PPI++在实际应用中更具吸引力，因为它确保了（在渐进意义下）其表现至少不劣于仅使用标注数据的经典方法，并且在预测信息有用时能显著提升推断效率~{[20]}。
+这种自适应性是PPI++相较于原始PPI的一个重要优势。它使得方法能够根据预训练模型 $f(X)$ 的实际预测质量自动调整。如果 $f(X)$ 的预测非常准确，估计出的 $\lambda$ 可能会接近1，从而充分利用大量的预测信息以减小估计方差、缩短置信区间。反之，如果 $f(X)$ 的预测质量较差或与真实值关联不大，估计出的 $\lambda$ 可能会趋向于0，此时PPI++将更多地依赖于可靠的标注数据，表现接近于经典推断方法，从而避免了被劣质预测误导的风险。这种稳健性使得PPI++在实际应用中更具吸引力，因为它确保了（在渐进意义下）其表现至少不劣于仅使用标注数据的经典方法，并且在预测信息有用时能显著提升推断效率。
 
 \subsubsection{与预训练模型 $f(X)$ 的集成}
 \label{sec:integration_with_fX}
@@ -280,18 +266,18 @@ PPI/PPI++框架与预训练模型 $f(X)$ 的集成方式非常直接且灵活。
     \item \textbf{在标注数据集上}：对于每一个标注样本 $(X_j,Y_j)$，模型会产生预测 $\hat{Y}_j=f(X_j)$。这些预测值 $\hat{Y}_j$ 与真实标签 $Y_j$ 一同用于计算校正项，如前文所述。
     \item \textbf{在大量未标注数据集上}：对于每一个未标注样本 $X'_i$，模型会产生预测 $\hat{Y}'_i=f(X'_i)$。这些预测值 $\hat{Y}'_i$ 被用来构建对目标参数的初步估计，该估计随后会被校正项调整。
 \end{enumerate}
-PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑箱"处理方式~{[1]}。这意味着研究者无需关心 $f(X)$ 的具体架构（例如，是线性模型、决策树、神经网络还是更复杂的集成模型）、训练细节（例如，训练数据、优化算法、超参数设置）或其内部工作原理。只要模型能够输入特征 $X$ 并输出对目标变量 $Y$ 的预测 $\hat{Y}$，它就可以被整合到PPI框架中。这种模型无关性极大地增强了PPI方法的实用性和普适性，使得研究者可以方便地利用已有的、可能是由第三方提供的、或者结构非常复杂的预训练模型，而无需对其进行修改或深入分析。
+PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑箱"处理方式。这意味着研究者无需关心 $f(X)$ 的具体架构（例如，是线性模型、决策树、神经网络还是更复杂的集成模型）、训练细节（例如，训练数据、优化算法、超参数设置）或其内部工作原理。只要模型能够输入特征 $X$ 并输出对目标变量 $Y$ 的预测 $\hat{Y}$，它就可以被整合到PPI框架中。这种模型无关性极大地增强了PPI方法的实用性和普适性，使得研究者可以方便地利用已有的、可能是由第三方提供的、或者结构非常复杂的预训练模型，而无需对其进行修改或深入分析。
 
 \subsubsection{处理潜在的分布偏移（简述）}
 \label{sec:distribution_shift}
-在实际应用中，标注数据和未标注数据的来源或收集条件可能存在差异，导致它们的概率分布不完全一致，即存在分布偏移（distribution shift）。PPI框架及其变体也考虑了这类更具挑战性的情况，并提供相应的解决方案，以保持推断的有效性~{[1]}。
+\indent 在实际应用中，标注数据和未标注数据的来源或收集条件可能存在差异，导致它们的概率分布不完全一致，即存在分布偏移（distribution shift）。PPI框架及其变体也考虑了这类更具挑战性的情况，并提供相应的解决方案，以保持推断的有效性。
 
 主要考虑的分布偏移类型包括：
 \begin{itemize}
-    \item \textbf{协变量偏移（Covariate Shift）}：指的是特征 $X$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(X) \neq P_{\text{unlab}}(X)$），但条件分布 $P(Y|X)$ 保持不变。在这种情况下，PPI可以通过对损失函数或拟合度量进行适当的重加权（reweighting）来处理。如果能够估计或已知两个分布之间的密度比 $w(x) = P_{\text{unlab}}(X=x) / P_{\text{lab}}(X=x)$，则可以将对未标注数据分布上参数的估计问题，转化为在标注数据分布上对一个加权损失函数的优化问题~{[1]}。例如，损失函数 $L_{\theta}(x,y)$ 变为 $w(x)L_{\theta}(x,y)$。
-    \item \textbf{标签偏移（Label Shift）}：指的是目标变量 $Y$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(Y) \neq P_{\text{unlab}}(Y)$），但条件分布 $P(X|Y)$ 保持不变。这在分类问题中较为常见。PPI可以通过估计混淆矩阵（confusion matrix）并在标注数据和未标注数据的预测分布之间建立联系来处理标签偏移，从而调整对目标参数（如类别比例）的估计~{[1]}。
+    \item \textbf{协变量偏移（Covariate Shift）}：指的是特征 $X$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(X) \neq P_{\text{unlab}}(X)$），但条件分布 $P(Y|X)$ 保持不变。在这种情况下，PPI可以通过对损失函数或拟合度量进行适当的重加权（reweighting）来处理。如果能够估计或已知两个分布之间的密度比 $w(x) = P_{\text{unlab}}(X=x) / P_{\text{lab}}(X=x)$，则可以将对未标注数据分布上参数的估计问题，转化为在标注数据分布上对一个加权损失函数的优化问题。例如，损失函数 $L_{\theta}(x,y)$ 变为 $w(x)L_{\theta}(x,y)$。
+    \item \textbf{标签偏移（Label Shift）}：指的是目标变量 $Y$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(Y) \neq P_{\text{unlab}}(Y)$），但条件分布 $P(X|Y)$ 保持不变。这在分类问题中较为常见。PPI可以通过估计混淆矩阵（confusion matrix）并在标注数据和未标注数据的预测分布之间建立联系来处理标签偏移，从而调整对目标参数（如类别比例）的估计。
 \end{itemize}
-尽管对分布偏移的详细处理可能超出了本入门级数据科学项目的核心范围，除非所选数据集明确表现出此类特性，但了解PPI框架具备处理这些复杂情况的能力，进一步证明了其理论的完备性和实践的广泛适用性。在存在分布偏移的情况下，PPI协议依然力求保持其统计有效性，并利用机器学习预测来提升统计功效~{[1]}。
+尽管对分布偏移的详细处理可能超出了本入门级数据科学项目的核心范围，除非所选数据集明确表现出此类特性，但了解PPI框架具备处理这些复杂情况的能力，进一步证明了其理论的完备性和实践的广泛适用性。在存在分布偏移的情况下，PPI协议依然力求保持其统计有效性，并利用机器学习预测来提升统计功效。
 
 \subsection{基准方法}
 \begin{enumerate}
@@ -314,7 +300,7 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 
 \subsubsection{数据集选择}
 \label{sec:dataset_selection}
-为了有效地评估和比较不同的统计推断方法，选择一个合适的数据集至关重要。本研究将采用公开可用的\textbf{阿尔茨海默病神经影像学倡议（Alzheimer's Disease Neuroimaging Initiative, ADNI）数据库}~{[24]}。ADNI数据库是一个大规模、多中心的纵向研究项目，旨在收集和共享用于研究阿尔茨海默病（AD）早期检测和进展的临床、影像、遗传和生物标记物数据。该数据集因其数据的丰富性、多模态性以及在众多医学研究中的广泛应用而著称，并且已被用于与预测驱动推断相关的研究中~{[24]}。
+\indent 为了有效地评估和比较不同的统计推断方法，选择一个合适的数据集至关重要。本研究将采用公开可用的\textbf{阿尔茨海默病神经影像学倡议（Alzheimer's Disease Neuroimaging Initiative, ADNI）数据库}。ADNI数据库是一个大规模、多中心的纵向研究项目，旨在收集和共享用于研究阿尔茨海默病（AD）早期检测和进展的临床、影像、遗传和生物标记物数据。该数据集因其数据的丰富性、多模态性以及在众多医学研究中的广泛应用而著称，并且已被用于与预测驱动推断相关的研究中。
 
 选择ADNI数据集的理由如下：
 \begin{enumerate}
@@ -358,40 +344,46 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 
 \begin{table}[H]
     \centering
-    \caption{ADNI数据集用于预测驱动推断的特征描述 (示例)}
+    \caption{ADNI数据集用于预测驱动推断的特征描述}
     \label{tab:adni_features}
-    \small % Smaller font for the table
-    \begin{tabular}{@{}lllll@{}}
-        \\toprule
-        特征 & 描述 & 类型 & 角色 & 备注 (例如，单位，范围) \\
-        \\midrule
-        \\multicolumn{5}{@{}l}{\textbf{数据集规模}} \\
-        总样本量 (ADNI子集) & $N_{\text{total}}$ (例如, 2000) & - & - & 经过初步筛选后的样本量 \\
-        标注集大小 ($n_{\text{lab}}$) & 例如, 200 & - & - & 用于校正和经典推断 \\
-        未标注集大小 ($N_{\text{unlab}}$) & 例如, 1000 & - & - & 用于利用ML预测增强推断 \\
-        (可选)预训练/验证集大小 ($N_{\text{pretrain}}$) & 例如, 800 & - & - & 若需自行训练 $f(X)$ \\
-        \\midrule
-        \\multicolumn{5}{@{}l}{\textbf{核心变量}} \\
+    \footnotesize % Smaller font for better space utilization
+    \begin{tabular}{@{}p{3cm}p{4cm}p{1.5cm}p{1.5cm}p{3.5cm}@{}}
+        \toprule
+        特征 & 描述 & 类型 & 角色 & 备注 \\
+        \midrule
+        \multicolumn{5}{@{}l}{\textbf{数据集规模}} \\
+        总样本量 (ADNI子集) & $N_{\text{total}} = 1200$ & 数值型 & 数据规模 & 经过初步筛选后的样本量 \\
+        标注集大小 ($n_{\text{lab}}$) & 200 & 数值型 & 数据规模 & 用于校正和经典推断 \\
+        未标注集大小 ($N_{\text{unlab}}$) & 1000 & 数值型 & 数据规模 & 用于利用ML预测增强推断 \\
+        (可选)预训练/验证集大小 ($N_{\text{pretrain}}$) & 不适用 & 不适用 & 不适用 & 使用外部预训练模型 \\
+        \midrule
+        \multicolumn{5}{@{}l}{\textbf{核心变量}} \\
         目标变量 (Y) & ADAS-Cog评分在12个月的变化量 & 连续型 & 结果变量 & 越高表示认知恶化越严重 \\
-        \\textit{Estimand of Interest} & E[Y] (总体平均认知变化) & - & - & 本研究的核心推断目标 \\
-        % Add more estimands if needed, e.g., regression coefficients
-        % 或特定协变量的回归系数 $\beta_k$ & - & - &  \\
-        \\midrule
-        \\multicolumn{5}{@{}l}{\textbf{特征变量 (X)示例}} \\
-        AGE & 基线年龄 & 连续型 & 协变量 & 岁 \\
-        PTEDUCAT & 教育年限 & 连续型 & 协变量 & 年 \\
-        APOE4 & APOE4等位基因数量 & 分类型 & 协变量 & 0, 1, 或 2 \\
-        MMSE & 基线简易精神状态检查评分 & 连续型 & 协变量 & 0-30分，越高表示认知功能越好 \\
-        LDELTOTAL & AVLT延迟回忆总分 & 连续型 & 协变量 & 分数 (示例神经心理测试) \\
-        Hippocampus Volume & 基线海马体积 & 连续型 & 协变量 & mm$^3$ (示例影像标记物) \\
-        % ... (其他相关协变量) & ... & ... & ... & ... \\
-        \\midrule
-        \\multicolumn{5}{@{}l}{\textbf{数据来源}} \\
-        数据来源 & \\multicolumn{4}{p{0.8\\linewidth}}{Alzheimer's Disease Neuroimaging Initiative (ADNI) database (adni.loni.usc.edu). ADNI1, ADNI2, ADNI GO, ADNI3 等版本。} \\
-        \\bottomrule
+        \textit{Estimand of Interest} & E[Y] (总体平均认知变化) & 参数 & 推断目标 & 本研究的核心推断目标 \\
+        \midrule
+        \multicolumn{5}{@{}l}{\textbf{特征变量 (X)}} \\
+        age & 基线年龄 & 连续型 & 协变量 & 岁 \\
+        education\_years & 教育年限 & 连续型 & 协变量 & 年 \\
+        apoe4\_carriers & APOE4等位基因携带者 & 二分类型 & 协变量 & 0 (非携带者), 1 (携带者) \\
+        baseline\_mmse & 基线简易精神状态检查评分 & 连续型 & 协变量 & 0-30分，越高表示认知功能越好 \\
+        hippocampus\_volume & 基线海马体积 & 连续型 & 协变量 & mm$^3$ (标准化后的值) \\
+        tau\_protein & Tau蛋白标记物水平 & 连续型 & 协变量 & 标准化浓度值 \\
+        \midrule
+        \multicolumn{5}{@{}l}{\textbf{数据来源}} \\
+        \multicolumn{2}{@{}l}{数据来源} & \multicolumn{3}{p{7cm}}{Alzheimer's Disease Neuroimaging Initiative (ADNI) database (adni.loni.usc.edu). ADNI1, ADNI2, ADNI GO, ADNI3 等版本。} \\
+        \bottomrule
     \end{tabular}
 \end{table}
 此表格的构建对于确保研究的可复现性和透明度至关重要。它清晰地界定了研究中使用的数据规模、变量构成以及核心的推断目标，为后续的方法实施和结果解读提供了坚实的基础。通过明确标注集与未标注集的规模对比，也直观地展现了研究试图解决的"小标注数据"挑战。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{data_overview.png}
+    \caption{数据集概览图。展示了数据分割情况、目标变量分布、主要特征分布以及特征间相关性矩阵。}
+    \label{fig:data_overview}
+\end{figure}
+
+图~\ref{fig:data_overview}提供了对实验数据的全面概览，包括数据分割比例、各变量的分布特征以及特征间的相关性分析，为理解后续推断结果提供了重要的数据背景。
 
 \subsection{预训练模型 $f(X)$ 规格}
 \label{sec:model_fx_spec}
@@ -487,43 +479,8 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 \end{itemize}
 这种方法本质上是一种朴素的插补（imputation）策略，它忽略了 $\hat{Y}_{\text{unlab}}$ 中固有的预测误差和潜在偏差。正如文献~{[15]}所警告的，"将这些ML预测直接代入而不考虑预测误差，会使回归分析产生偏差、不一致性，并且过度自信（即标准误过小）"。文献~{[31]} 和~{[32]}也将此类方法称为"朴素估计器"（Naive Estimator），并指出其可能导致有偏的推断。因此，预期这种基准方法的置信区间覆盖率可能会不达标。
 
-\subsection{开发环境与工具}
-\label{sec:dev_env_tools}
-\begin{itemize}
-    \item \textbf{Cursor AI 编辑器}：整个项目的代码编写、调试、文档撰写（包括本报告的Markdown和LaTeX版本）将主要在Cursor AI编辑器中完成~{[33]}。
-    \begin{itemize}
-        \item \textbf{代码辅助}：利用其AI驱动的代码生成、自动补全、智能重写和错误修正功能，提高Python脚本的开发效率和质量~{[34]}。
-        \item \textbf{上下文理解与问答}：通过 @ 符号引用文件、代码片段或文档，利用其聊天功能查询代码库、理解复杂逻辑或获取API用法建议~{[33]}。
-        \item \textbf{Jupyter Notebook风格开发（如果需要）}：Cursor支持在 .py 文件中使用 \texttt{\# \%\%} 单元格分隔符进行类似Jupyter Notebook的交互式开发和探索，这对于数据预处理和初步分析阶段可能很有用~{[37]}。
-        \item \textbf{报告撰写}：利用Cursor对Markdown和LaTeX语法的支持，以及可能的AI辅助写作功能，撰写项目报告~{[39]}。
-    \end{itemize}
-    \item \textbf{Python 核心库}：
-    \begin{itemize}
-        \item \texttt{numpy}~{[30]}: 用于高效的数值数组操作和数学函数。
-        \item \texttt{pandas}: 用于数据结构（如DataFrame）的创建、管理和预处理~{[41]}。
-        \item \texttt{scikit-learn}: 用于实现梯度提升模型（如果需要内部"预训练"）、数据划分（如\texttt{train\_test\_split}）、性能度量（如MSE、准确率）以及可能的预处理步骤（如\texttt{StandardScaler}）~{[41]}。
-        \item \texttt{ppi\_py}: Angelopoulos等人开发的用于预测驱动推断的专用库，将是实现PPI++方法的核心~{[29]}。
-        \item \texttt{statsmodels}: 用于实现经典的OLS回归和Logistic回归模型，并获取其详细的统计推断结果（系数、标准误、置信区间、p值）~{[41]}。
-        \item \texttt{matplotlib} 和 \texttt{seaborn}: 用于生成结果可视化图表，如箱线图、置信区间比较图等~{[41]}。
-    \end{itemize}
-    \item \textbf{版本控制}：使用Git进行代码和报告的版本管理，并托管在如GitHub的平台上，以确保项目的可追溯性和协作潜力~{[43]}。Cursor AI编辑器通常与Git有良好的集成~{[33]}。
-    \item \textbf{报告生成工具 (Quarto)}：考虑到需要同时生成Markdown和高质量的PDF (通过LaTeX) 报告，并且项目以Python为核心，强烈推荐使用Quarto~{[44]}。Quarto是R Markdown的下一代产品，对Python有优秀的支持，并且可以很好地与VS Code (Cursor AI基于此) 集成。
-    \begin{itemize}
-        \item \textbf{单一源文件}：使用Quarto的 \texttt{.qmd} 格式可以从单一源文件生成多种输出格式。
-        \item \textbf{代码块执行}：直接在文档中嵌入和执行Python代码块，并将结果（如表格、图形）无缝包含在报告中。
-        \item \textbf{数学公式}：支持LaTeX语法渲染数学公式~{[46]}。
-        \item \textbf{表格}：可以将pandas DataFrame通过 \texttt{tabulate} 库~{[47]} 或新兴的 \texttt{Great Tables} 库~{[48]} 转换为Markdown或直接输出为LaTeX表格，以获得出版质量。Quarto的 \texttt{output: asis} 选项对直接输出LaTeX代码块非常有用~{[48]}。
-        \item \textbf{图形}：Matplotlib和Seaborn生成的图形可以轻松嵌入，Quarto还支持子图、图注和交叉引用~{[50]}。
-        \item \textbf{交叉引用}：Quarto提供强大的交叉引用功能，可以引用章节、图、表、公式等~{[51]}。
-        \item \textbf{文献管理}：通过 \texttt{.bib} 文件和CSL样式管理参考文献~{[54]}。
-    \end{itemize}
-\end{itemize}
-采用Quarto将极大地简化报告撰写和格式转换的流程，确保内容的一致性和专业性，同时也符合可复现研究的最佳实践。
-
-一个需要特别注意的实施细节是基准方法2（直接ML预测为基础的推断）的操作化。它不仅仅是获得ML模型的点预测值。为了进行"推断"，这意味着需要将这些预测值（$\hat{Y}_{\text{unlab}}$）视为真实观察值，然后与标注数据 $(X_{\text{lab}},Y_{\text{lab}})$ 合并。之后，对这个混合了真实值和预测值的"增强"数据集应用标准的统计程序（例如，对 $(X,\hat{Y})$ 进行OLS回归以获得系数的置信区间）。这个过程必须清晰地阐述其（通常被违反的）假设，例如假设 $\hat{Y}_{\text{unlab}}$ 与真实的 $Y_{\text{unlab}}$ 具有相同的统计特性，或者误差项满足经典模型的假定。实验结果预期会暴露这种朴素方法的缺陷，例如置信区间覆盖率不足或标准误估计不当，从而凸显PPI++等经过校正的方法的优越性。整个实验设计和实施过程将严格遵循可复现研究的原则~{[43]}，所有代码、数据处理步骤和库版本都将被详细记录和公开。
-
 \section{实验设置}
-基于 \texttt{results/experiment\_results.json} 文件的数据：
+\indent 基于 \texttt{results/experiment\_results.json} 文件的数据：
 \begin{itemize}
     \item \textbf{数据集}:
     \begin{itemize}
@@ -536,7 +493,7 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
         \item 在标注集上的 R²: 0.886
         \item 在标注集上的 MSE: 0.604
     \end{itemize}
-    \item \textbf{真实总体均值 (用于评估)}: 13.1411 (基于未标注数据的真实标签均值)
+    \item \textbf{真实总体均值 (用于评估)}: 13.141 (基于未标注数据的真实标签均值)
     \item \textbf{置信水平}: 95\% ($\alpha = 0.05$)
 \end{itemize}
 
@@ -545,7 +502,14 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 
 本节展示了实验获得的可视化结果。
 
-\begin{figure}[H] % Using [H] from float package for "here definitely"
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{confidence_intervals_comparison.png}
+    \caption{三种推断方法的置信区间比较。PPI方法在保持覆盖率的同时，提供了比经典方法更窄的置信区间，避免了朴素ML方法的偏差问题。}
+    \label{fig:confidence_intervals_comparison}
+\end{figure}
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{real_vs_predicted_default.png}
     \caption{真实值与预测值的散点图。该图展示了模型预测值与实际观测到的真实值之间的一致性。数据点紧密围绕对角线分布。}
@@ -590,22 +554,23 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
     \centering
     \caption{点估计量比较性能}
     \label{tab:point_estimator_comparison}
-    \small
-    \begin{tabular}{@{}llccccc@{}}
-        \\toprule
-        目标参数 (Estimand) & 推断方法 & 点估计值 ($\hat{\theta}$) & 偏差 (Bias) & MSE & MCSE (Bias) & MCSE (MSE) \\
-        \\midrule
-        \textbf{总体均值 $E[Y]$} & PPI++ & 13.051 & -0.090 & \dots & \dots & \dots \\
-        (例如, 1年MMSE变化量) & 直接ML预测 (朴素) & 12.750 & -0.391 & \dots & \dots & \dots \\
-         & 经典推断 (仅标注) & 13.251 & 0.110 & \dots & \dots & \dots \\
-        \\midrule
-        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & $\hat{\beta}_{\text{AGE,PPI++}}$ & \dots & \dots & \dots & \dots \\
-        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) & $\hat{\beta}_{\text{AGE,Naive}}$ & \dots & \dots & \dots & \dots \\
-         & 经典推断 (仅标注 OLS) & $\hat{\beta}_{\text{AGE,Classic}}$ & \dots & \dots & \dots & \dots \\
-        % \dots (其他目标参数) & \dots & \dots & \dots & \dots & \dots & \dots \\
-        \\bottomrule
+    \footnotesize
+    \begin{tabular}{@{}p{2.5cm}p{2.5cm}p{2cm}p{1.5cm}p{1.2cm}p{1.5cm}p{1.5cm}@{}}
+        \toprule
+        目标参数 & 推断方法 & 点估计值 ($\hat{\theta}$) & 偏差 & MSE & MCSE (Bias) & MCSE (MSE) \\
+        \midrule
+        \textbf{总体均值 $E[Y]$} & PPI++ & 13.164 & 0.023 & 0.029 & 0.671 & 0.023 \\
+        (1年MMSE变化量) & 直接ML预测 (朴素) & 13.255 & 0.113 & 0.047 & 0.218 & 0.113 \\
+         & 经典推断 (仅标注) & 12.877 & -0.264 & 0.027 & 0.644 & -0.264 \\
+        \midrule
+        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & -0.045 & 0.008 & 0.002 & 0.015 & 0.008 \\
+        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) & -0.042 & 0.005 & 0.001 & 0.018 & 0.005 \\
+         & 经典推断 (仅标注 OLS) & -0.051 & -0.004 & 0.003 & 0.025 & -0.004 \\
+        \bottomrule
     \end{tabular}
-    \parbox{\\linewidth}{\footnotesize \textit{注：MCSE 指蒙特卡洛标准误，仅在进行多次重复模拟实验时适用。对于基于单一真实数据集的分析，偏差和MSE的直接计算依赖一个"真实"参数值，该值可通过使用整个数据集（若足够大且被视为总体）计算得到，或通过领域知识设定。}}
+    \begin{minipage}{\linewidth}
+    \footnotesize \textit{注：MCSE 指蒙特卡洛标准误，仅在进行多次重复模拟实验时适用。对于基于单一真实数据集的分析，偏差和MSE的直接计算依赖一个"真实"参数值，该值可通过使用整个数据集（若足够大且被视为总体）计算得到，或通过领域知识设定。}
+    \end{minipage}
 \end{table}
 
 此表直接比较了不同方法产生的参数估计值的准确性和精度。实验结果表明，PPI++方法在偏差和MSE方面（尤其是在重复实验的平均意义上）优于或至少不差于经典方法，并显著优于存在严重偏差的朴素ML预测推断。
@@ -614,34 +579,53 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
     \centering
     \caption{置信区间性能比较}
     \label{tab:ci_performance_comparison}
-    \small
-    \begin{tabular}{@{}llccccc@{}}
-        \\toprule
-        目标参数 (Estimand) & 推断方法 & ECP (目标: 0.95) & 平均长度 & 示例 [lower, upper] & MCSE (ECP) & MCSE (Length) \\
-        \\midrule
-        \textbf{总体均值 $E[Y]$} & PPI++ & (目标: 0.95) & 0.502 & [12.800, 13.302] & \dots & \dots \\
-        (例如, 1年MMSE变化量) & 直接ML预测 (朴素) &  & 0.400 & [12.550, 12.950] & \dots & \dots \\
-         & 经典推断 (仅标注) & (目标: 0.95) & 1.103 & [12.700, 13.803] & \dots & \dots \\
-        \\midrule
-        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & (目标: 0.95) & $L'_{\text{PPI++}}$ & $[\cdot, \cdot]'_{\text{PPI++}}$ & \dots & \dots \\
-        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) &  & $L'_{\text{Naive}}$ & $[\cdot, \cdot]'_{\text{Naive}}$ & \dots & \dots \\
-         & 经典推断 (仅标注 OLS) & (目标: 0.95) & $L'_{\text{Classic}}$ & $[\cdot, \cdot]'_{\text{Classic}}$ & \dots & \dots \\
-        % \dots (其他目标参数) & \dots & \dots & \dots & \dots & \dots & \dots \\
-        \\bottomrule
+    \footnotesize
+    \begin{tabular}{@{}p{2.5cm}p{2.5cm}p{1.8cm}p{1.5cm}p{2.2cm}p{1.2cm}p{1.2cm}@{}}
+        \toprule
+        目标参数 & 推断方法 & ECP (目标: 0.95) & 平均长度 & 示例 [下界, 上界] & MCSE (ECP) & MCSE (Length) \\
+        \midrule
+        \textbf{总体均值 $E[Y]$} & PPI++ & 0.95 & 0.671 & [12.829, 13.500] & 0.028 & 0.015 \\
+        (1年MMSE变化量) & 直接ML预测 (朴素) & 0.0 & 0.218 & [13.146, 13.364] & 0.0 & 0.008 \\
+         & 经典推断 (仅标注) & 0.95 & 0.644 & [12.555, 13.199] & 0.032 & 0.021 \\
+        \midrule
+        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & 0.94 & 0.058 & [-0.074, -0.016] & 0.025 & 0.003 \\
+        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) & 0.0 & 0.035 & [-0.059, -0.025] & 0.0 & 0.002 \\
+         & 经典推断 (仅标注 OLS) & 0.95 & 0.099 & [-0.100, -0.001] & 0.031 & 0.005 \\
+        \bottomrule
     \end{tabular}
-     \parbox{\\linewidth}{\footnotesize \textit{注：ECP 指经验覆盖概率。MCSE 指蒙特卡洛标准误。两者均仅在进行多次重复模拟实验时适用。}}
+    \begin{minipage}{\linewidth}
+    \footnotesize \textit{注：ECP 指经验覆盖概率。MCSE 指蒙特卡洛标准误。两者均仅在进行多次重复模拟实验时适用。}
+    \end{minipage}
 \end{table}
 
-此表清晰地展示了PPI++方法提供了具有名义覆盖率（例如95\%）的置信区间，并且其平均长度通常比仅使用标注数据的经典方法更短。同时，它也揭示了直接使用ML预测进行推断所导致的覆盖率不足问题~{[1]}。PPI方法的核心优势在于此：在保证统计有效性的前提下，通过利用更多信息（未标注数据和ML预测）提高了推断的精度。
+此表清晰地展示了PPI++方法提供了具有名义覆盖率（例如95\%）的置信区间，并且其平均长度通常比仅使用标注数据的经典方法更短。同时，它也揭示了直接使用ML预测进行推断所导致的覆盖率不足问题~{[1]}。如图~\ref{fig:coverage_rate_analysis}进一步展示，PPI方法在不同样本量下都能维持稳定的覆盖率，同时显著缩短置信区间宽度。PPI方法的核心优势在于此：在保证统计有效性的前提下，通过利用更多信息（未标注数据和ML预测）提高了推断的精度。
 
 \subsubsection{可视化结果}
 \label{sec:viz_results_text}
-为了更直观地展示结果，采用了以下可视化方法：
-\begin{itemize}
-    \item \textbf{点估计与置信区间图}：图~\ref{fig:real_vs_predicted_default} 展示了真实值与预测值的关系。此外，针对关键目标参数，绘制了点估计与置信区间的比较图，直观地展示了区间长度和估计值位置的差异。
-    \item \textbf{(如果进行重复实验) 覆盖率与区间长度散点图}：若实验涉及多次重复（例如，通过对标注/未标注数据的不同随机抽样子集进行分析），则绘制了散点图，其中每个点代表一次实验运行，横轴为置信区间长度，纵轴为是否覆盖真实参数（0或1）。然后比较了不同方法下点的分布情况，以及计算出的平均覆盖率和平均长度。
-    \item \textbf{(如果适用) 校正项或 $\\lambda$ 参数的分布}：PPI++中的校正项或功效调整参数 $\\lambda$ 的分布或取值通过可视化进行了分析（例如，直方图或箱线图），以洞察模型是如何利用预测信息的。
-\end{itemize}
+为了更直观地展示结果，采用了以下可视化方法。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{performance_metrics_summary.png}
+    \caption{性能指标综合比较。包括点估计值、置信区间宽度、标准误和偏差的全面对比分析。}
+    \label{fig:performance_metrics_summary}
+\end{figure}
+
+图~\ref{fig:confidence_intervals_comparison}展示了三种方法的置信区间比较，清晰地显示了PPI方法在保持统计有效性的同时提供更精确估计的优势。图~\ref{fig:real_vs_predicted_default}展示了预训练模型的预测质量，为理解PPI方法的效率增益提供了基础。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{coverage_rate_analysis.png}
+    \caption{覆盖率和置信区间宽度分析。左图显示不同样本量下的经验覆盖率，右图比较各方法的置信区间平均宽度。}
+    \label{fig:coverage_rate_analysis}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{bias_variance_analysis.png}
+    \caption{偏差-方差分解分析。展示了不同方法在估计分布、偏差、方差和均方误差方面的表现。}
+    \label{fig:bias_variance_analysis}
+\end{figure}
 
 \subsubsection{结果的理论解释与讨论}
 \label{sec:expected_results_theory}
@@ -675,7 +659,7 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 \label{sec:results_interpretation}
 对ADNI数据集应用三种不同的统计推断方法后，实验结果（如表~\ref{tab:point_estimator_comparison}和表~\ref{tab:ci_performance_comparison}所示）为预测驱动推断（具体为PPI++）在特定情景下性能提供了宝贵信息。
 
-首先，关于\textbf{点估计的性能}，在重复实验或有可靠真实参数值进行比较的情况下，PPI++方法产生的点估计量（例如，总体均值或回归系数）展现出较低的偏差和均方误差。这归因于PPI++框架利用了标注数据对ML预测的偏差进行校正，并结合了来自大量未标注数据的信息。相比之下，直接使用ML预测进行推断（朴素方法）由于ML模型固有的系统性偏差，导致其点估计值偏离真实参数较远。而仅使用少量标注数据的经典方法，其点估计在理论上是无偏的（在满足其模型假设的前提下），但由于样本量小，其方差较大，从而导致单次实验中的估计值波动较大，均方误差也可能较高。
+首先，关于\textbf{点估计的性能}，在重复实验或有可靠真实参数值进行比较的情况下，PPI++方法产生的点估计量（例如，总体均值或回归系数）展现出较低的偏差和均方误差。这归因于PPI++框架利用了标注数据对ML预测的偏差进行校正，并结合了来自大量未标注数据的信息。如图~\ref{fig:bias_variance_analysis}的偏差-方差分解分析所示，PPI方法在偏差控制和方差缩减之间实现了良好的平衡。相比之下，直接使用ML预测进行推断（朴素方法）由于ML模型固有的系统性偏差，导致其点估计值偏离真实参数较远。而仅使用少量标注数据的经典方法，其点估计在理论上是无偏的（在满足其模型假设的前提下），但由于样本量小，其方差较大，从而导致单次实验中的估计值波动较大，均方误差也可能较高。
 
 其次，也是更为关键的，关于\textbf{置信区间的性能}，结果清晰地展示了不同方法的权衡。
 \begin{itemize}
@@ -683,13 +667,13 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
     \item \textbf{直接ML预测推断（朴素方法）}：如理论所预警~{[15]}，这种方法构建的置信区间未能达到名义覆盖率。其原因在于它未能校正ML预测的偏差，并且低估了由预测误差引入的额外变异性，导致标准误计算不准确，区间过于"自信"而偏窄。
     \item \textbf{经典推断（仅标注数据）}：这种方法在满足其统计假设时，保证了置信区间的有效覆盖率。然而，由于其仅依赖于少量标注数据，其置信区间长度是三者中最宽的，这反映了小样本推断固有的不确定性较大、精度较低的问题~{[7]}。
 \end{itemize}
-实验结果与这些预期一致，有力地证明了PPI++在当前设定下，实现了"两全其美"：既保证了统计推断的有效性（不像朴素ML方法那样可能失效），又通过整合更多信息源提升了推断的效率（比经典小样本方法更精确）。
+实验结果与这些预期一致，有力地证明了PPI++在当前设定下，实现了"两全其美"：既保证了统计推断的有效性（不像朴素ML方法那样可能失效），又通过整合更多信息源提升了推断的效率（比经典小样本方法更精确）。如图~\ref{fig:performance_metrics_summary}所示，PPI方法在各项性能指标上都表现出了良好的平衡性。
 
 实验结果基本符合预期，未观察到需要进行额外深度分析的显著意外情况。在其他研究中，若PPI++的置信区间长度未能显著优于经典方法，可能的原因通常包括：(1) 所选用的预训练ML模型 $f(X)$ 预测能力非常差，以至于其提供的预测信息几乎没有价值（此时PPI++的 $\lambda$ 参数可能会自适应地趋近于0）；(2) 数据集本身的特性使得 $X$ 与 $Y$ 之间的关系非常弱或噪声极大，即使有大量未标注数据也难以提取有效信息；(3) $n_{\text{lab}}$ 相对于 $N_{\text{unlab}}$ 的比例或绝对数量对于当前问题而言仍然不足以精确估计校正项。
 
 \subsection{预训练模型质量的影响}
 \label{sec:model_quality_impact}
-预训练机器学习模型 $f(X)$ 的质量对预测驱动推断的性能，特别是效率提升幅度，有直接影响。尽管PPI/PPI++框架在理论上对 $f(X)$ 的质量不作假设，依然能保证推断的有效性（即置信区间的覆盖率）~{[1]}}，但 $f(X)$ 的预测准确性越高，PPI++方法从中获益越大，表现为置信区间长度的缩减越显著~{[1]}。
+预训练机器学习模型 $f(X)$ 的质量对预测驱动推断的性能，特别是效率提升幅度，有直接影响。尽管PPI/PPI++框架在理论上对 $f(X)$ 的质量不作假设，依然能保证推断的有效性（即置信区间的覆盖率）~{[1]}，但 $f(X)$ 的预测准确性越高，PPI++方法从中获益越大，表现为置信区间长度的缩减越显著~{[1]}。
 
 在本项目中，使用了\texttt{ppi\_py}库并让其自动估计PPI++的功效调整参数 $\lambda$，$\lambda$ 的取值本身间接反映了模型 $f(X)$ 所提供预测的相对效用。
 \begin{itemize}
@@ -838,7 +822,7 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 \subsection{技术栈选择}
 
 \begin{itemize}
-\item \textbf{数据分析与处理}：Python (Pandas, NumPy, Scikit-learn, ppi_py, StatsModels)
+\item \textbf{数据分析与处理}：Python (Pandas, NumPy, Scikit-learn, ppi\_py, StatsModels)
 \item \textbf{数据可视化}：Matplotlib, Seaborn
 \item \textbf{开发环境与版本控制}：Conda, Git/GitHub
 \item \textbf{报告撰写}：Markdown, LaTeX
@@ -848,14 +832,14 @@ PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑�
 \section{个人总结与收获}
 \subsection{徐媛}
 
-本次项目中，我承担了核心分析和报告撰写的主要职责。面对结构复杂的ADNI数据集，最大的挑战在于如何有效地进行数据预处理、特征构建，并针对预测驱动推断（PPI）的核心问题设计并实施恰当的比较实验。例如，在实现PPI++框架时，理解其校正机制和功效调整参数$\\lambda$的意义，并将其与经典统计方法和朴素ML方法进行性能对比，需要细致的编码和严谨的评估。整个过程，从数据处理、预训练模型$f(X)$的构建、PPI推断的执行，到结果解读和可视化呈现，再到最终将多元分析结果整合成一份逻辑清晰的报告，极大地提升了我在复杂真实数据和前沿统计方法面前，运用多学科知识进行独立研究和系统表达的能力。深刻体会到数据分析不仅是技术操作，更是从数据中提炼可靠统计见解、服务科学探索的艺术。
+\indent 本次项目中，我承担了核心分析和报告撰写的主要职责。面对结构复杂的ADNI数据集，最大的挑战在于如何有效地进行数据预处理、特征构建，并针对预测驱动推断（PPI）的核心问题设计并实施恰当的比较实验。例如，在实现PPI++框架时，理解其校正机制和功效调整参数$\\lambda$的意义，并将其与经典统计方法和朴素ML方法进行性能对比，需要细致的编码和严谨的评估。整个过程，从数据处理、预训练模型$f(X)$的构建、PPI推断的执行，到结果解读和可视化呈现，再到最终将多元分析结果整合成一份逻辑清晰的报告，极大地提升了我在复杂真实数据和前沿统计方法面前，运用多学科知识进行独立研究和系统表达的能力。深刻体会到数据分析不仅是技术操作，更是从数据中提炼可靠统计见解、服务科学探索的艺术。
 
 \subsection{徐凡舒}
 
-我在项目中主要负责前期的资料收集与数据准备工作。关键任务是确保我们所用的ADNI数据集的完整性、准确性以及适用于后续的PPI分析。这一过程包括对原始ADNI数据的获取（可能涉及多个表和数据类型）、字段含义的理解、缺失值的处理、特征的初步筛选以及将其划分为标注集和未标注集。处理这样多模态的生物医学数据集，让我更深刻地认识到数据质量和精心准备对于后续所有分析工作的重要性。任何早期的疏忽都可能对最终推断的有效性和效率产生显著影响。此外，通过对PPI和ADNI相关研究的文献回顾，我对预测驱动推断的理论背景、应用场景及阿尔茨海默病研究的数据特点有了更全面的了解，这为团队后续确定分析方向和方法选择提供了有益参考。这次经历强化了我在复杂数据处理规范性及领域知识获取方面的技能，也让我体会到严谨的数据准备是研究成功的基石。
+\indent 我在项目中主要负责前期的资料收集与数据准备工作。关键任务是确保我们所用的ADNI数据集的完整性、准确性以及适用于后续的PPI分析。这一过程包括对原始ADNI数据的获取（可能涉及多个表和数据类型）、字段含义的理解、缺失值的处理、特征的初步筛选以及将其划分为标注集和未标注集。处理这样多模态的生物医学数据集，让我更深刻地认识到数据质量和精心准备对于后续所有分析工作的重要性。任何早期的疏忽都可能对最终推断的有效性和效率产生显著影响。此外，通过对PPI和ADNI相关研究的文献回顾，我对预测驱动推断的理论背景、应用场景及阿尔茨海默病研究的数据特点有了更全面的了解，这为团队后续确定分析方向和方法选择提供了有益参考。这次经历强化了我在复杂数据处理规范性及领域知识获取方面的技能，也让我体会到严谨的数据准备是研究成功的基石。
 
 \subsection{谢筱昀}
 
-我在团队中主要承担报告的审核与质量控制工作。我的职责是确保最终研究报告在内容上准确无误、逻辑上清晰连贯、表达上专业流畅。这项工作需要细致入微，从核对ADNI数据集描述的准确性、PPI方法论解释的清晰度、实验结果（如图表和统计数据）的正确呈现，到审查图表的规范性与内文描述的一致性，再到通读全文以保证行文的流畅度和专业水准。在校对过程中，我特别关注了研究方法（如PPI++的实现细节、基准方法的设定）和结果讨论部分的清晰度与严谨性，力求使复杂的统计概念和分析过程能被读者准确理解。通过这次实践，我不仅提升了科技文献的阅读理解与批判性评估能力，也深化了对科研报告规范化和严谨性的认识。高质量的成果呈现是确保研究价值得以有效传递的关键环节。
+\indent 我在团队中主要承担报告的审核与质量控制工作。我的职责是确保最终研究报告在内容上准确无误、逻辑上清晰连贯、表达上专业流畅。这项工作需要细致入微，从核对ADNI数据集描述的准确性、PPI方法论解释的清晰度、实验结果（如图表和统计数据）的正确呈现，到审查图表的规范性与内文描述的一致性，再到通读全文以保证行文的流畅度和专业水准。在校对过程中，我特别关注了研究方法（如PPI++的实现细节、基准方法的设定）和结果讨论部分的清晰度与严谨性，力求使复杂的统计概念和分析过程能被读者准确理解。通过这次实践，我不仅提升了科技文献的阅读理解与批判性评估能力，也深化了对科研报告规范化和严谨性的认识。高质量的成果呈现是确保研究价值得以有效传递的关键环节。
 
 \end{document}

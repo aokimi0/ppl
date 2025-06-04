@@ -68,6 +68,16 @@ def print_experiment_info():
     - 模拟阿尔茨海默病研究数据 (类似ADNI数据集)
     - 包含年龄、教育、APOE4基因型等特征
     - 目标变量: 认知变化评分
+    
+    输出内容:
+    - 实验结果JSON文件 (results/experiment_results.json)
+    - 方法比较表格 (results/method_comparison.csv)
+    - 学术级可视化图表 (fig/*.png)
+      * 置信区间比较图
+      * 覆盖率分析图
+      * 偏差-方差分析图
+      * 数据概览图
+      * 性能指标总结图
     """
     print(info)
 
@@ -88,6 +98,14 @@ def main():
     # 打印横幅和信息
     print_banner()
     print_experiment_info()
+    
+    # 验证可视化模块是否可用
+    try:
+        from src.visualization import load_and_visualize_results
+        print("✅ 可视化模块加载成功")
+    except ImportError as e:
+        print(f"⚠️ 可视化模块加载失败: {e}")
+        print("将跳过图表生成步骤")
     
     # 设置目录
     setup_directories()
@@ -111,10 +129,25 @@ def main():
         print("\n2. 生成实验报告数据...")
         generate_report_data(results, args.output_dir)
         
+        # 生成可视化图表
+        if not args.no_plots:
+            print("\n3. 生成可视化图表...")
+            from src.visualization import load_and_visualize_results
+            try:
+                load_and_visualize_results()
+                print("✅ 所有可视化图表已生成")
+            except Exception as e:
+                print(f"⚠️ 可视化生成过程中出现问题: {str(e)}")
+                print("实验数据仍然可用，可手动运行可视化")
+        else:
+            print("\n3. 跳过图表生成 (使用了 --no-plots 参数)")
+        
         print("\n" + "="*80)
         print("实验完成!")
         print(f"结果图表保存在: {args.output_dir}/")
         print(f"报告数据保存在: results/")
+        if not args.no_plots:
+            print(f"可视化图表保存在: fig/")
         print("="*80)
         
     except KeyboardInterrupt:

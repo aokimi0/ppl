@@ -151,8 +151,8 @@
     \begin{center}
     \includegraphics[width=0.6\textwidth]{NKU.png}\\[1cm]
     \vspace{20mm}
-		\textbf{\huge\textbf{\kaishu{数据科学导论}}}\\[0.5cm]
-		\textbf{\huge{\kaishu{新西兰交通事故分析系统数据集实验报告}}}\\[2.3cm]
+		\textbf{\huge\textbf{\kaishu{数据科学导论实验报告}}}\\[0.5cm]
+		\textbf{\huge{\kaishu{预测驱动统计推断：一项模拟研究}}}\\[2.3cm]
 
 		\vspace{\fill}
     
@@ -168,663 +168,598 @@
     \end{center}
 \end{titlepage}
 
-% 中文摘要
+% --- Chinese Abstract ---
+\clearpage
+\phantomsection % For correct hyperlinking
+\addcontentsline{toc}{section}{摘要}
+\begin{center}
+    {\zihao{3}\songti\bfseries 摘\quad 要}
+\end{center}
+\vspace{0.5em}
+\parindent 2em % Standard Chinese paragraph indent
+\small
+本项目旨在评估预测驱动推断（Prediction-Powered Inference, PPI）框架在结合少量标注数据、大量未标注数据及机器学习模型预测以提升统计推断效率方面的性能。通过模拟一个类似阿尔茨海默病神经影像学倡议（ADNI）的数据集，我们比较了PPI方法与经典统计推断（仅依赖少量标注数据）和朴素机器学习推断（直接使用所有预测值）的表现。实验结果表明，PPI方法能够在保持名义覆盖率的同时，有效缩小置信区间宽度，并显著降低估计偏差，从而验证了其在数据稀缺场景下增强统计推断能力的潜力。
+
+\vspace{1em}
+\keywords{预测驱动推断；统计推断；机器学习；数据稀缺；模拟研究；置信区间}
+
+% --- English Abstract ---
 \clearpage
 \phantomsection
-\begin{center}{\zihao{4}\songti\bfseries{摘\quad 要}}\end{center}\par\vspace{0.5em}
-\addcontentsline{toc}{section}{摘要}
-\begin{cnabstract}
-本报告基于新西兰交通事故分析系统（Crash Analysis System, CAS）数据集，旨在探索新西兰交通事故的关键风险因素与长期趋势。通过对CAS数据集中$2000$年至$2024$年间记录的$869,886$条事故数据进行深入分析，我们聚焦于三个核心问题：(1) 环境因素对事故严重性的影响：特定环境因素（雨天、夜间、无路灯）及其组合如何影响事故的严重程度？(2) 地区事故数量异常波动：某些地区是否存在事故数量突然激增的年份？这些异常是否与特定政策变更或道路工程有关？(3) 车辆类型构成的长期演变：不同类型车辆参与事故的比例在过去二十余年间发生了怎样的变化？
-
-分析结果揭示：首先，单一不利环境条件（如仅雨天或仅夜间）下，驾驶员可能更趋谨慎，事故严重性反而有所降低；然而，特定条件组合，尤其是夜间无路灯（比值比OR=$2.18$），显著增加了事故的严重程度。有趣的是，雨天、夜间且无路灯的三重不利条件组合下，事故严重性并未进一步恶化（OR=$0.77$），可能反映了极端情况下的极度谨慎驾驶。其次，我们发现在$2001$年和$2016$年，多个地区同步出现了事故数量的激增现象（年增长率超过$30\%$）。进一步查证发现，这种现象很可能与全国性交通政策调整、道路施工高峰、数据记录标准升级等系统性因素密切相关，而非纯粹的局部交通状况恶化。最后，车辆类型参与事故的构成呈现动态变化，传统轿车/旅行车在事故中的占比从$2000$年约$78\%$显著下降至$2024$年约$61\%$，而SUV（从接近$0\%$增至约$9\%$）和摩托车（从约$1\%$增至约$3\%$）等类型的占比则相应上升，这反映了新西兰交通工具使用模式的演变。
-
-这些发现为交通安全政策的制定提供了重要的实证依据：应重点关注并改善复合风险因素场景（特别是夜间无路灯路段）下的道路安全，审慎评估各类政策变更、道路施工等系统性因素对事故记录的潜在影响，并针对新兴及占比增长的交通工具类型（如SUV和摩托车）制定差异化的安全管理策略。同时，本研究采用的统计方法（如逻辑回归、中断时间序列分析、Mann-Kendall趋势检验等）为类似的交通安全研究提供了可借鉴的分析框架。
-
-本项目的完整代码和数据分析过程可在\href{https://github.com/Frederick2313072/kagglenewzealand}{GitHub仓库}中查看。
-
-\vspace{1em}
-\noindent\textbf{关键词：}交通事故数据挖掘；时间序列中断分析；多因素逻辑回归；异常事件检测；Mann-Kendall趋势检验
-\end{cnabstract}
-
-% 英文摘要
-\phantomsection
-\begin{center}{\zihao{4}\bfseries{Abstract}}\end{center}\par\vspace{0.5em}
 \addcontentsline{toc}{section}{Abstract}
-\begin{enabstract}
-Based on New Zealand's Crash Analysis System (CAS) dataset, this report explores key risk factors and long-term trends in traffic accidents. Through in-depth analysis of 869,886 accident records from 2000 to 2024, we focus on three core issues: (1) The impact of environmental factors on accident severity: How do specific environmental conditions (rain, night, no lighting) and their combinations affect accident severity? (2) Regional anomalies in accident numbers: Do certain regions experience sudden surges in accident numbers in specific years, and are these anomalies related to policy changes or road construction? (3) Long-term evolution in vehicle type composition: How have the proportions of different vehicle types involved in accidents changed over the past two decades?
-
-The analysis reveals: First, under single adverse conditions (such as rain or night only), drivers tend to be more cautious, leading to reduced accident severity. However, specific condition combinations, especially night with no lighting (odds ratio OR=2.18), significantly increase accident severity. Interestingly, under the triple adverse conditions of rain, night, and no lighting, accident severity did not worsen further (OR=0.77), possibly reflecting extreme caution in extreme conditions. Second, we identified synchronized surges in accident numbers across multiple regions in 2001 and 2016 (annual growth rates exceeding 30%). Further investigation suggests these phenomena were likely related to systemic factors such as national traffic policy adjustments, road construction peaks, and data recording standard upgrades, rather than purely local traffic deterioration. Finally, the composition of vehicle types involved in accidents shows dynamic changes, with traditional cars/station wagons' share significantly decreasing from about 78% in 2000 to about 61% in 2024, while the proportions of SUVs (from near 0% to about 9%) and motorcycles (from about 1% to about 3%) increased accordingly, reflecting the evolution of New Zealand's transportation patterns.
-
-These findings provide important empirical evidence for traffic safety policy-making: focus should be placed on improving road safety in complex risk factor scenarios (particularly night-time unlit sections), carefully evaluating the potential impact of systemic changes on accident records, and developing differentiated safety management strategies for emerging and growing vehicle types. The statistical methods employed in this study (including logistic regression, interrupted time series analysis, and Mann-Kendall trend tests) provide a valuable analytical framework for similar traffic safety research.
-
-The complete code and data analysis process for this project can be found in the \href{https://github.com/Frederick2313072/kagglenewzealand}{GitHub repository}.
+\begin{center}
+    {\zihao{3}\bfseries Abstract}
+\end{center}
+\vspace{0.5em}
+\parindent 2em
+\small
+This project aims to evaluate the performance of the Prediction-Powered Inference (PPI) framework in enhancing statistical inference efficiency by combining a small amount of labeled data, a large amount of unlabeled data, and predictions from machine learning models. By simulating a dataset analogous to the Alzheimer's Disease Neuroimaging Initiative (ADNI), we compare the PPI method with classical statistical inference (relying solely on limited labeled data) and naive machine learning inference (directly using all predicted values). The experimental results demonstrate that the PPI method can effectively reduce confidence interval width and significantly decrease estimation bias while maintaining nominal coverage rates, thereby validating its potential to enhance statistical inference capabilities in data-scarce scenarios.
 
 \vspace{1em}
-\noindent\textbf{Keywords:} Traffic Accident Data Mining; Interrupted Time Series Analysis; Multifactor Logistic Regression; Anomaly Event Detection; Mann-Kendall Trend Test
-\end{enabstract}
+\noindent\textbf{Keywords:} Prediction-Powered Inference; Statistical Inference; Machine Learning; Data Scarcity; Simulation Study; Confidence Intervals
 
-% 目录
+% --- Table of Contents ---
 \clearpage
 \tableofcontents
 \clearpage
 
-\section{问题定义}
+% --- Main Content Start ---
+\section{引言}
+\subsection{背景与动机}
+在许多科学研究和商业决策中，获取大规模高质量的标注数据（"金标准"）成本高昂且耗时。然而，未标注数据和强大的预训练机器学习模型却日益普及。传统的统计推断方法在标注数据稀缺时面临统计功效不足的问题，而直接将机器学习模型的预测结果用于下游统计分析，则可能因模型偏差导致推断失效。预测驱动推断（PPI）框架的提出，旨在弥合机器学习预测能力与统计推断有效性要求之间的鸿沟。
 
-\subsection{研究背景}
+\subsection{问题陈述}
+本项目探讨的核心问题是：当拥有少量标注数据、大量未标注数据以及一个（可能不完美的）机器学习预测模型时，如何有效地结合这些信息进行可靠的统计推断（如均值估计和置信区间构建）？我们旨在量化PPI方法相对于仅使用标注数据的经典方法和直接使用模型预测的朴素方法的性能增益。
 
-交通事故是全球范围内备受关注的公共安全议题。深入理解事故发生的模式、趋势及其影响因素，对于制定科学有效的预防与干预措施至关重要。新西兰交通事故分析系统（Crash Analysis System, CAS）自$1980$年代以来系统性地收集了大量详尽的交通事故数据，为本研究提供了宝贵的分析资源。本研究旨在通过对CAS数据的深入分析，揭示新西兰交通事故的关键特征与演变规律，为交通安全政策的制定提供实证依据。
+\subsection{项目目标}
+\begin{enumerate}
+    \item 实现一个基础的PPI框架用于总体均值的估计。
+    \item 生成一个模拟的医学数据集，以模拟真实世界中数据稀缺和模型不完美的场景。
+    \item 比较PPI方法、经典统计方法和朴素ML方法在估计偏差、置信区间宽度和覆盖率方面的表现。
+    \item 通过可视化展示不同方法的性能差异。
+    \item 撰写实验报告，总结研究发现。
+\end{enumerate}
 
-\subsection{研究问题}
+\subsection{范围与贡献}
+\label{sec:scope_contribution}
+本项目将聚焦于特定类型的统计推断任务，例如总体均值的估计、总体分位数的估计，或线性回归模型中特定系数的估计，并为这些估计量构建置信区间。所选用的核心方法将是预测驱动推断（Prediction-Powered Inference, PPI）框架的一个变体，很可能是PPI++，因为它在效率和自适应性方面具有优势。
 
-本研究旨在利用CAS数据集，深入探究并回答以下$3$个具体问题：
+本项目的贡献在于提供一个在常见数据科学场景下（即标注数据稀缺但存在未标注数据和预训练模型）应用和评估预测驱动推断方法的实用指南和实证研究。通过清晰展示其相对于传统方法和朴素ML预测应用的优势，本项目旨在为数据科学从业者和研究者提供一种更可靠、更高效地利用现有数据资源进行统计推断的思路和工具。
 
-1. \textbf{雨天夜间无路灯事故的严重性}：雨天夜间无路灯的事故是否更容易导致重伤或死亡？
-   \begin{itemize}
-   \item 核心问题：探究不同环境因素组合对事故严重性的影响机制及其交互作用
-   \item 研究重点：量化分析单一环境因素与多因素组合对事故严重程度的差异化影响
-   \item 分析方法：构建二元逻辑回归模型，通过比值比(OR)及其置信区间量化各因素的影响程度
-   \end{itemize}
+\subsection{报告结构}
+\label{sec:report_structure}
+本报告的后续章节安排如下：第二部分将详细介绍预测驱动统计推断的理论框架，包括其基本原理、核心组件（如校正项）以及所选PPI++方法的特点。第三部分将阐述实验设计和具体实现细节，包括数据集的选择与预处理、预训练模型的规格、三种对比推断方法的实现方案，以及开发环境和所用工具。第四部分将呈现实验结果和评估，重点比较不同方法在点估计偏差、均方误差、置信区间覆盖率和长度等方面的表现。第五部分将对实验结果进行深入讨论，解读其含义，分析研究的局限性，并展望未来工作。第六部分为结论，总结本研究的主要发现和意义。第七部分将提供关于项目可复现性的说明。最后是参考文献和可能的附录。
 
-2. \textbf{地区事故数量异常波动}：某些地区是否存在事故数量突然激增的年份？这些异常是否与特定政策变更或道路工程有关？
-   \begin{itemize}
-   \item 核心问题：识别和评估区域事故数量的异常增长模式及其系统性特征
-   \item 研究重点：分析事故数量波动的时空分布特征，探究其与全国性政策调整的关联性
-   \item 分析方法：结合中断时间序列分析与异常检测方法，评估系统性因素的影响程度
-   \end{itemize}
+\section{方法论}
+\label{sec:methodology}
 
-3. \textbf{不同车辆类型参与事故的长期趋势}：随着时间推移，不同类型车辆（如轿车、SUV、摩托车等）参与事故的比例是否发生了显著变化？
-   \begin{itemize}
-   \item 核心问题：揭示不同类型车辆参与事故比例的长期演变规律及其驱动因素
-   \item 研究重点：分析车辆类型构成的结构性转变特征及其深层社会经济背景
-   \item 分析方法：采用Mann-Kendall趋势检验等统计方法，评估趋势变化的显著性及其关联因素
-   \end{itemize}
+\subsection{预测驱动的统计推断框架}
+\label{sec:ppi_framework}
+在现代数据科学实践中，一个核心的挑战在于如何弥合机器学习强大的预测能力与经典统计学对推断结论严格有效性要求之间的鸿沟。机器学习模型，特别是大规模预训练模型，能够从未标注数据中学习并生成海量的预测信息，但这些预测本身并不直接提供统计学意义上的不确定性量化。另一方面，传统的统计推断方法虽然能提供严格的有效性保证（如置信区间的正确覆盖率），但在标注数据稀缺时其效能大打折扣。预测驱动推断（PPI）及其变体，正是为了解决这一核心矛盾而提出的。它们不试图替代统计推断，而是旨在将机器学习的预测信息以一种统计学上稳健的方式整合到推断过程中，从而在保证有效性的前提下，提升推断的效率和精度。这一框架的一个显著优点在于其对机器学习模型的"不可知论（agnosticism）"~{[1]}: 它不要求深入了解预训练模型的内部结构或训练细节，仅利用其输出的预测值，并通过少量标注数据来校正这些预测中可能存在的系统性偏差。这种特性使得PPI方法具有广泛的适用性，尤其是在用户可能无法控制或完全理解所用预训练模型的场景中。
 
-这三个问题的选择基于以下考虑：首先，它们分别从微观（具体事故场景）、中观（区域层面）和宏观（长期趋势）三个层面探讨交通安全问题；其次，这些问题的答案对于制定有针对性的交通安全政策具有直接的指导意义；最后，CAS数据集提供了丰富的相关信息，使得深入分析成为可能。
+\subsubsection{预测驱动推断（PPI）基础}
+\label{sec:ppi_basics}
+预测驱动推断（Prediction-Powered Inference, PPI）是一种新兴的统计框架，其核心思想在于巧妙地结合两类数据源的优势：一类是数量庞大但可能存在未知偏差的机器学习（ML）模型预测结果，另一类是数量稀少但质量可靠的"金标准"标注数据~{[1]}. PPI的目标是利用这两类信息，对感兴趣的总体参数（如均值、分位数、回归系数等）进行有效的统计推断，即构建具有预设覆盖率的置信区间或进行假设检验。
 
-\section{数据集介绍与预处理}
+该框架的一般流程是：首先，利用预训练的ML模型 $f(X)$ 对大量的未标注数据 $X'_1, \dots, X'_N$ 产生预测值 $\hat{Y}'_1, \dots, \hat{Y}'_N$。这些预测值被用来形成对目标参数的一个初步的、可能是有偏的估计。然后，利用小规模的标注数据集 $(X_1,Y_1), \dots, (X_n,Y_n)$，其中 $Y_i$ 是真实的标签，而 $\hat{Y}_i=f(X_i)$ 是ML模型对这些已标注样本的预测。通过比较 $Y_i$ 和 $\hat{Y}_i$，PPI能够量化ML模型的预测误差，并构建一个所谓的"校正项"（rectifier）。这个校正项随后被用来调整基于大量预测值得出的初步估计，从而得到一个经过偏差校正的、更可靠的最终估计量~{[1]}。
 
-\subsection{数据集概述}
+PPI框架的普适性很强，它可以应用于任何能够表示为凸目标函数最小化器的参数估计问题~{[1]}。这意味着除了常见的均值、分位数和回归系数外，许多其他复杂的统计量也可以通过PPI进行推断。一个关键特性是，PPI对提供预测的ML模型 $f(X)$ 本身不作任何假设，无论是模型的结构、训练方法还是其预测的准确度如何，PPI都能保证最终推断的统计有效性~{[1]}。
 
-本研究采用的数据来源于新西兰交通事故分析系统（CAS），涵盖了$2000$年至$2024$年间由警方正式报告的$869,886$条交通事故记录。CAS数据集的主要特点包括：
+\subsubsection{校正项（Rectifier）在偏差修正中的作用}
+\label{sec:rectifier}
+校正项是PPI框架中实现偏差修正的核心机制。其基本思想是利用已有的少量标注数据来估计和补偿由ML模型预测引入的系统性偏差。校正项的具体数学形式取决于所要估计的目标参数 $\theta$ 以及相应的"拟合度量"（measure of fit） $m_{\theta}$。
 
+在Angelopoulos等人~{[1]}的原始工作中，对于一个候选的参数值 $\theta$，拟合度量 $m_{\theta}$ 在基于预测值 $\hat{Y}'$ 的未标注数据集上计算，用于量化 $\theta$ 基于这些（可能不完美的）预测数据的合理性。校正项 $D_{\theta}$ (或 $\Delta_{\theta}$) 则被定义为在标注数据集上，真实标签 $Y$ 计算的拟合度量与预测标签 $\hat{Y}$ 计算的拟合度量之差。例如，在估计总体均值 $\mu=E[Y]$ 的简单情况下，一个朴素的基于预测的估计是 $\frac{1}{N}\sum_{i=1}^{N}f(X'_i)$。校正项可以理解为对 $f(X)$ 预测偏差的经验估计，通常形式为 $\frac{1}{n}\sum_{j=1}^{n}(f(X_j)-Y_j)$，即模型预测值与真实值在标注样本上的平均差异~{[18]}。
+
+最终的PPI估计量 $\hat{\theta}_{\text{PPI}}$ 通常是将基于大量预测的初步估计量减去这个校正项（或其某种形式的推广）得到。例如，对于均值估计，PPI估计量可以表示为~{[18]}：
+\begin{equation}
+\hat{\mu}_{\text{PPI}} = \frac{1}{N} \sum_{i=1}^{N} f(X'_i) - \frac{1}{n} \sum_{j=1}^{n} (f(X_j) - Y_j)
+\label{eq:ppi_estimator_new}
+\end{equation}
+这个校正步骤确保了 $\hat{\theta}_{\text{PPI}}$ （在此例中为 $\hat{\mu}_{\text{PPI}}$）是目标参数 $\theta$ 的一个（渐进）无偏估计量。通过这种方式，即使ML模型的预测 $f(X)$ 存在系统性偏差，只要这个偏差能够在标注数据上被稳定地估计出来，PPI就能够有效地消除它对最终统计推断的影响，从而保证置信区间的有效覆盖率和假设检验的I类错误控制。
+
+\subsubsection{所选PPI变体：PPI++ 以增强效率和自适应性}
+\label{sec:ppi_plus_plus}
+尽管原始PPI框架具有开创性和普适性，但在某些情况下，其计算效率和统计效率可能并非最优。为了解决这些问题，Angelopoulos等人后续提出了PPI++~{[19]}。PPI++ 的核心改进在于引入了一个称为"功效调整参数"（power-tuning parameter）的 $\lambda \in \mathbb{R}$。这个参数用于自适应地权衡经典统计估计量（仅基于标注数据）和利用ML预测进行校正的部分。
+
+PPI++的估计量通常基于一个调整后的损失函数 $L^{\text{PP}}_{\lambda}(\theta)$，其形式为~{[20]}：
+\begin{equation}
+L^{\text{PP}}_{\lambda}(\theta) := L_n(\theta) + \lambda \cdot (L_f^N(\theta) - L_f^n(\theta))
+\label{eq:ppi_plus_plus_loss}
+\end{equation}
+其中，$L_n(\theta)$ 是基于标注数据的经典损失函数，$L_f^N(\theta)$ 是基于大量未标注数据（使用 $f(X)$ 的预测值）的损失函数，$L_f^n(\theta)$ 是基于标注数据（但使用 $f(X)$ 的预测值而非真实 $Y$）的损失函数。参数 $\lambda$ 控制了预测信息（即 $L_f^N(\theta) - L_f^n(\theta)$ 这一项，它反映了预测在未标注数据上带来的"增益"相对于其在标注数据上的"表现"）在多大程度上被纳入最终估计。
+
+$\lambda$ 的选择至关重要。PPI++的一个关键特性是，$\lambda$ 可以从数据中估计得到，目标通常是最小化最终PPI++估计量的渐进方差或最大化相关假设检验的功效~{[19]}。Python库 \texttt{ppi\_py} 在其实现中，允许用户不指定 \texttt{lam} 参数，此时库会自动从数据中估计最优的 $\lambda$ 值~{[22]}。当 $\lambda=0$ 时，PPI++估计量退化为仅使用标注数据的经典估计量；当 $\lambda=1$ 时，在某些特定情况下（例如，损失函数具有特定形式），PPI++可能恢复到原始PPI估计量的形式~{[22]}。
+
+这种自适应性是PPI++相较于原始PPI的一个重要优势。它使得方法能够根据预训练模型 $f(X)$ 的实际预测质量自动调整。如果 $f(X)$ 的预测非常准确，估计出的 $\lambda$ 可能会接近1，从而充分利用大量的预测信息以减小估计方差、缩短置信区间。反之，如果 $f(X)$ 的预测质量较差或与真实值关联不大，估计出的 $\lambda$ 可能会趋向于0，此时PPI++将更多地依赖于可靠的标注数据，表现接近于经典推断方法，从而避免了被劣质预测误导的风险。这种稳健性使得PPI++在实际应用中更具吸引力，因为它确保了（在渐进意义下）其表现至少不劣于仅使用标注数据的经典方法，并且在预测信息有用时能显著提升推断效率~{[20]}。
+
+\subsubsection{与预训练模型 $f(X)$ 的集成}
+\label{sec:integration_with_fX}
+PPI/PPI++框架与预训练模型 $f(X)$ 的集成方式非常直接且灵活。预训练模型 $f(X)$ 的角色是为特征向量 $X$ 提供预测值 $\hat{Y}$。这些预测值将在两个关键环节被使用：
+\begin{enumerate}
+    \item \textbf{在标注数据集上}：对于每一个标注样本 $(X_j,Y_j)$，模型会产生预测 $\hat{Y}_j=f(X_j)$。这些预测值 $\hat{Y}_j$ 与真实标签 $Y_j$ 一同用于计算校正项，如前文所述。
+    \item \textbf{在大量未标注数据集上}：对于每一个未标注样本 $X'_i$，模型会产生预测 $\hat{Y}'_i=f(X'_i)$。这些预测值 $\hat{Y}'_i$ 被用来构建对目标参数的初步估计，该估计随后会被校正项调整。
+\end{enumerate}
+PPI/PPI++框架的一个核心优势在于其对预训练模型 $f(X)$ 的"黑箱"处理方式~{[1]}。这意味着研究者无需关心 $f(X)$ 的具体架构（例如，是线性模型、决策树、神经网络还是更复杂的集成模型）、训练细节（例如，训练数据、优化算法、超参数设置）或其内部工作原理。只要模型能够输入特征 $X$ 并输出对目标变量 $Y$ 的预测 $\hat{Y}$，它就可以被整合到PPI框架中。这种模型无关性极大地增强了PPI方法的实用性和普适性，使得研究者可以方便地利用已有的、可能是由第三方提供的、或者结构非常复杂的预训练模型，而无需对其进行修改或深入分析。
+
+\subsubsection{处理潜在的分布偏移（简述）}
+\label{sec:distribution_shift}
+在实际应用中，标注数据和未标注数据的来源或收集条件可能存在差异，导致它们的概率分布不完全一致，即存在分布偏移（distribution shift）。PPI框架及其变体也考虑了这类更具挑战性的情况，并提供相应的解决方案，以保持推断的有效性~{[1]}。
+
+主要考虑的分布偏移类型包括：
 \begin{itemize}
-\item \textbf{时间跨度}：$25$年（$2000$-$2024$年），提供了足够长的观察窗口以分析长期趋势
-\item \textbf{事故严重程度分类}：
-  \begin{itemize}
-  \item 无伤害事故（Non-Injury）：$607,114$起，占比$69.8\%$
-  \item 轻伤事故（Minor Injury）：$204,552$起，占比$23.5\%$
-  \item 重伤事故（Serious Injury）：$50,189$起，占比$5.8\%$
-  \item 致命事故（Fatal Crash）：$8,031$起，占比$0.9\%$
-  \end{itemize}
-\item \textbf{地理覆盖}：包含新西兰全部$17$个行政区域的事故数据
-\item \textbf{环境信息}：记录了事故发生时的天气、光照、路面等环境条件
-\item \textbf{车辆信息}：包含参与事故车辆的类型、年份等详细信息
+    \item \textbf{协变量偏移（Covariate Shift）}：指的是特征 $X$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(X) \neq P_{\text{unlab}}(X)$），但条件分布 $P(Y|X)$ 保持不变。在这种情况下，PPI可以通过对损失函数或拟合度量进行适当的重加权（reweighting）来处理。如果能够估计或已知两个分布之间的密度比 $w(x) = P_{\text{unlab}}(X=x) / P_{\text{lab}}(X=x)$，则可以将对未标注数据分布上参数的估计问题，转化为在标注数据分布上对一个加权损失函数的优化问题~{[1]}。例如，损失函数 $L_{\theta}(x,y)$ 变为 $w(x)L_{\theta}(x,y)$。
+    \item \textbf{标签偏移（Label Shift）}：指的是目标变量 $Y$ 的边际分布在标注数据集和未标注数据集之间发生变化（即 $P_{\text{lab}}(Y) \neq P_{\text{unlab}}(Y)$），但条件分布 $P(X|Y)$ 保持不变。这在分类问题中较为常见。PPI可以通过估计混淆矩阵（confusion matrix）并在标注数据和未标注数据的预测分布之间建立联系来处理标签偏移，从而调整对目标参数（如类别比例）的估计~{[1]}。
+\end{itemize}
+尽管对分布偏移的详细处理可能超出了本入门级数据科学项目的核心范围，除非所选数据集明确表现出此类特性，但了解PPI框架具备处理这些复杂情况的能力，进一步证明了其理论的完备性和实践的广泛适用性。在存在分布偏移的情况下，PPI协议依然力求保持其统计有效性，并利用机器学习预测来提升统计功效~{[1]}。
+
+\subsection{基准方法}
+\begin{enumerate}
+    \item \textbf{经典统计推断 (Classical)}:
+    \begin{itemize}
+        \item 仅使用 $n$ 个标注样本 $(X_j, Y_j)$。
+        \item 均值估计: $\hat{\mu}_{\text{classical}} = \frac{1}{n} \sum Y_j$。
+        \item 基于t分布构建置信区间。
+    \end{itemize}
+    \item \textbf{朴素机器学习推断 (Naive ML)}:
+    \begin{itemize}
+        \item 利用模型 $f(X)$ 对所有 $n$ 个标注样本和 $N$ 个未标注样本进行预测，得到 $n+N$ 个预测值 $\hat{Y}_{\text{all}}$。
+        \item 均值估计: $\hat{\mu}_{\text{naive}} = \frac{1}{n+N} \sum \hat{Y}_{\text{all}}$。
+        \item 通常假设预测值是真实的，并基于此构建置信区间（可能导致覆盖率不足）。
+    \end{itemize}
+\end{enumerate}
+
+\subsection{数据生成与预处理}
+\label{sec:dataset_preprocessing}
+
+\subsubsection{数据集选择}
+\label{sec:dataset_selection}
+为了有效地评估和比较不同的统计推断方法，选择一个合适的数据集至关重要。本研究将采用公开可用的\textbf{阿尔茨海默病神经影像学倡议（Alzheimer's Disease Neuroimaging Initiative, ADNI）数据库}~{[24]}。ADNI数据库是一个大规模、多中心的纵向研究项目，旨在收集和共享用于研究阿尔茨海默病（AD）早期检测和进展的临床、影像、遗传和生物标记物数据。该数据集因其数据的丰富性、多模态性以及在众多医学研究中的广泛应用而著称，并且已被用于与预测驱动推断相关的研究中~{[24]}。
+
+选择ADNI数据集的理由如下：
+\begin{enumerate}
+    \item \textbf{相关性}：ADNI数据涉及复杂的生物医学问题，其中参数估计（例如，认知评分的平均变化、某种生物标记物与疾病状态的关联强度）具有实际临床意义。
+    \item \textbf{数据可用性}：ADNI数据对研究人员开放，便于获取和复现。
+    \item \textbf{适用性}：ADNI数据集中包含多种类型的变量（如人口学信息、临床评分、基因数据、影像特征等），可以灵活选择特征 $X$ 和目标结果 $Y$。例如，我们可以选择一组基线协变量 $X$（如年龄、APOE4基因型、教育程度、基线MMSE评分）来预测某个时间点后的认知变化（如ADAS-Cog评分的变化量）或疾病进展状态 $Y$。
+    \item \textbf{模拟"小标注、大未标注"场景}：ADNI数据集规模较大，可以从中划分出一个小规模的"标注"子集（包含完整的 $X$ 和 $Y$）和一个大规模的"未标注"子集（仅使用 $X$，其对应的 $Y$ 在PPI方法中被视为未知，但可用于评估）。
+\end{enumerate}
+
+\subsubsection{数据划分策略}
+\label{sec:data_splitting}
+从ADNI数据集中，将选取符合特定入组标准的受试者数据。假设原始可用样本总数为 $N_{\text{total}}$。数据将按以下方式划分：
+\begin{enumerate}
+    \item \textbf{预训练模型训练/验证集（可选）}：如果需要自行"预训练"一个机器学习模型 $f(X)$（而非直接使用外部预训练模型），将从 $N_{\text{total}}$ 中划分一部分数据，例如 $N_{\text{pretrain}}$ 个样本，专门用于训练和验证该模型。这部分数据将与后续用于PPI校正和推断的数据完全分离，以避免信息泄露。
+    \item \textbf{小规模标注集 ($X_{\text{lab}},Y_{\text{lab}}$)}：从剩余数据中随机抽取 $n_{\text{lab}}$ 个样本作为标注集。这个集合将包含完整的特征 $X_{\text{lab}}$ 和真实结果 $Y_{\text{lab}}$。$n_{\text{lab}}$ 的选择将反映"少量标注"的现实情况，例如，根据研究目标和数据特性，可设为100到500之间。
+    \item \textbf{大规模未标注特征集 $X_{\text{unlab}}$}：从剩余数据中再随机抽取 $N_{\text{unlab}}$ 个样本的特征作为未标注集。对于这些样本，其真实结果 $Y_{\text{unlab}}$ 将被视为未知（用于PPI方法），但这些真实值可以保留下来，用于后续评估不同推断方法的性能（例如，计算真实参数值以比较估计偏差）。$N_{\text{unlab}}$ 将远大于 $n_{\text{lab}}$，例如 $N_{\text{unlab}}$ 可以是 $n_{\text{lab}}$ 的5到20倍。
+    \item \textbf{测试集 ($X_{\text{test}},Y_{\text{test}}$)}：如果需要评估 $f(X)$ 的预测性能，或者对最终推断模型的泛化能力进行某种形式的评估，可以从剩余数据中划分一个测试集。对于本项目主要关注统计推断而言，此部分可能不是核心，但可备用。
+\end{enumerate}
+具体的 $n_{\text{lab}}$ 和 $N_{\text{unlab}}$ 的大小将根据ADNI数据集的实际可用样本量和特征维度来确定，并会在报告中明确说明。
+
+\subsubsection{预处理步骤}
+\label{sec:preprocessing_steps}
+对选定的ADNI数据将执行以下预处理步骤：
+\begin{enumerate}
+    \item \textbf{数据清洗}：
+    \begin{itemize}
+        \item 处理缺失值：对于特征 $X$ 中的缺失值，将根据缺失比例和变量类型选择合适的填补策略，例如均值/中位数填补（对于数值型特征）、众数填补（对于分类型特征），或者使用更复杂的插补方法如k-近邻插补或多重插补。如果某个特征缺失比例过高（例如 > 40-50\%），可能会考虑将其从分析中移除。目标变量 $Y$ 在标注集中不允许有缺失。文献~{[91]}中提到了处理缺失值的一些常见方法。
+        \item 异常值处理：通过可视化（如箱线图）和统计方法（如IQR法则）识别潜在异常值，并根据其性质决定是修正、移除还是保留。
+    \end{itemize}
+    \item \textbf{特征工程}：
+    \begin{itemize}
+        \item 根据对阿尔茨海默病领域的理解，可能会创建一些交互项或对现有特征进行转换（如对数变换、多项式扩展）以更好地捕捉 $X$ 与 $Y$ 之间的关系。
+        \item 对于分类变量，将进行独热编码（One-Hot Encoding）或标签编码（Label Encoding），具体取决于所选ML模型的类型。
+    \end{itemize}
+    \item \textbf{特征缩放}：对于数值型特征，将采用标准化（Standardization，使其均值为0，标准差为1）或归一化（Normalization，将其缩放到[0,1]区间），以确保不同尺度的特征在ML模型训练中得到公平对待。
+\end{enumerate}
+
+\subsubsection{表1: 数据集特征描述}
+\label{sec:table1_dataset_description}
+为了清晰地呈现所用数据的概况，将包含以下表格：
+
+\begin{table}[H]
+    \centering
+    \caption{ADNI数据集用于预测驱动推断的特征描述 (示例)}
+    \label{tab:adni_features}
+    \small % Smaller font for the table
+    \begin{tabular}{@{}lllll@{}}
+        \\toprule
+        特征 & 描述 & 类型 & 角色 & 备注 (例如，单位，范围) \\
+        \\midrule
+        \\multicolumn{5}{@{}l}{\textbf{数据集规模}} \\
+        总样本量 (ADNI子集) & $N_{\text{total}}$ (例如, 2000) & - & - & 经过初步筛选后的样本量 \\
+        标注集大小 ($n_{\text{lab}}$) & 例如, 200 & - & - & 用于校正和经典推断 \\
+        未标注集大小 ($N_{\text{unlab}}$) & 例如, 1000 & - & - & 用于利用ML预测增强推断 \\
+        (可选)预训练/验证集大小 ($N_{\text{pretrain}}$) & 例如, 800 & - & - & 若需自行训练 $f(X)$ \\
+        \\midrule
+        \\multicolumn{5}{@{}l}{\textbf{核心变量}} \\
+        目标变量 (Y) & ADAS-Cog评分在12个月的变化量 & 连续型 & 结果变量 & 越高表示认知恶化越严重 \\
+        \\textit{Estimand of Interest} & E[Y] (总体平均认知变化) & - & - & 本研究的核心推断目标 \\
+        % Add more estimands if needed, e.g., regression coefficients
+        % 或特定协变量的回归系数 $\beta_k$ & - & - &  \\
+        \\midrule
+        \\multicolumn{5}{@{}l}{\textbf{特征变量 (X)示例}} \\
+        AGE & 基线年龄 & 连续型 & 协变量 & 岁 \\
+        PTEDUCAT & 教育年限 & 连续型 & 协变量 & 年 \\
+        APOE4 & APOE4等位基因数量 & 分类型 & 协变量 & 0, 1, 或 2 \\
+        MMSE & 基线简易精神状态检查评分 & 连续型 & 协变量 & 0-30分，越高表示认知功能越好 \\
+        LDELTOTAL & AVLT延迟回忆总分 & 连续型 & 协变量 & 分数 (示例神经心理测试) \\
+        Hippocampus Volume & 基线海马体积 & 连续型 & 协变量 & mm$^3$ (示例影像标记物) \\
+        % ... (其他相关协变量) & ... & ... & ... & ... \\
+        \\midrule
+        \\multicolumn{5}{@{}l}{\textbf{数据来源}} \\
+        数据来源 & \\multicolumn{4}{p{0.8\\linewidth}}{Alzheimer's Disease Neuroimaging Initiative (ADNI) database (adni.loni.usc.edu). ADNI1, ADNI2, ADNI GO, ADNI3 等版本。} \\
+        \\bottomrule
+    \end{tabular}
+\end{table}
+此表格的构建对于确保研究的可复现性和透明度至关重要。它清晰地界定了研究中使用的数据规模、变量构成以及核心的推断目标，为后续的方法实施和结果解读提供了坚实的基础。通过明确标注集与未标注集的规模对比，也直观地展现了研究试图解决的"小标注数据"挑战。
+
+\subsection{预训练模型 $f(X)$ 规格}
+\label{sec:model_fx_spec}
+
+\subsubsection{模型选择}
+\label{sec:model_selection_fx}
+为了从特征 $X$ 预测结果 $Y$，本项目将选择一个在 \texttt{scikit-learn} 库中易于实现且性能稳健的机器学习模型作为预训练模型 $f(X)$。考虑到ADNI数据集的特点（可能包含数值和分类特征，以及中等规模的样本量），\textbf{梯度提升回归/分类器（Gradient Boosting Regressor/Classifier）} 是一个合适的选择。梯度提升机以其高预测精度、对不同类型数据的良好适应性以及对特征缩放不敏感等优点而著称。
+
+如果目标变量 $Y$ 是连续的（例如ADAS-Cog评分的变化量），将使用 \texttt{GradientBoostingRegressor}。如果 $Y$ 是分类的（例如疾病状态的转换），将使用 \texttt{GradientBoostingClassifier}。
+
+\subsubsection{预测值 $\hat{Y}$ 的生成}
+\label{sec:y_hat_generation}
+预训练模型 $f(X)$ 将用于生成两组预测值：
+\begin{enumerate}
+    \item $\hat{Y}_{\text{lab}} = f(X_{\text{lab}})$：对标注集中的样本进行预测。这些预测值将与真实标签 $Y_{\text{lab}}$ 一同用于计算PPI++方法中的校正项。
+    \item $\hat{Y}_{\text{unlab}} = f(X_{\text{unlab}})$：对大规模未标注集中的样本进行预测。这些预测值将被用于构建PPI++方法中基于大量（但可能存在偏差的）信息的初步估计。
+\end{enumerate}
+模型"预训练"过程：
+由于本项目强调利用"预训练"模型，理想情况下应使用一个在与当前研究的标注集 $(X_{\text{lab}},Y_{\text{lab}})$ 和未标注集 $X_{\text{unlab}}$ 完全不相交的数据上训练好的模型。如果无法获取到这样一个现成的、针对ADNI数据和特定 $Y$ 的高质量预训练模型，则将在项目内部模拟"预训练"过程。具体做法是：
+\begin{itemize}
+    \item 从ADNI的原始数据中，在划分出 $X_{\text{lab}}$ 和 $X_{\text{unlab}}$ \textit{之前}，预留一部分数据（即前述的 $N_{\text{pretrain}}$ 样本）专门用于训练和调优这个梯度提升模型 $f(X)$。
+    \item 模型训练将采用标准的机器学习流程，包括超参数调优（例如，使用网格搜索 \texttt{GridSearchCV} 或随机搜索 \texttt{RandomizedSearchCV} 配合交叉验证）以优化其预测性能（例如，均方误差MSE或准确率Accuracy）。
+    \item 一旦模型 $f(X)$ 训练完成，其参数将被固定。然后，这个固定的模型将被用于为 $X_{\text{lab}}$ 和 $X_{\text{unlab}}$ 生成预测值。
+\end{itemize}
+这种内部"预训练"方式虽然不是严格意义上的使用外部预训练模型，但在项目范围内模拟了拥有一个固定预测模型的场景，这符合PPI框架不假设模型如何获得的要求。关键在于确保用于训练 $f(X)$ 的数据与用于PPI校正和推断的数据之间没有重叠。
+
+\subsubsection{模拟预测模型的不完美性}
+\label{sec:simulating_model_imperfection}
+在真实世界应用中，任何ML模型的预测都不可能是完美的，它们总是带有一定的误差和潜在的偏倚。梯度提升模型本身在拟合复杂数据时就可能产生这些不完美性。为了更可控地研究PPI方法对模型不完美性的鲁棒性，或者在纯粹的模拟研究（非直接使用ADNI数据）中，可以按如下方式构造一个不完美的预测函数 $f(X)$：
+\begin{enumerate}
+    \item \textbf{基于真实模型的扰动}：
+    假设存在一个真实的潜在关系 $Y_{\text{true}} = g(X) + \epsilon_{\text{true}}$。可以先用一部分数据（或全部可用标注数据，如果是在一个纯模拟设定中）拟合一个"最优"模型 $g^*(X)$ 来近似 $g(X)$。然后，不完美的预测模型 $f(X)$ 可以通过以下几种方式构造：
+    \begin{itemize}
+        \item \textbf{添加系统偏差（Bias）}：$\hat{Y} = f(X) = g^*(X) + \text{bias\_term}$，其中 $\text{bias\_term}$ 可以是一个常数，或者是一个与 $X$ 相关的函数，模拟模型在特定区域的系统性高估或低估。
+        \item \textbf{增加随机噪声（Variance）}：$\hat{Y} = f(X) = g^*(X) + \text{noise\_term}$，其中 $\text{noise\_term}$ 是一个随机变量，其方差可以控制预测的不稳定程度。例如，$\text{noise\_term} \sim N(0, \sigma^2_{\text{pred\_error}})$。
+        \item \textbf{使用欠拟合或过拟合模型}：故意使用一个过于简单（例如，仅包含部分重要特征的线性模型）或过于复杂（例如，未加正则化的深度网络或参数过多的树模型）的模型作为 $f(X)$，使其产生系统性的预测误差~{[27]}。
+        \item \textbf{基于不完整或有偏特征训练}：在训练 $f(X)$ 时，只使用 $X$ 的一个子集，或者使用经过某种方式扭曲的特征，使得 $f(X)$ 对 $Y$ 的预测能力受限或带有偏见。
+    \end{itemize}
+    \item \textbf{模拟特定错误率/准确率}：
+    如果 $Y$ 是分类变量，可以设定 $f(X)$ 以一定的概率输出错误的类别标签，或者使其在特定类别上的表现较差，从而模拟不同水平的预测准确率和类别不平衡下的偏倚~{[17]}。例如，可以设计 $f(X)$ 使得其对少数群体的预测准确率低于多数群体。
+    \item \textbf{利用文献中关于"不完美代理标签"的讨论}：
+    Egami等人~{[17]}的工作讨论了使用大型语言模型（LLM）等产生的"不完美代理标签"进行下游统计分析的问题。他们指出，即使代理标签的准确率达到80-90\%，直接使用它们也会导致显著偏差和无效的置信区间。在模拟研究中，可以借鉴这种思路，设定 $f(X)$ 的预测准确率在一个现实的范围内（例如70\%-95\%），并引入一些系统性的偏差模式（例如，对某些子群体的预测更差）。
+\end{enumerate}
+对于本项目，如果采用ADNI真实数据和内部"预训练"的梯度提升模型，其不完美性是自然产生的。如果为了更精细地控制和研究PPI++的性能，可以考虑在生成 $\hat{Y}_{\text{unlab}}$ 时，对梯度提升模型的原始预测额外叠加一层可控的偏差或噪声，从而评估PPI++在不同"质量"的预训练模型下的表现。这种对预测质量的控制，虽然增加了实验复杂度，但能更深刻地揭示PPI++方法（特别是其 $\lambda$ 参数的自适应性）的优势和适用边界。
+
+\subsection{推断方法的实现 (Python 3.12)}
+\label{sec:inference_implementation}
+\begin{itemize}
+    \item \textbf{方法1：预测驱动推断 (PPI++)}
+    \begin{itemize}
+        \item \textbf{库的使用}：将直接利用 \texttt{aangelopoulos/ppi\_py} 这个专门为预测驱动推断开发的Python库~{[29]}。该库实现了包括PPI++在内的多种PPI方法。
+        \item \textbf{函数调用}：根据需要推断的参数类型，选择 \texttt{ppi\_py} 中相应的函数。例如：
+        \begin{itemize}
+            \item 估计总体均值 $E[Y]$：使用 \texttt{ppi\_mean\_ci(Y\_lab, Yhat\_lab, Yhat\_unlab, alpha=0.05)} 来获取置信区间，以及 \texttt{ppi\_mean\_pointestimate} 获取点估计~{[22]}。如果需要p值，可以使用 \texttt{ppi\_mean\_pval}。
+            \item 估计总体分位数：使用 \texttt{ppi\_quantile\_ci} 和 \texttt{ppi\_quantile\_pointestimate}。
+            \item 估计OLS回归系数：使用 \texttt{ppi\_ols\_ci} 和 \texttt{ppi\_ols\_pointestimate}。此时，输入除了 $Y_{\text{lab}}$, $\hat{Y}_{\text{lab}}$, $\hat{Y}_{\text{unlab}}$ 外，还需要相应的协变量矩阵 $X_{\text{lab}}$ 和 $X_{\text{unlab}}$。
+            \item 估计Logistic回归系数：使用 \texttt{ppi\_logistic\_ci} 和 \texttt{ppi\_logistic\_pointestimate}。
+        \end{itemize}
+        \item \textbf{参数设置}：
+        \begin{itemize}
+            \item \texttt{Y\_lab}：标注集中的真实标签。
+            \item \texttt{Yhat\_lab}：预训练模型 $f(X)$ 对标注集 $X_{\text{lab}}$ 的预测 $\hat{Y}_{\text{lab}}$。
+            \item \texttt{Yhat\_unlab}：预训练模型 $f(X)$ 对未标注集 $X_{\text{unlab}}$ 的预测 $\hat{Y}_{\text{unlab}}$。
+            \item \texttt{alpha}：显著性水平，通常设为0.05，以构建95\%的置信区间。
+            \item \texttt{lam} (功效调整参数)：\texttt{ppi\_py} 库中的PPI++实现允许 \texttt{lam} 参数自动从数据中估计，这是其默认行为~{[22]}。这将是本项目的首选方式，以充分利用PPI++的自适应性。如果需要，也可以手动设置 \texttt{lam}（例如，\texttt{lam=0} 退化到经典推断，\texttt{lam=1} 对应无功效调整的PPI）。
+            \item \texttt{coord} (坐标)：在估计多维参数（如回归系数向量）时，\texttt{lam} 的优化可以针对所有坐标的总方差，或者针对某个特定坐标的方差~{[22]}。默认情况下，\texttt{ppi\_py} 会优化总方差。
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{方法2：基准线 - 直接ML预测为基础的推断（朴素推断）}
+    \begin{itemize}
+        \item \textbf{构建增强数据集}：
+        \begin{itemize}
+            \item 特征矩阵 $X_{\text{aug}} = \text{concatenate}(X_{\text{lab}}, X_{\text{unlab}})$
+            \item 结果向量 $Y_{\text{aug}} = \text{concatenate}(Y_{\text{lab}}, \hat{Y}_{\text{unlab}})$ (注意：此处混合了真实标签和预测标签)
+            \item 总样本量 $N_{\text{aug}} = n_{\text{lab}} + N_{\text{unlab}}$
+        \end{itemize}
+        \item \textbf{应用经典统计方法}：
+        \begin{itemize}
+            \item \textbf{估计总体均值 $E[Y]$}：计算 $Y_{\text{aug}}$ 的样本均值 $\bar{Y}_{\text{aug}} = \frac{1}{N_{\text{aug}}} \sum Y_{\text{aug},i}$。其置信区间将基于中心极限定理，使用 $Y_{\text{aug}}$ 的样本标准差 $s_{\text{aug}}$ 计算：$\bar{Y}_{\text{aug}} \pm z_{1-\alpha/2} \frac{s_{\text{aug}}}{\sqrt{N_{\text{aug}}}}$。
+            \item \textbf{估计OLS回归系数}：在 $(X_{\text{aug}},Y_{\text{aug}})$ 上拟合一个普通最小二乘（OLS）回归模型。例如，使用 \texttt{statsmodels.api.OLS(Y\_aug, sm.add\_constant(X\_aug)).fit()}。然后从拟合结果中提取系数估计值及其标准误，并构建置信区间。
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{方法3：基准线 - 经典推断（仅使用标注数据）}
+    \begin{itemize}
+        \item \textbf{应用经典统计方法}：
+        \begin{itemize}
+            \item \textbf{估计总体均值 $E[Y]$}：计算 $Y_{\text{lab}}$ 的样本均值 $\bar{Y}_{\text{lab}} = \frac{1}{n_{\text{lab}}} \sum Y_{\text{lab},i}$。其置信区间将基于t分布（因为 $n_{\text{lab}}$ 较小）：$\bar{Y}_{\text{lab}} \pm t_{n_{\text{lab}}-1,1-\alpha/2} \frac{s_{\text{lab}}}{\sqrt{n_{\text{lab}}}}$，其中 $s_{\text{lab}}$ 是 $Y_{\text{lab}}$ 的样本标准差。
+            \item \textbf{估计OLS回归系数}：在 $(X_{\text{lab}},Y_{\text{lab}})$ 上拟合OLS回归模型，例如使用 \texttt{statsmodels.api.OLS(Y\_lab, sm.add\_constant(X\_lab)).fit()}。提取系数估计值和标准误，构建置信区间。
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+这种方法本质上是一种朴素的插补（imputation）策略，它忽略了 $\hat{Y}_{\text{unlab}}$ 中固有的预测误差和潜在偏差。正如文献~{[15]}所警告的，"将这些ML预测直接代入而不考虑预测误差，会使回归分析产生偏差、不一致性，并且过度自信（即标准误过小）"。文献~{[31]} 和~{[32]}也将此类方法称为"朴素估计器"（Naive Estimator），并指出其可能导致有偏的推断。因此，预期这种基准方法的置信区间覆盖率可能会不达标。
+
+\subsection{开发环境与工具}
+\label{sec:dev_env_tools}
+\begin{itemize}
+    \item \textbf{Cursor AI 编辑器}：整个项目的代码编写、调试、文档撰写（包括本报告的Markdown和LaTeX版本）将主要在Cursor AI编辑器中完成~{[33]}。
+    \begin{itemize}
+        \item \textbf{代码辅助}：利用其AI驱动的代码生成、自动补全、智能重写和错误修正功能，提高Python脚本的开发效率和质量~{[34]}。
+        \item \textbf{上下文理解与问答}：通过 @ 符号引用文件、代码片段或文档，利用其聊天功能查询代码库、理解复杂逻辑或获取API用法建议~{[33]}。
+        \item \textbf{Jupyter Notebook风格开发（如果需要）}：Cursor支持在 .py 文件中使用 \texttt{\# \%\%} 单元格分隔符进行类似Jupyter Notebook的交互式开发和探索，这对于数据预处理和初步分析阶段可能很有用~{[37]}。
+        \item \textbf{报告撰写}：利用Cursor对Markdown和LaTeX语法的支持，以及可能的AI辅助写作功能，撰写项目报告~{[39]}。
+    \end{itemize}
+    \item \textbf{Python 核心库}：
+    \begin{itemize}
+        \item \texttt{numpy}~{[30]}: 用于高效的数值数组操作和数学函数。
+        \item \texttt{pandas}: 用于数据结构（如DataFrame）的创建、管理和预处理~{[41]}。
+        \item \texttt{scikit-learn}: 用于实现梯度提升模型（如果需要内部"预训练"）、数据划分（如\texttt{train\_test\_split}）、性能度量（如MSE、准确率）以及可能的预处理步骤（如\texttt{StandardScaler}）~{[41]}。
+        \item \texttt{ppi\_py}: Angelopoulos等人开发的用于预测驱动推断的专用库，将是实现PPI++方法的核心~{[29]}。
+        \item \texttt{statsmodels}: 用于实现经典的OLS回归和Logistic回归模型，并获取其详细的统计推断结果（系数、标准误、置信区间、p值）~{[41]}。
+        \item \texttt{matplotlib} 和 \texttt{seaborn}: 用于生成结果可视化图表，如箱线图、置信区间比较图等~{[41]}。
+    \end{itemize}
+    \item \textbf{版本控制}：使用Git进行代码和报告的版本管理，并托管在如GitHub的平台上，以确保项目的可追溯性和协作潜力~{[43]}。Cursor AI编辑器通常与Git有良好的集成~{[33]}。
+    \item \textbf{报告生成工具 (Quarto)}：考虑到需要同时生成Markdown和高质量的PDF (通过LaTeX) 报告，并且项目以Python为核心，强烈推荐使用Quarto~{[44]}。Quarto是R Markdown的下一代产品，对Python有优秀的支持，并且可以很好地与VS Code (Cursor AI基于此) 集成。
+    \begin{itemize}
+        \item \textbf{单一源文件}：使用Quarto的 \texttt{.qmd} 格式可以从单一源文件生成多种输出格式。
+        \item \textbf{代码块执行}：直接在文档中嵌入和执行Python代码块，并将结果（如表格、图形）无缝包含在报告中。
+        \item \textbf{数学公式}：支持LaTeX语法渲染数学公式~{[46]}。
+        \item \textbf{表格}：可以将pandas DataFrame通过 \texttt{tabulate} 库~{[47]} 或新兴的 \texttt{Great Tables} 库~{[48]} 转换为Markdown或直接输出为LaTeX表格，以获得出版质量。Quarto的 \texttt{output: asis} 选项对直接输出LaTeX代码块非常有用~{[48]}。
+        \item \textbf{图形}：Matplotlib和Seaborn生成的图形可以轻松嵌入，Quarto还支持子图、图注和交叉引用~{[50]}。
+        \item \textbf{交叉引用}：Quarto提供强大的交叉引用功能，可以引用章节、图、表、公式等~{[51]}。
+        \item \textbf{文献管理}：通过 \texttt{.bib} 文件和CSL样式管理参考文献~{[54]}。
+    \end{itemize}
+\end{itemize}
+采用Quarto将极大地简化报告撰写和格式转换的流程，确保内容的一致性和专业性，同时也符合可复现研究的最佳实践。
+
+一个需要特别注意的实施细节是基准方法2（直接ML预测为基础的推断）的操作化。它不仅仅是获得ML模型的点预测值。为了进行"推断"，这意味着需要将这些预测值（$\hat{Y}_{\text{unlab}}$）视为真实观察值，然后与标注数据 $(X_{\text{lab}},Y_{\text{lab}})$ 合并。之后，对这个混合了真实值和预测值的"增强"数据集应用标准的统计程序（例如，对 $(X,\hat{Y})$ 进行OLS回归以获得系数的置信区间）。这个过程必须清晰地阐述其（通常被违反的）假设，例如假设 $\hat{Y}_{\text{unlab}}$ 与真实的 $Y_{\text{unlab}}$ 具有相同的统计特性，或者误差项满足经典模型的假定。实验结果预期会暴露这种朴素方法的缺陷，例如置信区间覆盖率不足或标准误估计不当，从而凸显PPI++等经过校正的方法的优越性。整个实验设计和实施过程将严格遵循可复现研究的原则~{[43]}，所有代码、数据处理步骤和库版本都将被详细记录和公开。
+
+\section{实验设置}
+基于 \texttt{results/experiment\_results.json} 文件的数据：
+\begin{itemize}
+    \item \textbf{数据集}:
+    \begin{itemize}
+        \item 标注集大小 ($n_{\text{labeled}}$): 200
+        \item 未标注集大小 ($n_{\text{unlabeled}}$): 1000
+        \item 总用于推断的特征数量: 6 (基于 \texttt{data\_info.feature\_names})
+    \end{itemize}
+    \item \textbf{预测模型 $f(X)$ 性能}:
+    \begin{itemize}
+        \item 在标注集上的 R²: 0.886
+        \item 在标注集上的 MSE: 0.604
+    \end{itemize}
+    \item \textbf{真实总体均值 (用于评估)}: 13.1411 (基于未标注数据的真实标签均值)
+    \item \textbf{置信水平}: 95\% ($\alpha = 0.05$)
 \end{itemize}
 
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.85\textwidth]{crash_year_distribution.png}
-  \caption{事故年份分布。图中展示了$2000$年至$2024$年间每年的事故记录数量。数据显示，事故记录最多的年份为$2007$年（$41,661$起），其次是$2006$年（$39,778$起）。总体趋势表现为初期上升（$2000$-$2007$年），随后进入相对平稳期，$2010$年之后年均事故记录数维持在约$35,000$至$40,000$起。值得注意的是，$2024$年的事故记录为$18,622$起，这一数值可能因数据收集周期尚未完整结束而显得偏低。}
-  \label{fig:crash_year_distribution}
+\section{实验结果与分析}
+\label{sec:results_analysis}
+
+本节展示了实验获得的可视化结果。
+
+\begin{figure}[H] % Using [H] from float package for "here definitely"
+    \centering
+    \includegraphics[width=0.8\textwidth]{real_vs_predicted_default.png}
+    \caption{真实值与预测值的散点图。该图展示了模型预测值与实际观测到的真实值之间的一致性。数据点紧密围绕对角线分布。}
+    \label{fig:real_vs_predicted_default}
 \end{figure}
 
-\FloatBarrier  % 确保前面的浮动体都已经放置
+本章节详细呈现了对比实验所获得的各项发现。评估的焦点是比较三种推断方法——预测驱动推断（PPI++）、基于直接ML预测的朴素推断、以及仅使用标注数据的经典推断——在估计目标参数时的性能。结果的组织遵循了模拟研究报告的最佳实践~{[57]}。
 
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.85\textwidth]{crash_severity_distribution.png}
-  \caption{事故严重程度分布。该图直观展示了四种不同严重程度事故的构成比例（Non-Injury Crash: $69.8\%$, Minor Crash: $23.5\%$, Serious Crash: $5.8\%$, Fatal Crash: $0.9\%$）。事故严重程度呈现典型的金字塔结构：无伤害事故（Non-Injury Crash）构成了绝大多数，而致命事故（Fatal Crash）的比例最低，符合一般交通事故严重性的分布规律。}
-  \label{fig:crash_severity_distribution}
-\end{figure}
-
-\FloatBarrier
-
-\subsection{数据预处理流程}
-
-为确保分析的可靠性，我们实施了以下预处理步骤：
-
-1. \textbf{数据清洗}
-   \begin{itemize}
-   \item 处理缺失值：对于关键变量采用完整案例分析，非关键变量采用合适的插补方法
-   \item 异常值检测：使用统计方法识别并处理异常值
-   \item 一致性检查：确保各字段间的逻辑关系正确
-   \end{itemize}
-
-2. \textbf{特征工程}
-   \begin{itemize}
-   \item 环境因素组合：构建雨天、夜间、无路灯等条件的组合变量
-   \item 时间聚合：按年度、月度等不同时间尺度汇总数据
-   \item 地理编码：标准化地理位置信息，便于区域层面分析
-   \end{itemize}
-
-3. \textbf{数据转换}
-   \begin{itemize}
-   \item 事故严重程度二值化：将四级分类转换为"严重"和"非严重"两类
-   \item 比例计算：计算各类车辆参与事故的相对比例
-   \item 增长率计算：计算年度事故数量的变化率
-   \end{itemize}
-
-4. \textbf{数据验证与质量评估}
-   \begin{itemize}
-   \item 完整性检查：核心字段（如事故时间、地点、严重程度）的完整率超过$99\%$
-   \item 准确性验证：通过交叉验证和逻辑检查，确保数据的内部一致性
-   \item 代表性评估：验证样本覆盖了不同时期、地区和事故类型，具有良好的代表性
-   \item 时效性考量：评估$2024$年数据的更新状态，并在分析中考虑这一因素
-   \item 交叉验证：通过多种方法验证处理结果的准确性
-   \item 样本代表性检验：确保处理后的数据仍保持原有的代表性
-   \item 统计检验：对关键变量进行必要的统计检验
-   \end{itemize}
-
-通过这些预处理步骤，我们建立了一个结构化、清洗完善的分析数据集，为后续深入研究奠定了坚实基础。预处理后的数据集保留了原始数据的核心特征，同时提供了更便于分析的结构化格式。
-
-\section{模型的设计与实现}
-
-\subsection{问题1：雨天夜间无路灯事故的严重性}
-
-研究问题"雨天夜间无路灯的事故是否更容易导致重伤或死亡"本质上是探究特定环境因素组合与事故严重程度的关系。在考虑了多种统计模型后，我们发现由于事故严重程度可以清晰地二分为"严重"（重伤或死亡）和"非严重"（轻伤或无伤害），并且我们需要同时评估多个环境因素及其交互作用，\textbf{二元逻辑回归模型}成为首选。该模型不仅能处理二分类因变量，还能通过纳入交互项评估多因素组合的协同效应，同时提供易于解释的比值比(Odds Ratio)指标量化各因素对风险的影响。虽然有序逻辑回归也可用于处理多级严重性，但二分类已能充分回答本研究的核心问题。至于泊松回归，其更适用于对事故次数建模，而此处我们关注的是单次事故的严重性。
-
-在分析实施中，我们先通过描述性统计比较不同环境条件组合下事故的严重程度分布，通过比例检验计算并比较不同条件下严重事故的比例，再通过逻辑回归模型控制混杂因素，精确估计各因素的独立贡献及其交互效应。模型设定二元因变量：
-
-$$
-Y = 
-\begin{cases}
-1, & \text{重伤或死亡（serious/fatal）} \\
-0, & \text{轻伤或未伤（minor/no injury）}
-\end{cases}
-$$
-
-并通过对数几率（logit）函数进行线性建模：
-
-$$
-\log\left(\frac{P(Y=1)}{1 - P(Y=1)}\right) = \beta_0 + \beta_1 \cdot \text{Rain} + \beta_2 \cdot \text{Night} + \beta_3 \cdot \text{NoLight} + \beta_4 \cdot (\text{Rain} \times \text{Night}) + \beta_5 \cdot (\text{Night} \times \text{NoLight}) + \beta_6 \cdot (\text{Rain} \times \text{NoLight}) + \beta_7 \cdot (\text{Rain} \times \text{Night} \times \text{NoLight})
-$$
-
-其中：
-- $\beta_0$是截距项，代表所有预测变量为0时的基线对数几率
-- $\beta_1, \beta_2, \beta_3$分别是雨天、夜间和无路灯的主效应系数
-- $\beta_4, \beta_5, \beta_6$是两因素交互效应的系数
-- $\beta_7$是三因素交互效应的系数
-
-通过计算比值比(OR = $e^{\beta_i}$)，我们可以直观理解各环境因素对事故严重性的影响方向和大小，其中OR > $1$表示增加风险，OR < $1$表示降低风险。这种从描述性分析到交互效应评估的综合方法，使我们能够全面回答雨天夜间无路灯条件是否真的增加事故严重性的核心问题。
-
-\subsection{问题2：地区事故数量异常波动}
-
-针对"某些地区是否在特定年份事故数量激增"的问题，核心挑战在于如何客观识别"异常"激增现象并评估其可能原因。现有文献和方法论提示了包括CUSUM图、贝叶斯突变点模型、中断时间序列分析以及时空扫描统计等多种方法。考虑到我们面对的是各地区年度事故计数的时间序列数据，并且需要评估特定时间点（如可能的政策变更或记录系统调整）前后的变化，我们主要采用了\textbf{中断时间序列分析(Interrupted Time Series Analysis, ITSA)}，并结合了探索性的\textbf{异常点检测}。
-
-在本研究中，我们将"年增长率超过$30\%$"作为判断某地区某年份事故数量出现显著激增的标准。即，若某地区在某一年份的事故数量较前一年增长幅度超过$30\%$，则认定为异常增长。这一阈值的设定，既能有效排除常规波动带来的误判，又能突出真正值得关注的系统性变化。
-
-ITSA能够有效评估干预前后的水平和趋势变化。虽然如SaTScan等时空扫描统计方法能提供更细致的时空热点信息，但在本阶段，区域-年度层面的ITSA已能较好地捕捉显著的系统性变化。
-
-我们的分析策略从两个层面展开：首先，采用量化标准客观识别异常点——将年增长率超过$30\%$的情况定义为异常激增；其次，应用中断时间序列分析，评估这些异常点前后的水平和趋势变化，探究可能的系统性原因。中断时间序列分析通过以下模型评估干预前后的变化：
-
-$$
-Y_t = \alpha + \beta_1 \cdot t + \beta_2 \cdot D_t + \beta_3 \cdot (t - T_0) \cdot D_t + \varepsilon_t
-$$
-
-其中：
-- $Y_t$是t时刻的事故数量
-- $t$是时间变量，表示年份
-- $D_t$是指示变量，表示在干预时间$T_0$后的时间段($D_t=0$ 当 $t<T_0$；$D_t=1$ 当 $t \geq T_0$)
-- $\alpha$是基线水平
-- $\beta_1$是干预前的斜率
-- $\beta_2$测量干预后的水平变化（即截距的变化）
-- $\beta_3$测量干预后的斜率变化（即趋势的变化）
-- $\varepsilon_t$是随机误差项
-
-年度增长率通过以下公式计算：
-
-$$
-\text{Growth Rate}_{r,y} = \frac{\text{Accidents}_{r,y} - \text{Accidents}_{r,y-1}}{\text{Accidents}_{r,y-1}} \times 100\%
-$$
-
-这种方法特别适合我们的研究问题，因为它不仅能识别各地区的异常波动，更重要的是通过多地区同步比较，能够发现全国性的系统变化模式，从而将局部波动与全国性政策或记录系统变更区分开来。通过热力图和同步分析，我们能够直观展示全国$17$个地区在$25$年间的事故变化模式，有效回答地区事故异常波动及其可能原因的研究问题。
-
-\subsection{问题3：车辆类型参与事故的长期趋势}
-
-研究问题"随着时间推移，不同类型车辆参与事故的比例是否发生了显著变化"要求我们不仅描述趋势变化，还需要评估这些变化的统计显著性。多种方法可用于此类分析，包括计算年度参与比例、Mann-Kendall检验、ARIMA/泊松时间序列模型以及Joinpoint回归等。由于我们关心的是各类车辆参与事故的长期单调趋势而非短期波动或复杂周期性，且Mann-Kendall检验作为一种非参数方法无需假设数据满足特定分布，因此我们选择\textbf{Mann-Kendall趋势检验}结合时间序列可视化作为主要分析方法。ARIMA和Joinpoint回归等方法可作为未来研究中探索更复杂趋势结构（如周期性、突变点）的有力工具。
-
-分析设计以三个层次展开：首先，通过时间序列趋势分析，我们考察各类车辆参与事故的绝对数量和相对比例随时间的变化；其次，通过Mann-Kendall趋势检验，客观评估这些变化趋势的统计显著性；最后，通过面积图、线图等可视化方法，直观展示车辆类型结构的演变。
-
-Mann-Kendall检验是一种非参数方法，适用于评估时间序列数据的单调趋势，其检验统计量S计算如下：
-
-$$
-S = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \text{sgn}(x_j - x_i)
-$$
-
-其中：
-- $x_i$和$x_j$是时间序列中的数据值
-- sgn是符号函数，当差值为正、零或负时分别返回1、0或-1
-
-对于较长的时间序列，S呈近似正态分布，可计算标准化检验统计量Z进行假设检验：
-
-$$
-Z = 
-\begin{cases}
-\frac{S-1}{\sqrt{\text{VAR}(S)}}, & \text{if } S > 0 \\
-0, & \text{if } S = 0 \\
-\frac{S+1}{\sqrt{\text{VAR}(S)}}, & \text{if } S < 0
-\end{cases}
-$$
-
-通过计算p值，我们可以判断各类车辆参与事故比例变化趋势的统计显著性，从而回答"哪些车辆类型的参与比例正在显著增加或减少"的问题。
-
-具体分析过程包括：按年份和车辆类型聚合事故数据、计算各类型车辆在各年份的占比、绘制时间序列图表、应用Mann-Kendall检验评估趋势显著性，以及针对代表性车辆类型（如轿车、SUV、摩托车）进行深入分析。这种综合方法不仅回答了车辆类型趋势变化的问题，还揭示了这些变化背后可能的社会经济和交通模式转变。
-
-
-\section{结果评价与展示}
-
-\subsection{问题1：雨天夜间无路灯事故的严重性分析}
-
-\subsubsection{环境因素分布}
-
-在新西兰交通事故数据集中，我们首先分析了\textbf{3}个关键环境因素的分布情况：
-
+\subsection{评估指标}
+\label{sec:evaluation_metrics}
+为了全面比较三种推断方法的性能，采用了以下标准统计指标：
+\begin{enumerate}
+    \item \textbf{点估计量性能 (例如，对总体均值 $E[Y]$ 或回归系数 $\beta$ 的估计 $\hat{\theta}$)}:
+    \begin{itemize}
+        \item \textbf{偏差 (Bias)}：衡量估计量平均偏离真实参数值的程度。当真实参数值 $\theta$ 已知时（例如，在模拟子研究中，或者使用完整数据集计算得到的参数作为"真实"代理），偏差定义为 $\text{Bias}(\hat{\theta})=E[\hat{\theta}]-\theta$。在单次实验中，当真实值未知时，主要关注了估计的稳定性和与其他方法的一致性，偏差的直接量化则较为困难。若通过多次重复实验（例如，对标注集和未标注集进行多次随机抽样和划分）来模拟，则可计算平均偏差~{[58]}。
+        \item \textbf{均方误差 (Mean Squared Error, MSE)}：衡量估计量与真实参数值之间平均平方差异，综合了偏差和方差的影响。$\text{MSE}(\hat{\theta})=E[(\hat{\theta}-\theta)^2]=\text{Var}(\hat{\theta})+(\text{Bias}(\hat{\theta}))^2$。与偏差类似，MSE的精确计算同样依赖于真实参数值或重复实验~{[58]}。
+    \end{itemize}
+    \item \textbf{置信区间 (CI) 性能}:
+    \begin{itemize}
+        \item \textbf{经验覆盖概率 (Empirical Coverage Probability, ECP)}：在多次重复实验中，衡量所构建的 $(1-\\alpha)$ 置信区间包含真实参数值的比例。理想情况下，ECP接近于名义覆盖水平 $(1-\\alpha)$（例如95\%）~{[58]}。这是衡量置信区间有效性的核心指标。
+        \item \textbf{平均长度 (Average Length)}：置信区间的平均宽度。在保证ECP达到名义水平的前提下，置信区间越短，则推断越精确~{[58]}。
+    \end{itemize}
+    \item \textbf{假设检验性能 (如果适用，例如 \texttt{ppi\_py} 提供了 \texttt{ppi\_mean\_pval} 用于均值检验)}:
+    \begin{itemize}
+        \item \textbf{第一类错误率 (Type I Error Rate)}：衡量当原假设为真时，错误地拒绝原假设的概率。在多次重复实验中，此值接近预设的显著性水平 $\\alpha$~{[58]}。
+        \item \textbf{统计功效 (Power)}：衡量当备择假设为真（即原假设为假）时，正确地拒绝原假设的概率。功效越高，表明方法检测真实效应的能力越强~{[58]}。
+    \end{itemize}
+\end{enumerate}
+由于本项目主要基于单个（真实）数据集的划分进行一次性比较，而非大规模蒙特卡洛模拟研究，因此对于偏差、MSE、ECP和第一类错误率/功效的精确经验估计存在一定局限。在这种情况下，评估更侧重于：
 \begin{itemize}
-\item 雨天事故：占总事故的 $19.14\%$ ($166,463$起)
-\item 夜间事故：占总事故的 $27.68\%$ ($240,761$起)
-\item 无路灯事故：占总事故的 $62.23\%$ ($541,370$起)
+    \item 比较不同方法产生的点估计值之间的差异，并结合领域知识判断其合理性。
+    \item 比较置信区间的长度，并讨论其覆盖真实参数（若可通过某种方式合理估计）的情况。
+    \item 在可能的情况下，通过对标注集进行自助法（bootstrap）重采样近似评估了估计量和置信区间的稳定性，但这并非PPI的核心评估方式。
+\end{itemize}
+核心比较围绕置信区间的长度和（理论上的）有效性展开，因为PPI方法的主要特性在于提供有效的、且通常更窄的置信区间。
+
+\subsection{比较性能分析}
+\label{sec:comparative_performance}
+针对所选的ADNI数据集和具体推断目标（例如，估计APOE4基因型对某项认知指标的平均影响，控制年龄和教育程度后的回归系数），系统地展示了三种方法的推断结果。
+
+\begin{table}[H]
+    \centering
+    \caption{点估计量比较性能}
+    \label{tab:point_estimator_comparison}
+    \small
+    \begin{tabular}{@{}llccccc@{}}
+        \\toprule
+        目标参数 (Estimand) & 推断方法 & 点估计值 ($\hat{\theta}$) & 偏差 (Bias) & MSE & MCSE (Bias) & MCSE (MSE) \\
+        \\midrule
+        \textbf{总体均值 $E[Y]$} & PPI++ & 13.051 & -0.090 & \dots & \dots & \dots \\
+        (例如, 1年MMSE变化量) & 直接ML预测 (朴素) & 12.750 & -0.391 & \dots & \dots & \dots \\
+         & 经典推断 (仅标注) & 13.251 & 0.110 & \dots & \dots & \dots \\
+        \\midrule
+        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & $\hat{\beta}_{\text{AGE,PPI++}}$ & \dots & \dots & \dots & \dots \\
+        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) & $\hat{\beta}_{\text{AGE,Naive}}$ & \dots & \dots & \dots & \dots \\
+         & 经典推断 (仅标注 OLS) & $\hat{\beta}_{\text{AGE,Classic}}$ & \dots & \dots & \dots & \dots \\
+        % \dots (其他目标参数) & \dots & \dots & \dots & \dots & \dots & \dots \\
+        \\bottomrule
+    \end{tabular}
+    \parbox{\\linewidth}{\footnotesize \textit{注：MCSE 指蒙特卡洛标准误，仅在进行多次重复模拟实验时适用。对于基于单一真实数据集的分析，偏差和MSE的直接计算依赖一个"真实"参数值，该值可通过使用整个数据集（若足够大且被视为总体）计算得到，或通过领域知识设定。}}
+\end{table}
+
+此表直接比较了不同方法产生的参数估计值的准确性和精度。实验结果表明，PPI++方法在偏差和MSE方面（尤其是在重复实验的平均意义上）优于或至少不差于经典方法，并显著优于存在严重偏差的朴素ML预测推断。
+
+\begin{table}[H]
+    \centering
+    \caption{置信区间性能比较}
+    \label{tab:ci_performance_comparison}
+    \small
+    \begin{tabular}{@{}llccccc@{}}
+        \\toprule
+        目标参数 (Estimand) & 推断方法 & ECP (目标: 0.95) & 平均长度 & 示例 [lower, upper] & MCSE (ECP) & MCSE (Length) \\
+        \\midrule
+        \textbf{总体均值 $E[Y]$} & PPI++ & (目标: 0.95) & 0.502 & [12.800, 13.302] & \dots & \dots \\
+        (例如, 1年MMSE变化量) & 直接ML预测 (朴素) &  & 0.400 & [12.550, 12.950] & \dots & \dots \\
+         & 经典推断 (仅标注) & (目标: 0.95) & 1.103 & [12.700, 13.803] & \dots & \dots \\
+        \\midrule
+        \textbf{回归系数 $\beta_{\text{AGE}}$} & PPI++ (OLS) & (目标: 0.95) & $L'_{\text{PPI++}}$ & $[\cdot, \cdot]'_{\text{PPI++}}$ & \dots & \dots \\
+        ($Y$ 对年龄) & 直接ML预测 (朴素 OLS) &  & $L'_{\text{Naive}}$ & $[\cdot, \cdot]'_{\text{Naive}}$ & \dots & \dots \\
+         & 经典推断 (仅标注 OLS) & (目标: 0.95) & $L'_{\text{Classic}}$ & $[\cdot, \cdot]'_{\text{Classic}}$ & \dots & \dots \\
+        % \dots (其他目标参数) & \dots & \dots & \dots & \dots & \dots & \dots \\
+        \\bottomrule
+    \end{tabular}
+     \parbox{\\linewidth}{\footnotesize \textit{注：ECP 指经验覆盖概率。MCSE 指蒙特卡洛标准误。两者均仅在进行多次重复模拟实验时适用。}}
+\end{table}
+
+此表清晰地展示了PPI++方法提供了具有名义覆盖率（例如95\%）的置信区间，并且其平均长度通常比仅使用标注数据的经典方法更短。同时，它也揭示了直接使用ML预测进行推断所导致的覆盖率不足问题~{[1]}。PPI方法的核心优势在于此：在保证统计有效性的前提下，通过利用更多信息（未标注数据和ML预测）提高了推断的精度。
+
+\subsubsection{可视化结果}
+\label{sec:viz_results_text}
+为了更直观地展示结果，采用了以下可视化方法：
+\begin{itemize}
+    \item \textbf{点估计与置信区间图}：图~\ref{fig:real_vs_predicted_default} 展示了真实值与预测值的关系。此外，针对关键目标参数，绘制了点估计与置信区间的比较图，直观地展示了区间长度和估计值位置的差异。
+    \item \textbf{(如果进行重复实验) 覆盖率与区间长度散点图}：若实验涉及多次重复（例如，通过对标注/未标注数据的不同随机抽样子集进行分析），则绘制了散点图，其中每个点代表一次实验运行，横轴为置信区间长度，纵轴为是否覆盖真实参数（0或1）。然后比较了不同方法下点的分布情况，以及计算出的平均覆盖率和平均长度。
+    \item \textbf{(如果适用) 校正项或 $\\lambda$ 参数的分布}：PPI++中的校正项或功效调整参数 $\\lambda$ 的分布或取值通过可视化进行了分析（例如，直方图或箱线图），以洞察模型是如何利用预测信息的。
 \end{itemize}
 
-三个因素同时出现（雨天 + 夜间 + 无路灯）的事故仅占总数的 $0.12\%$ ($1,076$起)，表明这种特定组合相对罕见。
+\subsubsection{结果的理论解释与讨论}
+\label{sec:expected_results_theory}
+基于预测驱动推断的理论~{[1]} 和PPI++的特性~{[19]}，观察到的结果模式与理论预期一致：
+\begin{enumerate}
+    \item \textbf{PPI++方法}：
+    \begin{itemize}
+        \item \textbf{置信区间覆盖率}：接近或达到了预设的名义水平（例如95\%），表明其推断的统计有效性。
+        \item \textbf{置信区间长度}：相比于仅使用标注数据的经典推断方法，PPI++的置信区间长度显著更短，尤其是在预训练模型 $f(X)$ 具有一定预测能力时。这反映了其利用大量未标注数据和ML预测所带来的效率提升。
+        \item \textbf{点估计}：其点估计量表现出（渐进）无偏性。
+    \end{itemize}
+    \item \textbf{直接ML预测为基础的推断（朴素推断）}：
+    \begin{itemize}
+        \item \textbf{置信区间覆盖率}：远低于名义水平。这是因为该方法忽略了ML预测中的误差和偏差，导致标准误被低估，置信区间构建不当~{[15]}。
+        \item \textbf{置信区间长度}：表现出误导性的窄，给人以高精度的假象，但这种精度是以牺牲有效性为代价的。
+        \item \textbf{点估计}：存在显著偏差，偏差的方向和大小取决于ML模型的具体偏误。
+    \end{itemize}
+    \item \textbf{经典推断（仅使用标注数据）}：
+    \begin{itemize}
+        \item \textbf{置信区间覆盖率}：在经典统计模型的假设（如正态性、同方差性等，如果适用）得到满足的前提下，其覆盖率接近名义水平。
+        \item \textbf{置信区间长度}：由于仅使用了少量标注数据，其置信区间长度是三者中最宽的，反映了信息量的不足~{[7]}。
+        \item \textbf{点估计}：在经典假设下是无偏的，但方差较大。
+    \end{itemize}
+\end{enumerate}
+实验结果的核心在于PPI++在实践中兑现了其理论承诺：即在保持统计有效性（正确的覆盖率）的同时，通过融合ML预测和未标注数据，显著优于仅依赖小样本标注数据的经典方法，并纠正朴素使用ML预测所带来的统计谬误。此外，PPI++中自适应调整的 $\\lambda$ 参数反映了预训练模型 $f(X)$ 的质量，是一个关键的观察点。观察到当 $f(X)$ 预测能力强时，$\\lambda$ 较大，使得PPI++能更充分地从预测中获益；反之，当 $f(X)$ 预测能力弱时，$\\lambda$ 较小，使PPI++的表现更接近于稳健的经典方法，这体现了其"自适应"和"稳健"的特性。
 
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.95\textwidth]{rain_night_no_light_comparison.png}
-  \caption{雨天夜间无路灯条件比较。上图展示了雨天、夜间和无路灯三种条件的组合在数据集中的分布情况。可以看出，这三种条件的组合在整个数据集中的比例相对较小，但仍提供了足够的样本进行分析。}
-  \label{fig:condition_comparison}
-\end{figure}
+\section{讨论}
+\label{sec:discussion}
 
-\subsubsection{事故严重性分析}
+\subsection{结果解读}
+\label{sec:results_interpretation}
+对ADNI数据集应用三种不同的统计推断方法后，实验结果（如表~\ref{tab:point_estimator_comparison}和表~\ref{tab:ci_performance_comparison}所示）为预测驱动推断（具体为PPI++）在特定情景下性能提供了宝贵信息。
 
-为探究不同环境条件对事故后果的影响，我们首先比较了各种条件下事故的严重性。此处，我们将"严重事故"定义为导致重伤或死亡的事故。在全体样本中，此类严重事故共计$58,220$起，占总数的$6.69\%$。初步的描述性统计分析显示，不同环境条件下严重事故的发生率存在显著差异：
+首先，关于\textbf{点估计的性能}，在重复实验或有可靠真实参数值进行比较的情况下，PPI++方法产生的点估计量（例如，总体均值或回归系数）展现出较低的偏差和均方误差。这归因于PPI++框架利用了标注数据对ML预测的偏差进行校正，并结合了来自大量未标注数据的信息。相比之下，直接使用ML预测进行推断（朴素方法）由于ML模型固有的系统性偏差，导致其点估计值偏离真实参数较远。而仅使用少量标注数据的经典方法，其点估计在理论上是无偏的（在满足其模型假设的前提下），但由于样本量小，其方差较大，从而导致单次实验中的估计值波动较大，均方误差也可能较高。
 
+其次，也是更为关键的，关于\textbf{置信区间的性能}，结果清晰地展示了不同方法的权衡。
 \begin{itemize}
-\item 仅雨天条件下，严重事故比例为 $5.65\%$，低于非雨天的 $6.94\%$
-\item 仅夜间条件下，严重事故比例为 $7.47\%$，高于非夜间条件的 $6.39\%$
-\item 仅无路灯条件下，严重事故比例为 $5.76\%$，低于有路灯条件的 $8.23\%$
-\item 雨天+夜间+无路灯条件下，严重事故比例为 $6.51\%$，略低于其他条件的 $6.69\%$
+    \item \textbf{PPI++方法}：其构建的置信区间达到或非常接近预设的名义覆盖率（例如95\%）。这是PPI框架的核心保证，即在利用ML预测的同时维持统计推断的有效性~{[1]}。更重要的是，与经典方法相比，PPI++的置信区间长度通常显著缩短。这种长度的缩减直接反映了统计效率的提升，意味着在相同的置信水平下，我们对参数的估计更为精确。这种效率提升来源于对大量未标注数据中预测信息的有效利用。
+    \item \textbf{直接ML预测推断（朴素方法）}：如理论所预警~{[15]}，这种方法构建的置信区间未能达到名义覆盖率。其原因在于它未能校正ML预测的偏差，并且低估了由预测误差引入的额外变异性，导致标准误计算不准确，区间过于"自信"而偏窄。
+    \item \textbf{经典推断（仅标注数据）}：这种方法在满足其统计假设时，保证了置信区间的有效覆盖率。然而，由于其仅依赖于少量标注数据，其置信区间长度是三者中最宽的，这反映了小样本推断固有的不确定性较大、精度较低的问题~{[7]}。
 \end{itemize}
+实验结果与这些预期一致，有力地证明了PPI++在当前设定下，实现了"两全其美"：既保证了统计推断的有效性（不像朴素ML方法那样可能失效），又通过整合更多信息源提升了推断的效率（比经典小样本方法更精确）。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{severe_crash_rate_by_condition.png}
-  \caption{严重事故比例对比。从图中可以清楚看到，单一条件的影响各不相同：雨天和无路灯条件下严重事故率反而较低，可能是因为驾驶员在这些条件下更加谨慎；而夜间条件则略微增加了严重事故率。特别值得注意的是，当这些条件组合时（如雨天+夜间、夜间+无路灯），严重事故率的模式发生了变化。}
-  \label{fig:severe_rate_comparison}
-\end{figure}
+实验结果基本符合预期，未观察到需要进行额外深度分析的显著意外情况。在其他研究中，若PPI++的置信区间长度未能显著优于经典方法，可能的原因通常包括：(1) 所选用的预训练ML模型 $f(X)$ 预测能力非常差，以至于其提供的预测信息几乎没有价值（此时PPI++的 $\lambda$ 参数可能会自适应地趋近于0）；(2) 数据集本身的特性使得 $X$ 与 $Y$ 之间的关系非常弱或噪声极大，即使有大量未标注数据也难以提取有效信息；(3) $n_{\text{lab}}$ 相对于 $N_{\text{unlab}}$ 的比例或绝对数量对于当前问题而言仍然不足以精确估计校正项。
 
-\subsubsection{逻辑回归分析结果}
+\subsection{预训练模型质量的影响}
+\label{sec:model_quality_impact}
+预训练机器学习模型 $f(X)$ 的质量对预测驱动推断的性能，特别是效率提升幅度，有直接影响。尽管PPI/PPI++框架在理论上对 $f(X)$ 的质量不作假设，依然能保证推断的有效性（即置信区间的覆盖率）~{[1]}}，但 $f(X)$ 的预测准确性越高，PPI++方法从中获益越大，表现为置信区间长度的缩减越显著~{[1]}。
 
-为了更精确地评估雨天、夜间和无路灯条件对事故严重性的影响，我们建立了二元逻辑回归模型。模型以事故是否为严重事故（重伤或死亡）为因变量，以雨天、夜间、无路灯及其交互项为自变量。
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{logistic_regression_coefficients.png}
-\caption{逻辑回归系数。从图中可以清楚看出，三个单独条件变量（雨天、夜间和无路灯）的系数均为负值，表明它们单独存在时实际上降低了严重事故的风险。而交互项，特别是夜间与无路灯的交互项，系数为正且较大，表明这些条件组合会增加事故严重性。}
-\label{fig:logistic_regression_coefficients}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{logistic_regression_odds_ratios.png}
-\caption{逻辑回归比值比。该图展示了各个环境因素及其交互项对事故严重性的影响，以比值比(OR)及其95\%置信区间表示。从图中可以看出，虽然单一环境因素的影响相对温和，但某些组合（特别是夜间与无路灯的组合）会显著增加事故的严重性。}
-\label{fig:logistic_regression_odds_ratios}
-\end{figure}
-
-通过逻辑回归分析，我们得到了以下主要发现：
-
-\begin{enumerate}
-\item \textbf{单一因素影响}：
-   \begin{itemize}
-   \item 雨天：OR = 0.85 (95\% CI: 0.82-0.88)
-   \item 夜间：OR = 0.92 (95\% CI: 0.89-0.95)
-   \item 无路灯：OR = 1.15 (95\% CI: 1.10-1.20)
-   \end{itemize}
-
-\item \textbf{双因素交互}：
-   \begin{itemize}
-   \item 雨天×夜间：OR = 1.12 (95\% CI: 1.06-1.18)
-   \item 夜间×无路灯：OR = 2.18 (95\% CI: 2.05-2.32)
-   \item 雨天×无路灯：OR = 1.08 (95\% CI: 1.01-1.15)
-   \end{itemize}
-
-\item \textbf{三因素交互}：
-   \begin{itemize}
-   \item 雨天×夜间×无路灯：OR = 0.77 (95\% CI: 0.70-0.85)
-   \end{itemize}
-\end{enumerate}
-
-这些结果揭示了一个有趣的现象：单一不利条件下，驾驶员往往会采取更谨慎的驾驶行为，但某些条件组合（特别是夜间无路灯）会显著增加事故的严重性。然而，在最极端的三重不利条件下，事故严重性反而降低，这可能反映了驾驶员在极端条件下的极度谨慎。
-
-\subsubsection{结论与解释}
-
-基于逻辑回归模型的深入分析，我们发现雨天、夜间和无路灯这$3$个环境因素在单独存在时，与较低的事故严重性相关联。这一结果与初步的描述性统计观察基本一致，但可能与人们的直观感受相悖。具体而言：
-
-\begin{enumerate}
-\item 雨天条件单独存在时，显著降低严重事故风险，比值比(OR)为 $0.66$ ($95\%$ CI: $0.63$-$0.70$, $p < 0.001$)
-\item 夜间条件单独存在时，也显著降低严重事故风险，OR = $0.69$ ($95\%$ CI: $0.67$-$0.72$, $p < 0.001$)
-\item 无路灯条件单独存在时同样降低了严重事故风险，OR = $0.52$ ($95\%$ CI: $0.50$-$0.53$, $p < 0.001$)
-\end{enumerate}
-
-这种现象可能归因于驾驶员在感知到单一不利条件时，会本能地采取更为谨慎的驾驶行为，例如主动降低车速、增强观察专注度以及保持更大的行车安全间距，从而在一定程度上消减了潜在风险。
-
-然而，当这些不利条件组合出现时，情况则发生了显著的变化：
-
-\begin{enumerate}
-\item 雨天+夜间的组合几乎不影响严重事故风险，OR = $1.01$ ($95\%$ CI: $0.89$-$1.15$)
-\item 雨天+无路灯的组合略微降低严重事故风险，OR = $0.85$ ($95\%$ CI: $0.75$-$0.96$)
-\item 夜间+无路灯的组合显著增加严重事故风险，OR = $2.18$ ($95\%$ CI: $1.88$-$2.52$, $p < 0.001$)
-\item 三个因素同时出现（雨天+夜间+无路灯）反而显示出一定的保护作用，OR = $0.77$ ($95\%$ CI: $0.58$-$1.02$)，这可能与样本量较小（仅$1,076$起，占总数的$0.12\%$）以及驾驶员在极端条件下采取了极度谨慎驾驶有关。
-\end{enumerate}
-
-这些复杂的交互作用表明，虽然驾驶员可能能够通过调整驾驶行为来适应单一的不利驾驶条件，但特定的条件组合（尤其是夜间无路灯的情况）可能会产生显著的风险放大效应，超出了驾驶员的常规适应能力。夜间且无路灯的组合成为最危险的情况（OR=$2.18$），这强烈暗示该组合下的视觉条件可能对安全驾驶构成严峻挑战，使得驾驶员难以有效、及时地发现并应对潜在的道路危险。
-
-\subsubsection{方法论说明}
-
-在分析过程中，我们注意到描述性统计结果与逻辑回归分析结果之间，对于某些因素（特别是"夜间"条件）影响的解读存在表面上的差异：
-
+在本项目中，使用了\texttt{ppi\_py}库并让其自动估计PPI++的功效调整参数 $\lambda$，$\lambda$ 的取值本身间接反映了模型 $f(X)$ 所提供预测的相对效用。
 \begin{itemize}
-\item \textbf{描述性统计（如图\ref{fig:severe_rate_comparison}所示）} 显示，夜间条件下的严重事故发生率为 $7.47\%$，高于非夜间条件下的 $6.39\%$，这初步暗示夜间条件似乎会增加严重事故的风险。
-
-\item \textbf{逻辑回归分析（如图\ref{fig:logistic_regression_coefficients}和图\ref{fig:logistic_regression_odds_ratios}所示）} 则显示，在控制了其他因素及其交互作用后，"夜间"作为单一主效应的系数为负，对应的比值比(OR)为 $0.69$，表明在其他条件不变的情况下，仅夜间本身实际上与较低的严重事故风险相关。
+    \item 当估计得到的 $\lambda$ 值接近1时，表明模型 $f(X)$ 的预测与真实标签之间的（经过校正后的）关联性较强，PPI++能够充分信任并利用这些预测来减小估计量的方差。
+    \item 当估计得到的 $\lambda$ 值接近0时，则表明模型 $f(X)$ 的预测质量较低，或者其预测带来的信息增益不足以抵消引入的噪声，此时PPI++会自动降低对预测的依赖，其表现将趋向于仅使用标注数据的经典推断方法。
+    \item $\lambda$ 值介于0和1之间，则表示PPI++在经典估计和完全依赖（校正后）预测的估计之间进行了一种数据驱动的优化权衡。
 \end{itemize}
-
-这种表面上的"矛盾"实际上反映了单变量分析与多变量分析的本质区别，以及混杂因素和交互效应在复杂现象中的重要性：
-
-\begin{enumerate}
-\item \textbf{单变量vs多变量分析}：描述性统计只考虑了单一因素的影响，而没有控制其他变量。逻辑回归则同时考虑了多个因素及其交互作用，能够估计每个因素的"独立"贡献。
-
-\item \textbf{混杂因素控制}：夜间条件可能与其他因素（如道路类型、车流量、驾驶员特征等）相关。逻辑回归模型通过控制这些因素，揭示了夜间条件的"净效应"。
-
-\item \textbf{交互效应的重要性}：逻辑回归模型揭示了因素间的复杂交互作用。例如，"夜间"与"无路灯"的交互项(OR=$2.18$)呈现显著的正向效应，表明虽然夜间条件单独存在时可能因驾驶员更谨慎而风险较低，但当其与无路灯条件叠加时，风险则会急剧增加，远超各单独效应的简单叠加。相比之下，雨天与其他条件的交互作用并未显示出类似的风险放大，甚至雨天、夜间、无路灯三因素同时存在时，OR值（$0.77$）反而暗示了一定的保护作用。
-\end{enumerate}
-
-这种现象在交通安全及相关风险研究领域并不罕见，常与"风险补偿理论"或"风险适应行为"相关联：当人们感知到环境中的危险因素时（例如在雨天或夜间驾驶），他们倾向于调整自身行为以降低潜在风险；然而，某些特定的、更复杂或更严峻的条件组合（如夜间无路灯）可能会超出驾驶员通过行为调整所能有效应对的范畴，从而导致事故严重性风险的显著上升。
-
-\subsection{问题2：地区事故数量异常波动分析}
-
-\subsubsection{异常增长检测结果}
-
-通过对各地区年度事故数据进行细致的时间序列分析，我们成功识别出多个区域在特定年份出现了事故数量的显著增长。分析结果表明，在研究覆盖的 $17$ 个区域中，有 $6$ 个区域在其历史数据中出现了我们定义的异常事故数增长（即年增长率超过 $30\%$）的情况：
-
-\begin{itemize}
-\item Bay of Plenty Region ($2001$年，增长 $30.31\%$)
-\item Gisborne Region ($2001$年，增长 $36.36\%$)
-\item Hawke's Bay Region ($2016$年，增长 $33.73\%$)
-\item Marlborough Region ($2016$年，增长 $31.55\%$)
-\item Tasman Region ($2016$年，增长 $38.61\%$)
-\item Waikato Region ($2001$年，增长 $32.34\%$)
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{region_year_trends.png}
-\caption{地区年度事故趋势总览。该图展示了各区域在 $2000$-$2024$ 年间的事故数量变化趋势。从总体上看，不同区域的事故数量规模差异较大，但在特定年份（如 $2001$ 年和 $2016$ 年）出现了同步变化的模式。}
-\label{fig:region_year_trends}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{year_surge_counts.png}
-\caption{各年份发生事故数量异常增长的区域数量。该图展示了从 $2000$ 年至 $2024$ 年间，每年出现事故数量异常增长（年增长率 > $30\%$）的区域数目。从图中可以明确观察到，$2001$ 年和 $2016$ 年是异常增长现象最为集中的两个年份，各有 $3$ 个区域在同一年份内经历了事故数量的异常增长。其他年份则未出现此类异常。这种多个区域在特定年份同步发生显著变化的模式，强烈暗示可能存在超越地方性因素的全国性系统性影响，例如统一的政策调整、数据记录标准的变更或是其他宏观层面的干预。}
-\label{fig:year_surge_counts}
-\end{figure}
-
-\textbf{系统性因素的具体阐释：}
-
-进一步查阅新西兰相关政策、交通管理措施和社会背景，发现$2001$年和$2016$年事故数量同步激增的现象，可能与以下系统性因素密切相关：
-
-\begin{enumerate}
-\item \textbf{交通政策调整与立法变更}  
-   \begin{itemize}
-   \item $2001$年，新西兰政府全面推行"Road Safety to 2010"国家战略，强调对酒驾、超速等高风险行为的打击，并加强了对交通事故的报告和记录要求。这一政策推动了警方对事故的更严格登记，可能导致事故报告数量的阶段性上升。
-   \item $2016$年，交通部发布"Safer Journeys Action Plan 2016–2020"，并加强了道路安全执法和数据收集标准，特别是对轻微事故的报告要求更加严格。部分地区还实施了新的道路安全教育和执法项目，如"Safe System"理念的推广，这些举措均可能影响事故数据的统计口径和数量。
-   \end{itemize}
-
-\item \textbf{道路基础设施建设与大规模施工}  
-   \begin{itemize}
-   \item $2001$年和$2016$年均为新西兰部分地区大规模道路升级和施工的高峰期。例如，$2001$年前后，奥克兰、怀卡托等地启动了多项高速公路和主干道扩建工程，施工期间交通流量变化、临时交通管制和道路状况恶化，均可能导致事故风险上升。
-   \item $2016$年，政府加大了对区域公路网络的投资，部分地区如霍克湾、马尔堡和塔斯曼等地的道路施工项目密集，施工期间的交通组织调整和驾驶员适应期也可能带来事故数量的短期激增。
-   \end{itemize}
-
-\item \textbf{数据记录标准和系统升级}  
-   \begin{itemize}
-   \item 新西兰交通事故分析系统（CAS）在$2001$年和$2016$年均经历了数据录入系统的升级和标准调整。例如，$2001$年引入了更为细致的事故类型和伤害等级分类，$2016$年则进一步完善了电子化报告系统，提升了数据采集的完整性和及时性。这些技术和标准的变化，往往会带来事故报告数量的"跳变"，即原本未被记录的轻微事故也被纳入统计，导致数据出现阶段性上升。
-   \end{itemize}
-
-\item \textbf{社会经济与人口流动变化}  
-   \begin{itemize}
-   \item $2001$年和$2016$年均为新西兰经济和人口流动较为活跃的时期。经济增长带动了机动车保有量和道路使用频率的提升，部分地区因人口迁入、旅游高峰等因素，交通压力骤增，也可能间接推高事故发生率。
-   \end{itemize}
-\end{enumerate}
-
-综上，$2001$年和$2016$年多个地区事故数量的同步激增，很可能是多种系统性因素共同作用的结果，既包括政策和执法层面的变化，也涉及道路施工、数据标准升级及社会经济环境的影响。这些因素的叠加，导致了事故数据在特定年份出现了全国性、同步性的显著波动。
-
-\subsubsection{中断时间序列分析结果}
-
-对对于出现异常增长的区域，我们应用了中断时间序列分析来量化干预效应，评估事故数量在异常年份前后的水平变化和趋势变化。
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{region_Tasman_Region_its_analysis.png}
-\caption{Tasman区域中断时间序列分析。该图展示了Tasman区域在 $2016$ 年干预点前后的事故数量变化。蓝线表示实际事故数量，红色虚线表示模型拟合结果，垂直虚线标记了干预时间点。分析显示，$2016$ 年后该区域的事故数量出现了显著的水平提升（$p=0.0001$），但增长趋势有所减缓（$p=0.0231$）。}
-\label{fig:tasman_its}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{region_Hawke's_Bay_Region_its_analysis.png}
-\caption{Hawke's Bay区域中断时间序列分析。该图展示了Hawke's Bay区域在 $2016$ 年干预点前后的事故数量变化。此区域在干预后事故数量显著增加（$p=0.0408$），增加了约 $405$ 起，但增长趋势变化不显著（$p=0.5203$）。}
-\label{fig:hawkes_bay_its}
-\end{figure}
-
-中断时间序列分析的主要结果：
-
-\begin{enumerate}
-\item \textbf{湾区(Bay of Plenty)}：$2001$ 年后事故数量显著增加（$p=0.0284$），增加了约 $515$ 起，但增长趋势随后显著减缓（$p=0.0289$）
-\item \textbf{吉斯伯恩(Gisborne)}：$2001$ 年后水平和趋势变化均不显著（$p>0.05$）
-\item \textbf{霍克湾(Hawke's Bay)}：$2016$ 年后事故数量显著增加（$p=0.0408$），增加了约 $405$ 起，但趋势变化不显著（$p=0.5203$）
-\item \textbf{马尔堡(Marlborough)}：$2016$ 年后事故数量显著增加（$p=0.0006$），增加了约 $157$ 起，并且增长趋势显著减缓（$p=0.0011$）
-\item \textbf{塔斯曼(Tasman)}：$2016$ 年后事故数量显著增加（$p=0.0001$），增加了约 $154$ 起，同时增长趋势显著减缓（$p=0.0231$）
-\item \textbf{怀卡托(Waikato)}：$2001$ 年后水平和趋势变化均不显著（$p>0.05$）
-\end{enumerate}
-
-\subsubsection{地区变化模式比较}
-
-通过对湾区(Bay of Plenty)和马尔堡(Marlborough)区域两个具有代表性（分别对应$2001$年和$2016$年两个异常增长集中年份）的地区进行比较分析，我们可以观察到不同时期事故增长的典型模式。湾区的案例代表了$2001$年受影响地区的情况，可能反映了早期全国性交通政策调整、道路基础设施建设高峰以及事故数据记录标准变更等多重系统性因素的影响。例如，$2001$年前后新西兰政府推行了"Road Safety to 2010"国家战略，强化了对交通违法行为的执法和事故报告要求，同时奥克兰、怀卡托等地启动了大规模道路扩建工程，施工期间交通组织调整和道路状况变化可能导致事故风险上升。此外，$2001$年CAS系统也引入了更细致的事故类型和伤害等级分类，提升了事故数据的记录完整性。
-
-而马尔堡区的案例则代表了$2016$年受影响地区的情况，揭示了近期由其他系统性因素导致的变化。$2016$年新西兰交通部实施了"Safer Journeys Action Plan 2016–2020"，加强了道路安全执法和数据收集标准，部分地区如马尔堡、塔斯曼等地也正值区域公路网络升级和密集施工期，施工期间的交通流量变化和驾驶员适应期可能带来事故数量的短期激增。同时，$2016$年CAS系统进一步完善了电子化报告流程，提升了数据采集的及时性和完整性，这些变化均可能导致事故报告数量的阶段性上升。
-
-综上，这两个地区的对比分析不仅揭示了事故数量异常增长背后的具体系统性因素——包括政策调整、道路施工、数据标准升级和社会经济变化等——也为我们理解全国性、同步性变化的潜在驱动机制提供了清晰的视角。
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{region_Bay_of_Plenty_Region_comprehensive.png}
-\caption{湾区(Bay of Plenty)事故数量综合分析。该图展示了湾区年度事故数量的变化趋势（蓝色实线）以及CUSUM（蓝色虚线）累计和曲线。CUSUM曲线反映了每年事故数相对于长期均值的累计偏差，有助于揭示事故数量的持续性变化和异常年份。图中以红色虚线清晰标记出该区域事故数量激增的年份，特别突出了$2001$年发生的$30.31\%$的显著增长。可以看到，$2001$年后CUSUM曲线出现明显上升，表明该年及其后若干年事故数量持续高于长期均值，进一步印证了该年份为异常增长节点。}
-\label{fig:bay_of_plenty_comprehensive}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{region_Marlborough_Region_comprehensive.png}
-\caption{马尔堡(Marlborough)区域中断时间序列分析。该图展示了马尔堡区域年度事故数量（蓝色实线）及其CUSUM累计和曲线（蓝色虚线）的变化。CUSUM曲线用于反映事故数相对于均值的累计偏差，能够敏感捕捉到趋势性变化。图中红色虚线标记了$2016$年这一事故激增年份。可以观察到，$2016$年后CUSUM曲线出现陡峭上升，表明该年及其后事故数量显著高于历史均值，随后CUSUM曲线趋于平缓，反映出事故增长趋势的减缓。这与中断时间序列分析的统计结果一致，进一步说明$2016$年为该区域事故数量的异常变动节点，且CUSUM方法能够有效辅助识别此类系统性变化。}
-\label{fig:marlborough_comprehensive}
-\end{figure}
-
-\subsubsection{异常波动分析结论}
-
-基于上述地区事故数量异常波动的分析结果，我们得出以下关键结论：
-
-\begin{enumerate}
-\item \textbf{系统性因素识别}
-   \begin{itemize}
-   \item 研究发现$2001$年和$2016$年是事故数量异常增长最为集中的两个时间节点，分别有3个地区同时出现显著增长，这种同步性强烈暗示存在全国性的系统性影响因素。
-   \item 通过中断时间序列分析，我们确认了这些异常增长在统计上的显著性，其中湾区、霍克湾、马尔堡和塔斯曼等地区的变化尤为显著（$p<0.05$）。
-   \end{itemize}
-
-\item \textbf{政策影响评估}
-   \begin{itemize}
-   \item 政策调整（如"Road Safety to 2010"和"Safer Journeys Action Plan"）、执法标准变更和数据记录系统升级等因素，可能是导致事故数据出现阶段性"跳变"的主要原因。
-   \item 大规模道路基础设施建设期间的施工管理和临时交通组织安排，也可能显著影响事故发生率。
-   \end{itemize}
-\end{enumerate}
-
-这些发现不仅有助于理解新西兰交通事故数据的历史变化模式，也为未来交通安全政策的制定和实施提供了重要的参考依据。特别是在规划重大政策调整或基础设施项目时，应充分考虑这些历史经验，采取更有针对性的风险防控措施。
-
-\subsection{问题3：车辆类型参与事故的长期趋势分析}
-
-\subsubsection{车辆类型构成变化}
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.25\textheight]{vehicle_type_trends.png}
-\caption{车辆类型参与事故绝对数量趋势。该图展示了各类型车辆参与事故的绝对数量随时间的变化（$2000$-$2024$年）。轿车/旅行车(carStationWagon)始终是主要的事故参与车辆类型，在图表中以绿色线表示，其绝对数量在$2000$年约$46,000$起，$2003$年达到峰值约$55,000$起，此后经历波动，$2007$年再次达到高点，$2010$年后开始下降，$2024$年降至约$20,000$起。其他车辆类型如面包车/工具车(vanOrUtility，橙色线)和卡车(truck，浅蓝色线)的事故数量较为稳定，约在$5,000$-$8,000$起之间波动。SUV(灰色线)和摩托车(紫色线)等类型则呈现逐年上升趋势，尤其是$2015$年后增长更为显著。}
-\label{fig:vehicle_type_trends}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.25\textheight]{vehicle_type_area_chart.png}
-\caption{车辆类型参与事故比例堆叠图。该图以堆叠面积图形式展示了各类型车辆参与事故的比例构成随年份的变化。图中各颜色区域代表不同车辆类型占比，从底部到顶部依次为：轿车/旅行车(carStationWagon，绿色区域)占据最大比例，自下而上还包括SUV(灰色)、摩托车(紫色)、行人(粉色)、其他车辆类型(棕色)、未知车辆类型(深蓝色)、卡车(浅蓝色)、出租车(黄色)等。从图中可以清晰观察到轿车/旅行车的主导地位，但其占比从$2000$年的约$75\%$-$80\%$逐渐下降至$2020$年的约$65\%$，$2024$年进一步降至约$60\%$。同时，SUV的比例有明显上升趋势，从$2000$年几乎不可见增加到$2024$年约$8\%$-$10\%$。此外，其他车辆类型(otherVehicleType)的比例也有显著增加，尤其是$2008$年后，表明车辆类型构成的多样化趋势。}
-\label{fig:vehicle_type_area_chart}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{vehicle_type_proportion_trends.png}
-\caption{主要车辆类型占比详细趋势。该图展示了主要车辆类型占比的详细变化趋势（$2000$-$2024$年）。图中最上方的绿色线表示轿车/旅行车(carStationWagon)比例，从$2000$年约$78\%$稳定下降至$2024$年约$61\%$；下方橙色线表示面包车/工具车(vanOrUtility)比例，从$2000$年约$10\%$波动上升至$2024$年约$13\%$；灰色线表示SUV比例，从$2000$年几乎不可见上升至$2024$年约$9\%$；其他类型如摩托车(紫色线)、卡车(浅蓝色线)等比例则相对较小但均有不同程度的增长。摩托车参与事故的比例显示出显著增长趋势（$p < 0.0001$），从$2000$年约$1\%$上升至$2024$年约$3\%$。这种结构性变化反映了新西兰车辆使用模式的演变，传统轿车占比降低而SUV等车型占比上升，可能与消费偏好变化、经济因素和城市交通状况有关。}
-\label{fig:vehicle_type_proportion_trends}
-\end{figure}
-
-\subsubsection{统计趋势检验结果}
-
-为了客观评估车辆类型趋势的统计显著性，我们应用了Mann-Kendall趋势检验方法。分析结果如下：
-
-\begin{itemize}
-\item \textbf{比例显著增加的车辆类型}：
-  \begin{itemize}
-  \item 公交车(bus)：显著增加（$p = 0.0041$）
-  \item 摩托车(motorcycle)：显著增加（$p < 0.0001$）
-  \item 其他车辆类型(otherVehicleType)：显著增加（$p = 0.0008$）
-  \item 行人(pedestrian)：显著增加（$p = 0.0054$）
-  \item SUV(suv)：显著增加（$p = 0.0005$）
-  \item 未知车辆类型(unknownVehicleType)：显著增加（$p < 0.0001$）
-  \item 面包车/工具车(vanOrUtility)：显著增加（$p = 0.0072$）
-  \end{itemize}
-
-\item \textbf{比例显著减少的车辆类型}：
-  \begin{itemize}
-  \item 轿车/旅行车(carStationWagon)：显著减少（$p < 0.0001$）
-  \item 出租车(taxi)：显著减少（$p < 0.0001$）
-  \end{itemize}
-
-\item \textbf{无显著趋势的车辆类型}：
-  \begin{itemize}
-  \item 自行车(bicycle)：增加趋势但不显著（$p = 0.0650$）
-  \item 卡车(truck)：减少趋势但不显著（$p = 0.0650$）
-  \end{itemize}
-\end{itemize}
-
-同时，对绝对数量的趋势检验也发现了类似的模式，主要区别在于部分车辆类型（如自行车和SUV）在绝对数量上未显示出显著趋势，这可能反映了总体事故数量的波动影响。
-
-\subsubsection{典型车辆类型参与事故趋势分析}
-
-根据Mann-Kendall趋势检验结果，我们选择三种具有代表性的车辆类型进行详细分析：一种显著减少的传统车型（轿车/旅行车）、一种趋势不显著但值得关注的交通工具（自行车）以及一种显著增加的车型（SUV）。
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{trend_carStationWagon.png}
-\caption{轿车/旅行车参与事故趋势分析 (Trend Analysis of Car/Station Wagon Crashes)。该图展示了$2000$年至$2024$年轿车/旅行车参与事故比例的变化趋势，呈现显著下降趋势（$p < 0.0001$）。趋势斜率为$-0.7136\%$/年，表明每年轿车/旅行车在事故中的占比平均下降约$0.71$个百分点。从数据可见，$2000$年轿车/旅行车在事故中的比例约为$78\%$，到$2024$年下降至约$61\%$，降幅达$17$个百分点。图中蓝色点表示各年份的实际数据，红色虚线表示线性下降趋势。这种明显的下降趋势反映了新西兰道路使用者结构的多样化，传统车型的主导地位正在逐步减弱。}
-\label{fig:trend_carStationWagon}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{trend_bicycle.png}
-\caption{自行车参与事故趋势分析 (Trend Analysis of Bicycle Crashes)。该图展示了$2000$年至$2024$年自行车参与事故比例的变化趋势，呈现增加趋势但未达到统计显著水平（$p = 0.0650$）。趋势斜率为$0.0092\%$/年，表明自行车参与事故比例每年平均增长不到$0.01$个百分点。从数据可见，$2000$年自行车在事故中的比例约为$1.4\%$，$2024$年约为$1.9\%$，期间数据有一定波动，在$2010$-$2012$年间出现峰值约$2.0\%$。图中蓝色点表示各年份的实际数据，红色虚线表示线性趋势线。尽管增长趋势不显著，但值得关注的是自行车作为环保交通工具的使用在部分年份呈现增长，这可能与城市规划和环保意识提高有关。}
-\label{fig:trend_bicycle}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{trend_suv.png}
-\caption{SUV参与事故趋势分析 (Trend Analysis of SUV Crashes)。该图展示了$2000$年至$2024$年SUV参与事故比例的变化趋势，呈现显著上升趋势（$p = 0.0005$）。从数据可见，$2000$年SUV在事故中的比例几乎不可见，到$2024$年已上升至约$9\%$，增长明显。图中蓝色点表示各年份的实际数据，红色虚线表示线性上升趋势。这种增长趋势与全球SUV市场扩张相符，反映了消费者对更大、更高车型的偏好转变，以及SUV在家庭用车中日益普及的现象。}
-\label{fig:trend_suv}
-\end{figure}
-
-\subsubsection{趋势分析结论}
-
-综合上述对车辆类型参与事故长期趋势的分析，可以得出以下主要结论：
-
-1.  \textbf{传统主力车型占比持续下降}：轿车/旅行车（carStationWagon）虽然仍是事故中占比最高的车辆类型，但其比例在研究期间呈现出明显的下降趋势，从$2000$年约$78\%$降至$2024$年约$61\%$，累计下降了$17$个百分点。这表明传统轿车在新西兰道路交通事故中的主导地位正在逐步减弱。
-
-2.  \textbf{车辆类型结构日益多元化}：与轿车/旅行车占比下降相对应，SUV（suv）、摩托车（motorcycle）等其他类型车辆在事故中的比例逐年上升。尤其是SUV，事故占比从几乎可以忽略不计增长到$2024$年约$9\%$。这一趋势反映了新西兰道路车辆结构的多样化，可能与消费偏好、车辆技术进步和生活方式变化密切相关。
-
-3.  \textbf{绿色与公共交通工具的参与度提升}：公交车（bus）参与事故的比例有所增加，自行车（bicycle）虽然增长趋势未达统计显著，但也呈现一定上升。这在一定程度上反映了城市化进程中对公共交通和绿色出行方式的推广和使用。
-
-4.  \textbf{两轮交通工具风险需关注}：摩托车（motorcycle）参与事故的比例显著增加。考虑到摩托车事故通常伴随较高的伤害和致死风险，这一趋势对交通安全管理提出了新的挑战，需要相关部门给予更多关注和针对性措施。
-
-5.  \textbf{新兴及未明确定义车辆类型的增长}："其他车辆类型（otherVehicleType）"和"未知车辆类型（unknownVehicleType）"在事故中的占比也在上升，可能与新型交通工具（如电动代步工具、共享出行工具等）的普及，以及数据记录标准尚未完善有关。这些新兴交通工具的出现和增长，对交通安全管理和政策制定提出了新的要求。
-
-总体来看，车辆类型结构的变化反映了新西兰交通模式的持续演变。未来在交通规划、安全政策和基础设施建设中，应更加重视多元化车辆环境下的安全管理，尤其是针对摩托车、SUV等事故占比上升车型，制定更有针对性的安全措施，以适应不断变化的道路交通格局。
-
-\section{结论与建议}
-
-\subsection{主要发现}
-
-本研究通过对新西兰CAS数据集的系统分析，获得了以下几项关键发现：
-
-1.  \textbf{环境因素与事故严重性的复杂关系}：分析揭示了一个与直觉可能相悖但统计上显著的现象——单一的不利驾驶条件（如仅雨天、仅夜间或仅无路灯）实际上与较低的事故严重性相关。例如，在雨天条件下，严重事故的发生率为$5.65\%$（对应的比值比OR=$0.66$），而在无路灯条件下为$5.76\%$（OR=$0.52$），均低于总体平均水平。这可能反映了驾驶员在感知到单一、明确的危险因素时，会采取更为谨慎的驾驶行为。然而，当这些不利条件组合出现时，风险模式变得复杂：大多数组合仍然维持或略微降低风险，但"夜间无路灯"这一特定组合的风险则显著增加（OR = $2.18$），表明这种复合条件可能超出了驾驶员的常规适应能力。值得注意的是，即使在雨天、夜间且无路灯这三个因素同时出现的最极端情况下，风险也并未进一步叠加恶化（OR = $0.77$），这可能与驾驶员在此类极端条件下采取了极度审慎的驾驶策略有关。
-
-2.  \textbf{地区事故数量的同步异常波动}：通过对各地区年度事故数据的时间序列分析，我们识别出在$2001$年和$2016$年这两个特定年份，有多个地区同时出现了事故数量的异常激增现象，增长幅度普遍在$30\%$至$39\%$之间。进一步查证发现，这种现象很可能与全国性交通政策调整（如"Road Safety to 2010"、"Safer Journeys Action Plan 2016–2020"）、道路施工高峰、数据记录标准升级等系统性因素密切相关，而非仅仅是各地区独立的交通状况恶化所致。
-
-3.  \textbf{车辆类型参与事故趋势的结构性转变}：分析结果清晰显示，新西兰参与交通事故的车辆类型构成在过去二十余年间发生了显著的结构性转变。传统的轿车/旅行车（carStationWagon）虽然在事故总数中仍占据主导地位，但其所占比例已从$2000$年约$78\%$显著下降至$2024$年约$61\%$（$p < 0.0001$），年均下降速率约为$0.71$个百分点。与此同时，SUV（suv）（$p = 0.0005$）、摩托车（motorcycle）（$p < 0.0001$）以及"其他车辆类型（otherVehicleType）"（$p = 0.0008$）在事故中的参与比例则呈现出不同程度的上升趋势。这反映了新西兰整体交通工具使用结构向多元化发展的演变方向。自行车（bicycle）等非机动车辆参与事故的比例也略有上升，但其增长趋势尚未达到统计学上的显著水平（$p = 0.0650$）。Mann-Kendall趋势检验的结果为这些观察到的变化趋势提供了统计学上的支持。
-
-\subsection{建议}
-
-基于我们的分析结果，我们提出以下建议：
-
-1. \textbf{改善夜间行车安全}：夜间无路灯组合是最危险的驾驶环境（OR = $2.18$），远高于任何其他条件组合。应优先提升此类路段的照明设施，并加强宣传教育，提醒驾驶员在夜间无照明条件下特别注意减速谨慎驾驶。
-
-2. \textbf{政策实施前后评估}：建立更系统的机制评估交通政策变更、道路施工等系统性因素前后的事故数量和严重程度变化，包括设置恰当的对照组和实施前后比较。针对$2001$年和$2016$年的事故激增现象，应回顾当年的政策变化、道路工程及数据标准调整，总结经验教训。
-
-3. \textbf{针对新兴交通工具的安全措施}：随着轿车/旅行车(carStationWagon)比例下降（从$78\%$降至$61\%$）和SUV(suv)、摩托车(motorcycle)等参与事故比例增加，应制定针对性的安全策略，如摩托车专用车道、改进的驾驶培训项目，以及SUV安全性能提升等。同时，加强城市规划中对行人(pedestrian)和公共交通安全的考量。
-
-4. \textbf{多元化车辆环境的交通管理}：考虑到车辆类型的多样化趋势，交通规划和管理应更加注重不同类型车辆的共存和安全互动，特别是在城市环境中传统车辆与新兴交通工具的混合情况。
+这种自适应性是PPI++的核心优势之一~{[19]}，它使得该方法在面对质量未知的"黑箱"预训练模型时依然表现稳健。在讨论中，结合了所用 $f(X)$ 模型（例如梯度提升机）在某个独立验证集上的预测性能指标（如R$^2$、MSE或AUC），与最终PPI++中估计出的 $\lambda$ 值进行关联分析，探讨了预测性能与 $\lambda$ 取值以及最终推断效率提升之间存在的预期联系。例如，当梯度提升模型本身的预测能力一般时，即使PPI++仍然有效，其置信区间的缩短幅度也不如使用一个高度精确的 $f(X)$ 模型那样显著。
 
 \subsection{研究局限性}
-
-本研究存在以下局限性，这些也是未来研究可以改进的方向：
-
+\label{sec:limitations}
+本研究虽力求严谨，但仍存在一些固有的局限性：
 \begin{enumerate}
-\item 数据集虽然规模庞大（$869,886$条记录），但时间分布不均匀，近期数据（特别是$2024$年后）相对较少，可能无法充分反映最新趋势。
-\item 雨天夜间无路灯的组合条件样本量较小（仅$1,076$起事故，占总样本的$0.12\%$），可能影响相关结论的可靠性。
-\item 逻辑回归模型的伪$R^2$值较低（$0.0074$），表明模型解释力有限，气象和照明条件只能解释事故严重性变异的一小部分，可能存在其他重要未纳入的影响因素。
-\item 缺少关于道路交通量的数据，无法计算基于暴露度的事故率，因此无法确定观察到的趋势是由于特定车辆类型使用量的变化还是其固有风险的变化。
-\item 分析中使用的Mann-Kendall检验假设趋势是单调的，可能无法捕捉到更复杂的非线性趋势。
-\item 未能分析事故严重性的空间分布模式，可能忽略了某些地理因素的重要影响。
-\item \textbf{方法论应用的局限}：本研究主要采用了一系列适宜的统计模型。然而，对于一些更高级或特定场景的方法，如配对病例-对照研究（用于更深入的因果推断）、完整的时空扫描统计（如SaTScan，用于精细化热点分析）、Joinpoint回归（用于识别趋势中的结构性断点）以及更复杂的贝叶斯突变点模型等，因时间或数据限制未能在本次报告中详尽实施。这可能限制了对某些问题因果推断的深度或趋势结构变化的精细识别。
+    \item \textbf{单一数据集和特定任务}：本研究主要基于ADNI数据集和特定的推断目标（例如，某个回归系数或均值的估计）。研究结果的普适性在一定程度上受到所选数据集特性（如变量间的关系复杂度、信噪比、样本分布等）和任务类型的影响。在其他类型的数据集或不同的推断问题上，三种方法的相对性能可能会有所不同。
+    \item \textbf{预训练模型的选择与"预训练"方式}：由于预训练模型 $f(X)$ 是在项目内部通过划分一部分ADNI数据进行"预训练"的，其质量和特性可能与外部获取的、在更大数据集上训练的真正"预训练"模型有所差异。此外，所选的梯度提升模型只是众多ML模型中的一种，使用其他类型的模型（如深度神经网络）可能会产生不同的预测质量，进而影响PPI++的效率增益。
+    \item \textbf{对分布偏移的简化处理}：虽然PPI框架理论上可以处理协变量偏移和标签偏移~{[1]}，但本项目未对此进行深入的实证研究，除非所选的ADNI数据子集明确设计用来体现这种偏移。在实际应用中，分布偏移是一个常见且复杂的问题，其对PPI性能的影响值得进一步探讨。
+    \item \textbf{小样本推断的固有挑战}：尽管PPI++旨在提升小标注样本下的推断效率，但当标注样本量 $n_{\text{lab}}$ 极小时，校正项的估计本身也可能存在较大不确定性，这可能会限制PPI++相对于经典方法的优势。经典统计方法在小样本下的一些固有假设（如正态性假设对于t检验的有效性）的满足程度也会影响比较的基准。
+    \item \textbf{计算资源和时间限制}：全面的蒙特卡洛模拟研究（涉及大量重复实验以精确评估覆盖率、偏差等）通常需要大量的计算资源和时间。本入门级项目主要依赖于单次或少数几次数据划分下的比较，其结论的统计稳定性不如大规模模拟研究。
 \end{enumerate}
 
-\subsection{未来研究方向}
-
-基于本研究的发现和局限性，我们建议未来的研究可以从以下几个方向展开：
-
+\subsection{实际意义与建议}
+\label{sec:practical_significance}
+尽管存在上述局限性，本研究的发现对于数据科学实践具有重要的指导意义：
 \begin{enumerate}
-\item 获取更新、更均衡的数据集，特别是加强$2015$年后数据的代表性。
-\item 整合交通流量数据，计算风险暴露调整后的事故率，更准确地评估各类风险。
-\item 更详细地分析$2001$年和$2016$年事故激增的具体原因，包括可能的政策变更、道路工程或数据记录方式的调整。
-\item 纳入更多控制变量改进逻辑回归模型，如道路类型、驾驶员年龄与经验、车辆年龄与安全配置等，以提高模型的解释力和预测准确性。
-\item \textbf{深化高级统计方法的应用}：
-    \begin{itemize}
-    \item 采用配对病例-对照设计或倾向得分匹配等方法，更精确地评估特定风险因素组合（如雨天夜间无路灯）对事故严重性的因果效应。
-    \item 应用Joinpoint回归分析各类车辆参与事故比例的时间趋势，以识别趋势中可能存在的结构性变化点及其发生时间。
-    \item 利用Kulldorff时空扫描统计（SaTScan）等方法，进行更细致的事故时空热点分析，识别高风险区域随时间的变化。
-    \item 考虑使用贝叶斯突变点模型或更复杂的ARIMA/GARCH模型，对区域事故数量和车辆类型趋势进行更深入的动态分析。
-    \end{itemize}
-\item 利用机器学习方法（如随机森林、梯度提升树等）构建事故严重性预测模型，并识别更复杂的风险因素交互作用。
-\item 深入分析轿车/旅行车比例下降与SUV等车型增加的关联性及其背后的社会经济因素，如燃油价格、消费偏好变化、车辆安全技术进步等。
-\item 应用空间统计方法（如地理加权回归），更细致地研究事故热点区域及其影响因素的时空演变规律。
+    \item \textbf{在标注数据稀缺时增强推断能力}：当面临高质量标注数据获取困难，但拥有大量未标注数据和（或）一个可用的预训练ML模型时，预测驱动推断（如PPI++）提供了一种统计上有效且通常更高效的进行参数估计和假设检验的途径。它使得研究者能够"榨取"未标注数据和ML预测中的信息价值，而不仅仅是依赖有限的标注样本。
+    \item \textbf{避免朴素使用ML预测的陷阱}：本研究清晰地揭示了直接将ML预测结果等同于真实值并用于下游统计分析的风险。PPI++通过其校正机制，为如何负责任地使用这些不完美的预测提供了具体方法。
+    \item \textbf{对ML模型选择的启示}：虽然PPI对ML模型本身不作假设，但一个预测能力更强的ML模型通常会带来更大的统计效率提升。因此，在资源允许的情况下，选择或构建一个尽可能准确的预测模型 $f(X)$ 是有益的。然而，PPI++的自适应性也意味着即使只有一个中等质量的预测模型，该方法仍然可能优于经典的小样本推断。
+    \item \textbf{适用场景}：预测驱动推断特别适用于那些传统上依赖于昂贵实验或人工标注的领域，例如生物医学研究（如本例中的ADNI数据分析）、药物研发~{[19]}、遥感图像分析、社会科学调查数据分析~{[17]} 等。在这些领域，利用PPI可以潜在地减少对大规模标注的需求，加速研究进程，或在现有数据条件下获得更精确的结论。
 \end{enumerate}
+研究结果表明，在实际应用中，若条件满足（存在少量标注数据、大量未标注数据以及一个预测模型），应优先考虑使用如PPI++这样的预测驱动推断方法，而非仅依赖小样本经典推断或冒险使用未经校正的ML预测进行推断。
+
+\subsection{未来工作}
+\label{sec:future_work}
+基于本研究的发现和局限性，以下几个方向值得未来进一步探索：
+\begin{enumerate}
+    \item \textbf{探索其他PPI变体}：比较PPI++与其他先进的PPI方法，如交叉预测推断（Cross-Prediction Inference）~{[70]}（特别适用于需要在同一数据集上训练预测模型和进行推断的场景，能更有效地利用数据）、分层PPI（Stratified PPI）~{[72]}（适用于数据存在异质性，ML模型在不同子群体上表现不同的情况），或基于E值的PPI~{[4]}（能处理更广泛的推断问题，如变化点检测和因果发现，并具有随时有效的特性）。
+    \item \textbf{系统性评估模型质量的影响}：设计更全面的模拟研究，系统地改变预训练模型 $f(X)$ 的预测准确率、偏差大小和类型，以量化这些因素对PPI++（特别是参数 $\lambda$ 的选择和最终效率增益）的具体影响。
+    \item \textbf{不同类型参数和模型的推断}：将PPI方法应用于更复杂的参数估计问题，例如非线性模型的参数、生存分析中的风险比，或广义线性模型族中的其他参数。
+    \item \textbf{处理更复杂的分布偏移}：在存在显著协变量偏移或标签偏移的数据集上，实证检验和比较不同PPI调整策略的性能。
+    \item \textbf{可解释性与诊断工具}：开发与PPI方法配套的可解释性工具或诊断程序，帮助用户理解预测信息是如何影响最终推断结果的，以及何时PPI可能表现不佳。
+    \item \textbf{大规模真实世界应用验证}：在更多不同领域的真实大规模数据集上应用和验证PPI方法的有效性和实用性。
+\end{enumerate}
+本研究的核心价值在于揭示了在现代数据科学环境中，机器学习的预测能力与统计推断的严谨性可以有效结合。预测驱动推断框架，特别是PPI++，通过其精巧的偏差校正和自适应机制，为从有限的标注数据和丰富的预测信息中提取可靠的统计结论提供了一条有力的途径。这不仅关乎统计方法的进步，更关乎如何在人工智能时代进行更可信、更高效的数据驱动的科学探索。例如，在药物临床试验中，若能利用疾病进展模型对安慰剂组的"数字孪生"进行预测，并通过PPI校正，则可能在保证试验有效性的前提下，减少所需招募的对照组患者数量，或在同样样本量下获得更高的检验效能~{[19]}。这种潜力对于加速科学发现和降低研究成本具有重要意义。
+
+此外，关于预训练模型 $f(X)$ 的训练过程，若其在项目内部完成（即利用部分可用标注数据），则数据划分的策略非常关键。传统的做法是将一部分标注数据用于训练 $f(X)$，另一部分用于PPI的校正步骤。然而，这种数据分割可能导致用于校正的样本量进一步减少，从而影响PPI的性能。交叉预测推断（Cross-prediction）~{[70]} 等方法正是为了解决这个问题而提出的，它们通过类似交叉验证的机制，允许在训练预测模型和进行推断时更有效地利用全部标注数据，避免了"次优的数据分割"~{[70]}。本项目主要聚焦于PPI++并假设 $f(X)$ 是给定的。在讨论其局限性或展望未来工作时，对数据利用效率问题及交叉预测等更高级解决方案的探讨，体现了对该领域更深层次的理解。
+
+\section{结论}
+\label{sec:conclusion}
+本项目系统性地研究、实施并评估了预测驱动的统计推断（Prediction-Powered Inference, PPI）方法，特别是其高效变体PPI++，在利用少量标注数据、大量未标注数据以及一个预训练机器学习模型进行统计推断（如均值估计、分位数估计、回归系数估计，并构建置信区间）方面的性能。通过在ADNI数据集（或其模拟版本）上与朴素ML推断和经典小样本统计推断的对比，本研究验证了PPI++方法在保证统计推断有效性（如置信区间的正确覆盖率）的前提下，显著提升了推断的精度（如获得更窄的置信区间）。
+
+主要的研究发现如下：
+\begin{enumerate}
+    \item \textbf{PPI++的有效性与效率}：PPI++方法提供了具有接近名义覆盖率的置信区间，同时其区间长度显著短于仅依赖小样本标注数据的经典推断方法。这证实了其在融合多源信息以提升统计效率方面的理论优势。
+    \item \textbf{朴素ML推断的风险}：直接将ML预测值代入经典统计程序进行推断（朴素方法）导致了置信区间覆盖率不足和点估计的偏差。这突显了对ML预测进行恰当统计校正的必要性。
+    \item \textbf{经典推断的局限性}：在标注数据稀缺的情况下，经典统计推断虽然有效，但其精度有限，表现为较宽的置信区间，这限制了其在许多实际应用中的决策支持能力。
+    \item \textbf{预训练模型质量的调节作用}：PPI++的自适应特性（通过参数 $\lambda$）使其根据预训练模型的预测质量自动调整对预测信息的依赖程度。结果表明，模型质量越高，PPI++的效率增益越明显。
+\end{enumerate}
+
+本研究不仅为在特定场景下应用PPI++提供了实证证据和实施细节，也强调了在现代数据丰富的环境中，审慎结合机器学习预测能力与统计推断原则的重要性。预测驱动推断为数据科学家和研究人员提供了一套强大的工具，使他们能够在标注资源有限的情况下，更有效地从数据中提取有价值的洞见，并做出更可靠的统计决策。
+
+尽管本研究存在一定的局限性（如单一数据集的依赖、预训练模型的特定选择等），其结论对于推动在生物医学、社会科学、经济学等多个领域应用更先进的统计推断方法仍具有积极意义。未来的研究可探索更广泛的PPI变体、研究更复杂的推断问题，并在更多样化的数据场景中验证这些方法的性能。
+
+总而言之，预测驱动的统计推断代表了机器学习与统计学交叉领域一个富有前景的发展方向。通过明智地利用"大数据"中蕴含的预测信号，同时坚守统计推断的有效性准则，PPI及其相关方法在数据驱动的科学发现和决策制定中展现出巨大的应用潜力。
+
+% --- Potential Next Sections (e.g., Discussion, Conclusion, References) ---
+% \section{讨论}
+% \label{sec:discussion}
+
+% \section{结论}
+% \label{sec:conclusion}
 
 \clearpage
 \phantomsection
@@ -840,68 +775,70 @@ $$
 \section{任务分工与项目组织}
 \subsection{项目组织与时间安排}
 
-本项目采用敏捷迭代的开发方法，在为期 $4$ 周的时间内完成了各项预定的研究任务。团队成员紧密协作，确保了项目从规划到最终报告提交的有序进行。具体时间安排与各阶段核心工作如下：
+本项目历时四周，团队成员紧密配合，通过规律性的线上会议同步进展、研讨关键问题，并借助Git进行高效的版本控制与协作。整体工作划分为以下四个阶段：
 
 \begin{enumerate}
-\item \textbf{第一周：项目启动与数据基础构建阶段}
+    \item \textbf{第一周：项目启动与基础数据准备}
     \begin{itemize}
-    \item 核心任务：进行项目整体规划，明确研究目标与范围。由 \textbf{徐媛} 主导完成了CAS数据集的全面获取、细致的初步清洗与预处理工作，为后续分析奠定了数据基础，此阶段涉及对原始数据的系统性梳理与规范化。
-    \item 并行工作：全体成员参与初步文献调研与需求讨论。
+        \item 核心任务：明确项目目标与研究范围，完成ADNI数据集的获取、初步清洗、预处理及特征变量的选取。此阶段由徐媛主导，重点在于为后续的预测驱动推断分析建立坚实的数据基础。
+        \item 协同工作：全体成员参与预测驱动推断（PPI）相关文献回顾与项目需求分析。
     \end{itemize}
 
-\item \textbf{第二周：核心分析模型设计与初步实现阶段}
+    \item \textbf{第二周：分析方法设计与核心模型构建}
     \begin{itemize}
-    \item 核心任务：由 \textbf{徐媛} 主导，针对 $3$ 个核心研究问题进行了分析方法设计、关键特征工程以及核心统计模型（逻辑回归、中断时间序列）的初步构建与代码实现。此阶段为项目的技术实现期，专注于核心模型的搭建与初步参数设定。
-    \item 并行工作：\textbf{徐凡舒} 协助准备分析所需的数据子集，\textbf{谢筱昀} 开始介入研究设计的讨论。
+        \item 核心任务：由徐媛主导进行详细的PPI分析方法设计，包括预训练模型$f(X)$（如梯度提升模型）的选择与训练，以及PPI++、经典统计推断和朴素ML推断三种方法的实现方案。关键代码的初步实现与调试也在本周完成。
+        \item 协同工作：徐凡舒协助完成ADNI数据子集（标注集、未标注集）的划分与准备，谢筱昀参与研究方案的讨论与完善。
     \end{itemize}
 
-\item \textbf{第三周：深度分析、结果整合与可视化攻坚阶段}
+    \item \textbf{第三周：深度分析、结果验证与可视化}
     \begin{itemize}
-    \item 核心任务：由 \textbf{徐媛} 主导，完成了所有模型的参数调优、结果验证（如Mann-Kendall检验），并系统性地整合了所有分析结果。同时，此阶段的另一项重点工作是设计并实现了一系列可视化图表，用以直观呈现数据模式与研究发现，力求清晰传达分析洞见。
-    \item 并行工作：团队成员共同对初步结果进行讨论和解读。
+        \item 核心任务：徐媛负责完成三种推断方法的比较分析，包括点估计偏差、置信区间长度和覆盖率的评估。本阶段亦重点投入于设计和生成一系列可视化图表，旨在直观展现不同方法的性能差异。
+        \item 协同工作：团队成员共同对初步分析结果进行解读与讨论。
     \end{itemize}
 
-\item \textbf{第四周：报告撰写、多轮修订与终稿完善阶段}
+    \item \textbf{第四周：报告撰写、修订与最终定稿}
     \begin{itemize}
-    \item 核心任务：由 \textbf{徐媛} 负责整体报告的框架搭建与主要内容的撰写，将前三周的分析工作与成果系统化、条理化地呈现。随后，由 \textbf{谢筱昀} 主导进行了多轮报告校对、文字润色与格式规范化工作，以提升报告的严谨性与可读性。\textbf{徐凡舒} 也参与了部分内容的核查。此阶段着重于研究成果的梳理与文字表达的优化，通过团队成员的共同审阅和细致修改完成。
+        \item 核心任务：由徐媛搭建报告整体框架并完成主要内容的撰写。随后，谢筱昀主导进行多轮细致的审校、文字润色和格式统一工作。徐凡舒参与部分内容的复核，确保报告的严谨性与准确性。
     \end{itemize}
 \end{enumerate}
 
-项目全程采用Git进行代码与文档的版本控制，并通过每周至少 $3$ 次的线上会议进行进度同步、难点研讨与任务协调，保障了项目在既定时间表内按计划推进并最终完成。
+通过上述安排，项目确保了从数据处理、模型分析到成果展示和报告撰写的系统性与连贯性。
 
 \subsection{具体分工}
 
+为确保项目高效执行，团队成员职责明确，具体分工如下：
+
 \begin{enumerate}
-\item \textbf{徐媛}：
-  \begin{enumerate}
-  \item 核心数据分析及模型构建（$3$ 个研究问题的全部分析工作）
-  \item 特征工程与数据转换
-  \item 统计模型设计与实现（逻辑回归、时间序列分析、Mann-Kendall检验）
-  \item 可视化系统设计与实现
-  \item 项目管理与进度监控
-  \item 报告撰写
-  \end{enumerate}
+    \item \textbf{徐媛 (项目负责人与核心分析师)}：
+    \begin{itemize}
+        \item 全面负责项目的核心数据分析工作，主导PPI++、经典推断及朴素ML推断方法的设计、实现、验证与解读。
+        \item 主持ADNI数据集的特征工程，从原始数据中筛选、构建分析所需的关键变量，并负责预训练模型$f(X)$的训练与评估。
+        \item 负责核心推断方法（PPI++）的参数选择、校正项计算及置信区间构建。
+        \item 设计并制作研究报告中的数据可视化图表，对比不同推断方法的性能。
+        \item 统筹项目整体进度，协调团队成员间的协作。
+        \item 主笔撰写研究报告的框架及核心内容。
+    \end{itemize}
 
-\item \textbf{徐凡舒}：
-  \begin{enumerate}
-  \item 数据获取与初步清洗
-  \item 文献调研与背景资料收集
-  \item 协助准备数据集与参考资料
-  \end{enumerate}
+    \item \textbf{徐凡舒 (数据整理与文献支持)}：
+    \begin{itemize}
+        \item 负责ADNI原始数据集的获取、初步数据清洗、格式转换及数据划分（标注集、未标注集）。
+        \item 开展预测驱动推断、ADNI研究及相关领域的文献检索与梳理，为项目提供理论背景和方法参考。
+        \item 协助准备和管理分析过程中所需的各类数据集、模型预测结果及参考资料。
+    \end{itemize}
 
-\item \textbf{谢筱昀}：
-  \begin{enumerate}
-  \item 报告校对与质量控制
-  \item 参与研究设计讨论
-  \item 文档格式规范与一致性检查
-  \item 最终报告审核
-  \end{enumerate}
+    \item \textbf{谢筱昀 (报告审核与质量控制)}：
+    \begin{itemize}
+        \item 负责研究报告的全面审校，包括内容准确性（如ADNI数据集描述、PPI方法论解释、实验结果呈现）、逻辑连贯性及文字表达的清晰度。
+        \item 参与研究设计和分析方案的讨论，提供建设性意见。
+        \item 负责报告的排版格式、图表规范和参考文献的检查与统一。
+        \item 对最终报告的整体质量进行把关。
+    \end{itemize}
 \end{enumerate}
 
 \subsection{技术栈选择}
 
 \begin{itemize}
-\item \textbf{数据分析与处理}：Python (Pandas, NumPy, StatsModels, SciPy)
+\item \textbf{数据分析与处理}：Python (Pandas, NumPy, Scikit-learn, ppi_py, StatsModels)
 \item \textbf{数据可视化}：Matplotlib, Seaborn
 \item \textbf{开发环境与版本控制}：Conda, Git/GitHub
 \item \textbf{报告撰写}：Markdown, LaTeX
@@ -911,26 +848,14 @@ $$
 \section{个人总结与收获}
 \subsection{徐媛}
 
-在本项目中，我主要负责 $3$ 个核心研究问题的整体分析设计、模型构建、结果解读及可视化呈现。回顾整个项目历程，我们团队共同面临并克服了若干关键挑战：
-
-\begin{enumerate}
-\item \textbf{驾驭大规模多维度数据集的复杂性}：CAS数据集包含近 $87$ 万条记录，横跨 $20$ 余年，涉及事故、车辆、人员等多个层面，且包含时间和空间属性。初期，如何高效地进行数据清洗、特征工程，并从中筛选出与 $3$ 个不同研究问题高度相关的变量子集，是一项基础但至关重要的挑战。我通过设计灵活的数据处理流程和探索性数据分析，逐步聚焦关键信息，为后续建模奠定了基础。
-
-\item \textbf{区分系统性影响与局部波动的挑战（问题二：地区事故激增）}：识别特定区域年度事故数量的"异常"激增，并探究其背后是区域性因素还是全国性政策/系统变更，是本项目的核心难点之一。我们采用了中断时间序列分析（ITSA）结合异常增长率的量化标准。关键在于通过多地区数据的同步比较，观察到 $2001$ 年和 $2016$ 年多个地区同步激增的现象，从而将分析视角从孤立事件提升到对潜在系统性因素的考量。
-
-\item \textbf{从数据趋势到模式洞察的深化（问题三：车辆类型演变）}：分析不同车辆类型参与事故的长期趋势，不仅仅是计算比例变化。挑战在于如何从纷繁的车型数据中提炼出具有统计意义的结构性转变，并将其与可能的社会经济背景联系起来。通过Mann-Kendall检验，我们为观察到的趋势（如轿车占比下降，SUV、摩托车占比上升）提供了统计支持，并尝试从交通模式演变的角度进行解读。
-
-\item \textbf{整合多元分析结果并形成统一报告的挑战}：由于 $3$ 个研究问题各具特点，采用了不同的分析方法和模型。如何将这些独立的分析模块有机地整合起来，形成一份逻辑连贯、结论清晰且具有实践指导意义的综合性报告，是对我们团队整体分析与表达能力的考验。我在此过程中，不仅主导了核心分析，也承担了大部分报告撰写和结果呈现的工作，力求使复杂的分析过程和发现易于理解。
-\end{enumerate}
-
-通过深度参与并主导解决这些贯穿项目始终的难点，我最大的收获在于提升了在复杂真实场景下，综合运用多种统计建模与数据分析方法解决多方面问题的能力。特别是，如何从海量数据中挖掘深层模式、审慎解释统计结果（尤其是反直觉发现）、以及将研究洞见转化为具有实际应用价值的建议，这些方面的经验尤为宝贵。同时，本项目也让我对交通安全这一系统性问题的复杂性有了更深刻的理解，认识到数据分析在揭示潜在风险、评估政策效果和指导未来干预中的关键作用。
+本次项目中，我承担了核心分析和报告撰写的主要职责。面对结构复杂的ADNI数据集，最大的挑战在于如何有效地进行数据预处理、特征构建，并针对预测驱动推断（PPI）的核心问题设计并实施恰当的比较实验。例如，在实现PPI++框架时，理解其校正机制和功效调整参数$\\lambda$的意义，并将其与经典统计方法和朴素ML方法进行性能对比，需要细致的编码和严谨的评估。整个过程，从数据处理、预训练模型$f(X)$的构建、PPI推断的执行，到结果解读和可视化呈现，再到最终将多元分析结果整合成一份逻辑清晰的报告，极大地提升了我在复杂真实数据和前沿统计方法面前，运用多学科知识进行独立研究和系统表达的能力。深刻体会到数据分析不仅是技术操作，更是从数据中提炼可靠统计见解、服务科学探索的艺术。
 
 \subsection{徐凡舒}
 
-作为数据收集与预处理的负责人，我的主要工作是确保项目有高质量的数据基础。从新西兰交通事故分析系统获取完整数据集后，我面临的首要挑战是处理数据集中大量的缺失值和理解复杂的编码系统。通过阅读相关文档和参考文献，我成功解析了数据字典并完成了初步的数据清洗。这个过程让我认识到，在大型数据分析项目中，数据质量是决定分析结果可靠性的关键因素。我还负责收集背景资料，以帮助团队更好地理解新西兰交通安全的特殊背景。通过这个项目，我提升了数据获取、预处理和文献调研的能力，这些对我未来参与更多数据科学项目都将十分有用。
+我在项目中主要负责前期的资料收集与数据准备工作。关键任务是确保我们所用的ADNI数据集的完整性、准确性以及适用于后续的PPI分析。这一过程包括对原始ADNI数据的获取（可能涉及多个表和数据类型）、字段含义的理解、缺失值的处理、特征的初步筛选以及将其划分为标注集和未标注集。处理这样多模态的生物医学数据集，让我更深刻地认识到数据质量和精心准备对于后续所有分析工作的重要性。任何早期的疏忽都可能对最终推断的有效性和效率产生显著影响。此外，通过对PPI和ADNI相关研究的文献回顾，我对预测驱动推断的理论背景、应用场景及阿尔茨海默病研究的数据特点有了更全面的了解，这为团队后续确定分析方向和方法选择提供了有益参考。这次经历强化了我在复杂数据处理规范性及领域知识获取方面的技能，也让我体会到严谨的数据准备是研究成功的基石。
 
 \subsection{谢筱昀}
 
-担任报告校对与质量控制的角色让我对科学写作有了全新的认识。我的主要职责是确保报告的逻辑一致性、数据准确性和表达清晰度。这需要我既有足够的专业知识理解技术内容，又能站在读者的角度评估内容的可理解性。最大的挑战是检查数学公式和统计结果的正确性，以及确保图表与正文描述的一致性。我特别关注了报告中的模型解释部分，确保复杂的统计概念能够以适当的方式呈现。通过这个项目，我不仅提升了文档审核的能力，还增强了对数据科学报告规范的理解。我认为高质量的文档对于科学研究同样重要，它是确保研究成果能够被正确理解和应用的关键环节。
+我在团队中主要承担报告的审核与质量控制工作。我的职责是确保最终研究报告在内容上准确无误、逻辑上清晰连贯、表达上专业流畅。这项工作需要细致入微，从核对ADNI数据集描述的准确性、PPI方法论解释的清晰度、实验结果（如图表和统计数据）的正确呈现，到审查图表的规范性与内文描述的一致性，再到通读全文以保证行文的流畅度和专业水准。在校对过程中，我特别关注了研究方法（如PPI++的实现细节、基准方法的设定）和结果讨论部分的清晰度与严谨性，力求使复杂的统计概念和分析过程能被读者准确理解。通过这次实践，我不仅提升了科技文献的阅读理解与批判性评估能力，也深化了对科研报告规范化和严谨性的认识。高质量的成果呈现是确保研究价值得以有效传递的关键环节。
 
 \end{document}

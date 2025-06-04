@@ -1,17 +1,31 @@
+# PPI实验核心依赖
+numpy==1.26.4
+pandas==2.2.1
+scikit-learn==1.4.2
+scipy==1.13.0
+
+# 可视化依赖
+matplotlib==3.8.3
+seaborn==0.13.2
+plotly==5.21.0
+
+# 统计分析
+statsmodels==0.14.2
+
+# Jupyter支持
+jupyter==1.0.0
+ipython==8.20.0
+
+# 其他工具
+tqdm==4.66.2
+pathlib==1.0.1
+
 fqdn==1.5.1
 ipython_pygments_lexers==1.1.1
 isoduration==20.11.0
 jsonpointer==3.0.0
-jupyter==1.0.0
 kagglehub==0.1.5
-matplotlib==3.8.3
-numpy==1.26.4
-pandas==2.2.1
-plotly==5.21.0
-ruptures==1.1.9
-scikit-learn==1.4.2
-seaborn==0.13.2
-statsmodels==0.14.2
 tinycss2==1.4.0
 uri-template==1.3.0
 webcolors==24.11.1
+ruptures==1.1.9

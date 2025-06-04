@@ -1,0 +1,4 @@
+Method,Estimate,Standard Error,CI Lower,CI Upper,CI Width
+Classical (Labeled Only),12.8771,0.1632,12.5554,13.1989,0.6435
+Naive ML (All Predictions),13.2547,0.0556,13.1458,13.3636,0.2179
+PPI (Corrected),13.1642,0.1702,12.8285,13.4998,0.6713

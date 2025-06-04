@@ -1,0 +1,61 @@
+{
+  "classical": {
+    "estimate": 12.87713670583138,
+    "se": 0.16316531452343508,
+    "ci": [
+      12.555381796062381,
+      13.198891615600377
+    ],
+    "ci_width": 0.6435098195379965
+  },
+  "naive_ml": {
+    "estimate": 13.254684898561882,
+    "se": 0.05557588454638986,
+    "ci": [
+      13.145758166442002,
+      13.363611630681762
+    ],
+    "ci_width": 0.21785346423975938
+  },
+  "ppi": {
+    "estimate": 13.164163273142739,
+    "se": 0.17021799616964237,
+    "ci": [
+      12.828500781646994,
+      13.499825764638484
+    ],
+    "ci_width": 0.6713249829914893
+  },
+  "true_value": 13.141122345386593,
+  "model_performance": {
+    "r2": 0.8859908849801215,
+    "mse": 0.604015851044388
+  },
+  "data_info": {
+    "n_labeled": 200,
+    "n_unlabeled": 1000,
+    "feature_names": [
+      "age",
+      "education_years",
+      "apoe4_carriers",
+      "baseline_mmse",
+      "hippocampus_volume",
+      "tau_protein"
+    ]
+  },
+  "classical_metrics": {
+    "bias": -0.26398563955521404,
+    "coverage": true,
+    "ci_width": 0.6435098195379965
+  },
+  "naive_ml_metrics": {
+    "bias": 0.11356255317528863,
+    "coverage": false,
+    "ci_width": 0.21785346423975938
+  },
+  "ppi_metrics": {
+    "bias": 0.023040927756145635,
+    "coverage": true,
+    "ci_width": 0.6713249829914893
+  }
+}

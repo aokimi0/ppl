@@ -252,10 +252,6 @@ def ppi_custom_estimand(Y_labeled, Y_hat_labeled, Y_hat_unlabeled):
 
 完整依赖列表见 `requirements.txt`。
 
-## 开发团队
-
-- **廖望** - 学号2210556，南开大学计算机学院，计算机科学与技术专业
-
 ## 参考文献
 
 1. Angelopoulos, A. N., Bates, S., Fannjiang, C., Jordan, M. I., & Zrnic, T. (2023). **Prediction-powered inference**. *Science*, 382(6671), 669-674.
